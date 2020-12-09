@@ -11,4 +11,9 @@ public class Tests {
     public void secondTest() {
        Assert.assertEquals(33, Main.getHelloMessage().length());
     }
+
+    @Test
+    public void difficultTest() {
+        Assert.assertTrue("How???", true);
+    }
 }
