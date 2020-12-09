@@ -8,4 +8,3 @@ public class Main {
         return HELLO + "! This is the best app";
     }
 }
-
