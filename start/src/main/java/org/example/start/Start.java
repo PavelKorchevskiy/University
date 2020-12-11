@@ -16,9 +16,12 @@ public class Start {
         Worker worker2 = new Worker("Sem");
         worker2.setSalary(initSalary());
         workers.add(worker2);
+        Worker worker3 = new Worker("pasha2");
+        worker3.setSalary(initSalary());
+        workers.add(worker3);
 
         double averageSalary = Calculator.calculateAverageSalary(workers, 6);
-        System.out.format("%.3f", averageSalary);
+        System.out.format("Average salary - %.2f ", averageSalary);
     }
 
     public static List<Double> initSalary() {
