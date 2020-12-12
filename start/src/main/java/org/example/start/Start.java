@@ -3,6 +3,7 @@ package org.example.start;
 import org.example.Calculator;
 import org.example.model.Worker;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,14 @@ public class Start {
         worker3.setSalary(initSalary());
         workers.add(worker3);
 
-        double averageSalary = Calculator.calculateAverageSalary(workers, 6);
+        BigDecimal averageSalary = Calculator.calculateAverageSalary(workers, 6);
         System.out.format("Average salary - %.2f ", averageSalary);
     }
 
-    public static List<Double> initSalary() {
-        List<Double> salary = new ArrayList<>();
+    public static List<BigDecimal> initSalary() {
+        List<BigDecimal> salary = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            salary.add(Math.random() * 200 + 300);
+            salary.add(BigDecimal.valueOf(Math.random() * 200 + 300));
         }
         return salary;
     }

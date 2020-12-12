@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
 public class Worker {
     private String name;
-    private List<Double> salary;
+    private List<BigDecimal> salary;
 
     public Worker(String name) {
         if (StringUtils.isAlpha(name)) {
@@ -19,6 +20,6 @@ public class Worker {
         } else {
             this.name = "Slave";
         }
-        salary = new ArrayList<>();
+        salary = new ArrayList<BigDecimal>();
     }
 }
