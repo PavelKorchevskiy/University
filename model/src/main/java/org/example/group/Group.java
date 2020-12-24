@@ -1,18 +1,19 @@
 package org.example.group;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.subject.Subject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class Group {
-    private List<Student> students;
-    private Teacher teacher;
-    private List<Subject> subjects;
+
+  private List<Student> students = new ArrayList<>();
+  private Teacher teacher;
 }

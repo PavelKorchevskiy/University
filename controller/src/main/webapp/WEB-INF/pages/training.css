@@ -1,0 +1,19 @@
+body{
+    background-image: url(../../pictures/background.png);
+    width: 670px;
+    height: 376px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: #195;
+}
+div{
+    background-color:#BABABA;
+    font-size:20px;
+    border: solid 5px;
+    display: inline-block;
+}
+h1{
+    align-content: center;
+    text-align: center;
+    font-size:400px;
+}

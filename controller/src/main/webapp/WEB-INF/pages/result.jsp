@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html; UTF-8" language="java" %>
 
 <html>
@@ -6,7 +7,8 @@
   </head>
     <body>
 
-<%= session.getAttribute("report") %>
+    <%= session.getAttribute("report") %>
+    <%= new Date()%>
 
     </body>
 </html>
