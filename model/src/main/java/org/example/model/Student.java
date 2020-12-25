@@ -28,6 +28,20 @@ public class Student extends AbstractPerson {
     }
   }
 
+//  перегруженный метод, принимающий строку
+  public void putRating(String subject, int rating) {
+    //TODO: throw exception
+    try {
+      Subject s = Subject.valueOf(subject);
+      if (rating >= 0 && rating <= 100) {
+        ratings.put(s, rating);
+      }
+    } catch (IllegalArgumentException e) {
+      //нужно ли кидать исключение в таком случае?
+      //пусть пока ни чего не происходит
+    }
+  }
+
   public void deleteRating(Subject subject) {
     ratings.remove(subject);
   }

@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import org.example.model.Student;
 import org.example.model.Teacher;
 
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
 
     private RepositoryForTeachersInMemory() {
         map = new ConcurrentHashMap<>();
-        for (Teacher teacher: initTeachers()) {
+        for (Teacher teacher : initTeachers()) {
             map.put(teacher.getLogin(), teacher);
         }
     }
@@ -34,10 +35,19 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
 
     private List<Teacher> initTeachers() {
         List<Teacher> teachers = new ArrayList<>();
-        teachers.add(new Teacher("teacher1", "teacher1", "Ivanov Ivan", 34, initSalary()));
-        teachers.add(new Teacher("teacher3", "teacher3", "Gallieo Galiley", 64, initSalary()));
-        teachers.add(new Teacher("teacher4", "teacher4", "Albert Einschtein", 54, initSalary()));
-        teachers.add(new Teacher("teacher5", "teacher5", "Master Ioda", 334, initSalary()));
+        teachers.add(new Teacher("t1", "t1", "Ivanov Ivan", 34, initSalary()));
+        teachers.add(new Teacher("t2", "t2", "Gallieo Galiley", 64, initSalary()));
+        teachers.add(new Teacher("t3", "t3", "Albert Einschtein", 54, initSalary()));
+        teachers.add(new Teacher("t4", "t4", "Master Ioda", 334, initSalary()));
+
+        //add 2 random students in group
+        for (Teacher teacher : teachers) {
+            RepositoryForStudentsInMemory repository = RepositoryForStudentsInMemory.getInstance();
+            List<Student> students = repository.getRandomStudents(4);
+            for (Student student: students) {
+                teacher.addStudentInGroup(student);
+            }
+        }
         return teachers;
     }
 
@@ -61,7 +71,7 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
 
     @Override
     public Teacher save(Teacher teacher) {
-        map.put(teacher.getLogin(), (Teacher) teacher);
+        map.put(teacher.getLogin(), teacher);
         return teacher;
     }
 
@@ -73,7 +83,7 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
     @Override
     public Optional<Teacher> findByLoginAndPassword(String login, String password) {
         Teacher result = null;
-        for (Map.Entry<String, Teacher> entry: map.entrySet()) {
+        for (Map.Entry<String, Teacher> entry : map.entrySet()) {
             if (entry.getValue().getLogin().equals(login) && entry.getValue().getPassword().equals(password)) {
                 result = entry.getValue();
             }

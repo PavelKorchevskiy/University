@@ -31,15 +31,27 @@ public class RepositoryForStudentsInMemory implements RepositoryForStudentsInter
 
     private List<Student> initStudents() {
         List<Student> students = new ArrayList<>();
-        students.add(new Student("student1", "student1", "Lena", 24, Set.of(Subject.Chemistry, Subject.Math)));
-        students.add(new Student("student2", "student2", "Dima", 25, Set.of(Subject.Chemistry, Subject.Math)));
-        students.add(new Student("student3", "student3", "Tolik", 26, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
-        students.add(new Student("student4", "student4", "Bill", 27, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
-        students.add(new Student("student5", "student5", "Tom", 28, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
-        students.add(new Student("student6", "student6", "Kim", 23, Set.of(Subject.Geography, Subject.Math)));
-        students.add(new Student("student7", "student7", "Pasha", 24, Set.of(Subject.Geography, Subject.Math)));
-        students.add(new Student("студент8", "student8", "Dasha", 34, Set.of(Subject.Geography, Subject.Math)));
+        students.add(new Student("s1", "s1", "Lena", 24, Set.of(Subject.Chemistry, Subject.Math)));
+        students.add(new Student("s2", "s2", "Dima", 25, Set.of(Subject.Chemistry, Subject.Math)));
+        students.add(new Student("s3", "s3", "Tolik", 26, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
+        students.add(new Student("s4", "s4", "Bill", 27, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
+        students.add(new Student("s5", "s5", "Tom", 28, Set.of(Subject.Chemistry, Subject.Biology, Subject.Geography)));
+        students.add(new Student("s6", "s6", "Kim", 23, Set.of(Subject.Geography, Subject.Math)));
+        students.add(new Student("s7", "s7", "Pasha", 24, Set.of(Subject.Geography, Subject.Math)));
+        students.add(new Student("s8", "s8", "Dasha", 34, Set.of(Subject.Geography, Subject.Math)));
         return students;
+    }
+
+    public List<Student> getRandomStudents(int count) {
+        List<Student> students = new ArrayList<>();
+        for (Map.Entry<String, Student> entry: map.entrySet()) {
+            students.add(entry.getValue());
+        }
+        List<Student> result = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            result.add(students.remove((int) (Math.random() * students.size())));
+        }
+        return result;
     }
 
     @Override
