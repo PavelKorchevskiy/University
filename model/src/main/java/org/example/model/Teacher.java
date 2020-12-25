@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Getter
@@ -38,11 +39,20 @@ public class Teacher extends AbstractPerson {
     //получить студента из группы
     public Optional<Student> getStudentByLogin(String login) {
         Student student = null;
-        for (Student s: group) {
+        for (Student s : group) {
             if (s.getLogin().equalsIgnoreCase(login)) {
                 student = s;
             }
         }
         return Optional.ofNullable(student);
+    }
+
+    public String showSalary() {
+        StringBuilder sb = new StringBuilder();
+        for (BigDecimal b : salary) {
+            sb.append(b.setScale(2, RoundingMode.HALF_UP)).append(", ");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        return "Teacher - " + getFullName() + ", with login - " + getLogin() + ".<br/> His salary: " + sb.toString() + "<br/>";
     }
 }

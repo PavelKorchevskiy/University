@@ -18,8 +18,7 @@ public class Controller extends HttpServlet {
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     int countOfMonth = Integer.parseInt(req.getParameter("count"));
-    AverageSalary service = new AverageSalary();
-    String report = service.report(countOfMonth);
+    String report = AverageSalary.report(countOfMonth);
     HttpSession session = req.getSession();
     session.setAttribute("report", report);
     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/result");

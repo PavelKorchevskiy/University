@@ -13,6 +13,7 @@
 </head>
 <body>
     <h1>Hello ADMIN!</h1>
+    <a href="<c:url value='/salary' />">Set Salary</a><br/>
     <a href="<c:url value='/logout' />">Logout</a>
 </body>
 </html>

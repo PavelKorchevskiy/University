@@ -23,10 +23,18 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>Salary</servlet-name>
+    <jsp-file>/WEB-INF/pages/AdminSetSalary.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Salary</servlet-name>
+    <url-pattern>/salary</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>org.example.controller.LogoutServlet</servlet-class>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/logout</url-pattern>
