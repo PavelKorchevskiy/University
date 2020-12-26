@@ -5,6 +5,7 @@ import org.example.repository.RepositoryForStudentsInMemory;
 import org.example.repository.RepositoryForStudentsInterface;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.example.repository.RepositoryForTeachersInterface;
+import org.example.service.AverageSalary;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,12 @@ public class AuthFilter implements Filter {
         String password = req.getParameter("password");
 
         HttpSession session = req.getSession();
+        //у меня не получилось сделать проверку этого атрибута на null в AdminAverageSalary
+        //пусть пока будет так
+        //есть ошибка при первом входе на страницу, даже если мы сначала установим новую Salary
+        //она не будет учитываться до нажатия на кнопку, ибо мы сделали рассчет еще в фильтре
+        //даст Бог исправлю
+        session.setAttribute("averageSalary", AverageSalary.showAverageSalaryForAllTeacher(1));
 
         String role;
         if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {

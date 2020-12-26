@@ -31,10 +31,10 @@ public class AverageSalary {
     return sum.divide(BigDecimal.valueOf(teachers.size()), 2, RoundingMode.HALF_UP);
   }
 
-  public static String report(int countOfMonth) {
+  public static String report(int numberOfMonths) {
     RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
     List<Teacher> teachersList = repository.findAll();
-    BigDecimal averageSalary = calculateAverageSalary(teachersList, countOfMonth);
+    BigDecimal averageSalary = calculateAverageSalary(teachersList, numberOfMonths);
     return "Average salary for " + teachersList.size() + " teachers - " + averageSalary
         .setScale(2, RoundingMode.HALF_UP);
   }
@@ -47,5 +47,20 @@ public class AverageSalary {
       sb.append(teacher.showSalary());
     }
     return sb.toString();
+  }
+
+  public static String showAverageSalaryForAllTeacher(int numberOfMonths) {
+    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    List<Teacher> teachers = repository.findAll();
+    BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
+    String head = "Average salary for " + teachers.size() + " teachers, for " + numberOfMonths
+            + " months - " + averageSalary.setScale(2, RoundingMode.HALF_UP) +"<br/>";
+    StringBuilder sb = new StringBuilder();
+    for (Teacher teacher: teachers) {
+      sb.append("Average salary for ").append(teacher.getFullName()).append(" - ")
+              .append(calculateAverageSalary(teacher, numberOfMonths)
+                      .setScale(2, RoundingMode.HALF_UP)).append("<br/>");
+    }
+    return head + sb.toString();
   }
 }

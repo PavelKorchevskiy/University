@@ -32,6 +32,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>AverageSalary</servlet-name>
+    <jsp-file>/WEB-INF/pages/AdminAverageSalary.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AverageSalary</servlet-name>
+    <url-pattern>/averageSalary</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Admin</servlet-name>
+    <jsp-file>/WEB-INF/pages/AdminPage.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Admin</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>org.example.controller.LogoutServlet</servlet-class>
   </servlet>
