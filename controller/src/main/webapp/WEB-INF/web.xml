@@ -5,24 +5,6 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 
   <servlet>
-    <servlet-name>ResultJsp</servlet-name>
-    <jsp-file>/result.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ResultJsp</servlet-name>
-    <url-pattern>/result</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>RatingJsp</servlet-name>
-    <jsp-file>/showRating.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RatingJsp</servlet-name>
-    <url-pattern>/showRating</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>Salary</servlet-name>
     <jsp-file>/WEB-INF/pages/AdminSetSalary.jsp</jsp-file>
   </servlet>
