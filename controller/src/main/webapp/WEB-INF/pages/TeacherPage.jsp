@@ -7,14 +7,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 <h1>Hello Teacher</h1>
-<%= RepositoryForTeachersInMemory.getInstance().findByLogin(String.valueOf(session.getAttribute("login"))).get().showGroup()%><br/>
+<%= RepositoryForTeachersInMemory.getInstance()
+        .findByLogin(String.valueOf(session.getAttribute("login"))).get().showGroup()%>
+<br/>
 <h3>Enter student's login, subject and rating:</h3>
 <form method="post" action="<c:url value="/changeRating"/>">
     <input type="text" required placeholder="login" name="loginStudent"><br/>

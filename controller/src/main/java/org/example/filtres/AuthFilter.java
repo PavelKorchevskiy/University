@@ -1,96 +1,108 @@
 package org.example.filtres;
 
+import static java.util.Objects.nonNull;
+
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.example.model.Admin;
 import org.example.repository.RepositoryForStudentsInMemory;
 import org.example.repository.RepositoryForStudentsInterface;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.example.repository.RepositoryForTeachersInterface;
-import org.example.service.AverageSalary;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-
-import static java.util.Objects.nonNull;
+@WebInitParam(name = "AdminLogin", value = "admin")
 
 public class AuthFilter implements Filter {
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+  @Override
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+      throws IOException, ServletException {
+    request.setCharacterEncoding("UTF-8");
+    response.setCharacterEncoding("UTF-8");
+    HttpServletRequest req = (HttpServletRequest) request;
+    HttpServletResponse resp = (HttpServletResponse) response;
 
+    String login = req.getParameter("login");
+    String password = req.getParameter("password");
+
+    HttpSession session = req.getSession();
+    //у меня не получилось сделать проверку этого атрибута на null в AdminAverageSalary
+    //пусть пока будет так
+    //есть ошибка при первом входе на страницу, даже если мы сначала установим новую Salary
+    //она не будет учитываться до нажатия на кнопку, ибо мы сделали рассчет еще в фильтре
+    //даст Бог исправлю
+    //session.setAttribute("averageSalary", AverageSalary.showAverageSalaryForAllTeacher(1));
+
+    String role;
+    if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {
+      role = (String) session.getAttribute("role");
+    } else if (nonNull(login) && nonNull(password)) {
+      session.setAttribute("login", login);
+      session.setAttribute("password", password);
+      role = getAccess(login, password);
+      session.setAttribute("role", role);
+    } else {
+      role = "no";
+      req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
     }
+    goToPage(role, req, resp);
+    //нужно ли?
+    //filterChain.doFilter(request, response);
+  }
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
+  @Override
+  public void destroy() {
+  }
 
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
+  //определяем доступ для введенного логина и пароля
+  private String getAccess(String login, String password) {
+    String access = "no";
+    RepositoryForTeachersInterface repositoryForTeachers = RepositoryForTeachersInMemory
+        .getInstance();
+    RepositoryForStudentsInterface repositoryForStudents = RepositoryForStudentsInMemory
+        .getInstance();
 
-        HttpSession session = req.getSession();
-        //у меня не получилось сделать проверку этого атрибута на null в AdminAverageSalary
-        //пусть пока будет так
-        //есть ошибка при первом входе на страницу, даже если мы сначала установим новую Salary
-        //она не будет учитываться до нажатия на кнопку, ибо мы сделали рассчет еще в фильтре
-        //даст Бог исправлю
-        session.setAttribute("averageSalary", AverageSalary.showAverageSalaryForAllTeacher(1));
-
-        String role;
-        if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {
-            role = (String) session.getAttribute("role");
-        } else if (nonNull(login) && nonNull(password)) {
-            session.setAttribute("login", login);
-            session.setAttribute("password", password);
-            role = getAccess(login, password);
-            session.setAttribute("role", role);
-        } else {
-            role = "no";
-            req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
-        }
-        goToPage(role, req, resp);
-        //нужно ли?
-        filterChain.doFilter(request, response);
+    if (repositoryForTeachers.findByLoginAndPassword(login, password).isPresent()) {
+      access = "teacher";
+    } else if (repositoryForStudents.findByLoginAndPassword(login, password).isPresent()) {
+      access = "student";
+    } else if (login.equals(Admin.getInstance().getLogin()) && Admin.getInstance().getPassword()
+        .equals(password)) {
+      access = "admin";
     }
+    return access;
+  }
 
-    @Override
-    public void destroy() {
-
+  private void goToPage(String role, HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    switch (role) {
+      case "admin":
+        req.getRequestDispatcher("WEB-INF/pages/AdminPage.jsp").forward(req, resp);
+        break;
+      case "student":
+        req.getRequestDispatcher("WEB-INF/pages/StudentPage.jsp").forward(req, resp);
+        break;
+      case "teacher":
+        req.getRequestDispatcher("WEB-INF/pages/TeacherPage.jsp").forward(req, resp);
+        break;
+      default:
+        req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
+        break;
     }
-    //определяем доступ для введенного логина и пароля
-    private String getAccess(String login, String password) {
-        String access = "no";
-        RepositoryForTeachersInterface repositoryForTeachers = RepositoryForTeachersInMemory.getInstance();
-        RepositoryForStudentsInterface repositoryForStudents = RepositoryForStudentsInMemory.getInstance();
+  }
 
-        if (repositoryForTeachers.findByLoginAndPassword(login, password).isPresent()) {
-            access = "teacher";
-        } else if (repositoryForStudents.findByLoginAndPassword(login, password).isPresent()) {
-            access = "student";
-        } else if (login.equals(Admin.getInstance().getLogin()) && Admin.getInstance().getPassword().equals(password)) {
-            access = "admin";
-        }
-        return access;
-    }
-
-    private void goToPage(String role, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        switch (role) {
-            case "admin":
-                req.getRequestDispatcher("WEB-INF/pages/AdminPage.jsp").forward(req, resp);
-                break;
-            case "student":
-                req.getRequestDispatcher("WEB-INF/pages/StudentPage.jsp").forward(req, resp);
-                break;
-            case "teacher":
-                req.getRequestDispatcher("WEB-INF/pages/TeacherPage.jsp").forward(req, resp);
-                break;
-            default:
-                req.getRequestDispatcher("WEB-INF/pages/AdminPage.jsp").forward(req, resp);
-                break;
-        }
-    }
+  @Override
+  public void init(FilterConfig filterConfig) {
+    String login = filterConfig.getInitParameter("AdminLogin");
+    Admin.getInstance().setLogin(login);
+    Admin.getInstance().setPassword(login);
+  }
 }

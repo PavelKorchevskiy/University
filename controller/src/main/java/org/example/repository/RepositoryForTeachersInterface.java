@@ -1,19 +1,18 @@
 package org.example.repository;
 
-import org.example.model.Teacher;
-
 import java.util.List;
 import java.util.Optional;
+import org.example.model.Teacher;
 
 public interface RepositoryForTeachersInterface {
 
-    List<Teacher> findAll();
+  List<Teacher> findAll();
 
-    Optional<Teacher> findByLogin(String login);
+  Optional<Teacher> findByLogin(String login);
 
-    Teacher save(Teacher teacher);
+  Teacher save(Teacher teacher);
 
-    Teacher remove(Teacher teacher);
+  Teacher remove(Teacher teacher);
 
-    Optional<Teacher> findByLoginAndPassword(String login, String password);
+  Optional<Teacher> findByLoginAndPassword(String login, String password);
 }
