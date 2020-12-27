@@ -27,6 +27,7 @@ public class AuthFilter implements Filter {
       throws IOException, ServletException {
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
+
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
 
@@ -34,13 +35,6 @@ public class AuthFilter implements Filter {
     String password = req.getParameter("password");
 
     HttpSession session = req.getSession();
-    //у меня не получилось сделать проверку этого атрибута на null в AdminAverageSalary
-    //пусть пока будет так
-    //есть ошибка при первом входе на страницу, даже если мы сначала установим новую Salary
-    //она не будет учитываться до нажатия на кнопку, ибо мы сделали рассчет еще в фильтре
-    //даст Бог исправлю
-    //session.setAttribute("averageSalary", AverageSalary.showAverageSalaryForAllTeacher(1));
-
     String role;
     if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {
       role = (String) session.getAttribute("role");
@@ -54,8 +48,6 @@ public class AuthFilter implements Filter {
       req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
     }
     goToPage(role, req, resp);
-    //нужно ли?
-    //filterChain.doFilter(request, response);
   }
 
   @Override
