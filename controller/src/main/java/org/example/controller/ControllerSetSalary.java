@@ -38,6 +38,6 @@ public class ControllerSetSalary extends HttpServlet {
       Teacher teacher = optionalTeacher.get();
       teacher.getSalary().add(newSalary);
     }
-    req.getRequestDispatcher("WEB-INF/pages/AdminSetSalary.jsp").forward(req, resp);
+    req.getRequestDispatcher("pages/AdminSetSalary.jsp").forward(req, resp);
   }
 }

@@ -1,4 +1,4 @@
-package org.example.filtres;
+package org.example.filters;
 
 import static java.util.Objects.nonNull;
 
@@ -45,7 +45,7 @@ public class AuthFilter implements Filter {
       session.setAttribute("role", role);
     } else {
       role = "no";
-      req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
+      req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
     }
     goToPage(role, req, resp);
   }
@@ -77,16 +77,20 @@ public class AuthFilter implements Filter {
       throws ServletException, IOException {
     switch (role) {
       case "admin":
-        req.getRequestDispatcher("WEB-INF/pages/AdminPage.jsp").forward(req, resp);
+        req.getRequestDispatcher("pages/AdminPage.jsp").forward(req, resp);
         break;
       case "student":
-        req.getRequestDispatcher("WEB-INF/pages/StudentPage.jsp").forward(req, resp);
+        req.getRequestDispatcher("pages/StudentPage.jsp").forward(req, resp);
         break;
       case "teacher":
-        req.getRequestDispatcher("WEB-INF/pages/TeacherPage.jsp").forward(req, resp);
+        req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
         break;
       default:
-        req.getRequestDispatcher("LoginPage.jsp").forward(req, resp);
+        final HttpSession session = req.getSession();
+        session.removeAttribute("password");
+        session.removeAttribute("login");
+        session.removeAttribute("role");
+        req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
         break;
     }
   }

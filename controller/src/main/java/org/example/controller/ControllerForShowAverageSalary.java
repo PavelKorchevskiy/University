@@ -24,7 +24,7 @@ public class ControllerForShowAverageSalary extends HttpServlet {
     int numberOfMonths = 1;
     try {
       numberOfMonths = Integer.parseInt(req.getParameter("numberOfMonths"));
-      log.info("numberOfMonths" + numberOfMonths);
+      log.info("number of months " + numberOfMonths);
     } catch (NumberFormatException e) {
       log.error("not a number in number of months");
       //нужно ли кидать исключение в таком случае?
@@ -32,6 +32,6 @@ public class ControllerForShowAverageSalary extends HttpServlet {
     }
     session.setAttribute("averageSalary",
         AverageSalary.showAverageSalaryForAllTeacher(numberOfMonths));
-    req.getRequestDispatcher("WEB-INF/pages/AdminAverageSalary.jsp").forward(req, resp);
+    req.getRequestDispatcher("pages/AdminAverageSalary.jsp").forward(req, resp);
   }
 }

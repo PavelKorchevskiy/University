@@ -11,7 +11,7 @@ import org.example.subject.Subject;
 
 public class RepositoryForStudentsInMemory implements RepositoryForStudentsInterface {
 
-  private static RepositoryForStudentsInMemory instance;
+  private static volatile RepositoryForStudentsInMemory instance;
   private final Map<String, Student> map = new ConcurrentHashMap<>();
 
   private RepositoryForStudentsInMemory() {

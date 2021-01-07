@@ -48,6 +48,6 @@ public class ControllerForChangeRating extends HttpServlet {
         student.putRating(subject, rating);
       }
     }
-    req.getRequestDispatcher("WEB-INF/pages/TeacherPage.jsp").forward(req, resp);
+    req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
   }
 }
