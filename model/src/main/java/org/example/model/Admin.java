@@ -5,7 +5,7 @@ public class Admin extends AbstractPerson {
   private static Admin instance;
 
   private Admin(String login, String password, String fullName, int age) {
-    super(login, password, fullName, age);
+    super(1, login, password, fullName, age);
   }
 
   public static Admin getInstance() {

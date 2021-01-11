@@ -37,7 +37,7 @@ public class AverageSalary {
     List<Teacher> teachers = repository.findAll();
     StringBuilder sb = new StringBuilder();
     for (Teacher teacher : teachers) {
-      sb.append(teacher.showSalary());
+      sb.append(TeacherService.showSalary(teacher));
     }
     return sb.toString();
   }

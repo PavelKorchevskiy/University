@@ -13,8 +13,8 @@ public class Student extends AbstractPerson {
   private static final Logger log = LoggerFactory.getLogger(Student.class);
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
-  public Student(String login, String password, String fullName, int age, Set<Subject> subjects) {
-    super(login, password, fullName, age);
+  public Student(int id, String login, String password, String fullName, int age, Set<Subject> subjects) {
+    super(id, login, password, fullName, age);
     if (!StringUtils.isAlpha(fullName)) {
       setFullName("Petia");
     }
@@ -24,6 +24,7 @@ public class Student extends AbstractPerson {
     }
   }
 
+//учитель может добавить предмет и рейтинг
   public void putRating(String subject, int rating) {
     try {
       Subject s = Subject.valueOf(subject);
@@ -31,7 +32,7 @@ public class Student extends AbstractPerson {
         ratings.put(s, rating);
       }
     } catch (IllegalArgumentException e) {
-      log.error("rating is not valid");
+      log.error("rating or subject is not valid");
     }
   }
 

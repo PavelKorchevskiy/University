@@ -17,11 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 public class Teacher extends AbstractPerson {
 
-  private Set<Student> group = new HashSet<>();
+  private volatile Set<Student> group = new HashSet<>();
   private List<BigDecimal> salary = new ArrayList<>();
 
-  public Teacher(String login, String password, String fullName, int age, List<BigDecimal> salary) {
-    super(login, password, fullName, age);
+  public Teacher(int id, String login, String password, String fullName, int age, List<BigDecimal> salary) {
+    super(id, login, password, fullName, age);
     if (!StringUtils.isAlpha(fullName)) {
       setFullName("Ivan Ivanovich");
     }
@@ -32,35 +32,14 @@ public class Teacher extends AbstractPerson {
     group.add(student);
   }
 
-  public String showGroup() {
-    String head = getFullName() + ", in your group " + group.size() + " students:</br>";
-    StringBuilder stringBuilder = new StringBuilder();
-    for (Student student : group) {
-      stringBuilder.append(" name - ").append(student.getRatingAsString()).append(", login - ")
-          .append(student.getLogin()).append(";</br>");
-    }
-    stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(";"));
-    return head + stringBuilder.toString();
-  }
-
   //получить студента из группы
-  public Optional<Student> getStudentByLogin(String login) {
+  public Optional<Student> getStudentById(int id) {
     Student student = null;
     for (Student s : group) {
-      if (s.getLogin().equalsIgnoreCase(login)) {
+      if (s.getId() == id) {
         student = s;
       }
     }
     return Optional.ofNullable(student);
-  }
-
-  public String showSalary() {
-    StringBuilder sb = new StringBuilder();
-    for (BigDecimal b : salary) {
-      sb.append(b.setScale(2, RoundingMode.HALF_UP)).append(", ");
-    }
-    sb.deleteCharAt(sb.lastIndexOf(","));
-    return "Teacher - " + getFullName() + ", with login - " + getLogin() + ".<br/> His salary: "
-        + sb.toString() + "<br/>";
   }
 }

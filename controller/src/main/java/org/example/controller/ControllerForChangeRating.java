@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.example.constans.Parameters;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.RepositoryForTeachersInMemory;
@@ -26,23 +28,27 @@ public class ControllerForChangeRating extends HttpServlet {
     HttpSession session = req.getSession();
     int rating = 0;
     try {
-      rating = Integer.parseInt(req.getParameter("ratingStudent"));
+      rating = Integer.parseInt(req.getParameter(Parameters.RATING));
       log.info(String.valueOf(rating));
     } catch (NumberFormatException e) {
       log.error("not a number in rating");
-      //нужно ли кидать исключение в таком случае?
-      //пусть пока ни чего не происходит
     }
-    String subject = req.getParameter("subjectStudent");
-    String login = req.getParameter("loginStudent");
+    String subject = req.getParameter(Parameters.SUBJECT);
+    int id = 0;
+    try {
+      id = Integer.parseInt(req.getParameter(Parameters.ID_STUDENT));
+      log.info("students id - " + id);
+    } catch (NumberFormatException e) {
+      log.error("id is not a number");
+    }
     log.info(String.format("subject - %s", subject));
-    log.info(String.format("login - %s", login));
+    log.info(String.format("id - %s", id));
     RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
     Optional<Teacher> teacherOptional = repository
-        .findByLogin(String.valueOf(session.getAttribute("login")));
+        .findByLoginAndPassword(String.valueOf(session.getAttribute("login")), String.valueOf(session.getAttribute("password")));
     if (teacherOptional.isPresent()) {
       Teacher teacher = teacherOptional.get();
-      Optional<Student> studentOptional = teacher.getStudentByLogin(login);
+      Optional<Student> studentOptional = teacher.getStudentById(id);
       if (studentOptional.isPresent()) {
         Student student = studentOptional.get();
         student.putRating(subject, rating);

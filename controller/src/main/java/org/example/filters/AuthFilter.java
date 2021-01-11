@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.example.constans.Attributes;
 import org.example.model.Admin;
 import org.example.repository.RepositoryForStudentsInMemory;
 import org.example.repository.RepositoryForStudentsInterface;
@@ -36,13 +38,13 @@ public class AuthFilter implements Filter {
 
     HttpSession session = req.getSession();
     String role;
-    if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {
-      role = (String) session.getAttribute("role");
+    if (nonNull(session.getAttribute(Attributes.LOGIN)) && nonNull(session.getAttribute(Attributes.PASSWORD))) {
+      role = (String) session.getAttribute(Attributes.ROLE);
     } else if (nonNull(login) && nonNull(password)) {
-      session.setAttribute("login", login);
-      session.setAttribute("password", password);
+      session.setAttribute(Attributes.LOGIN, login);
+      session.setAttribute(Attributes.PASSWORD, password);
       role = getAccess(login, password);
-      session.setAttribute("role", role);
+      session.setAttribute(Attributes.ROLE, role);
     } else {
       role = "no";
       req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
@@ -87,9 +89,9 @@ public class AuthFilter implements Filter {
         break;
       default:
         final HttpSession session = req.getSession();
-        session.removeAttribute("password");
-        session.removeAttribute("login");
-        session.removeAttribute("role");
+        session.removeAttribute(Attributes.PASSWORD);
+        session.removeAttribute(Attributes.LOGIN);
+        session.removeAttribute(Attributes.ROLE);
         req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
         break;
     }

@@ -8,7 +8,7 @@ public interface RepositoryForStudentsInterface {
 
   List<Student> findAll();
 
-  Optional<Student> findByLogin(String login);
+  Optional<Student> findById(int id);
 
   Student save(Student student);
 

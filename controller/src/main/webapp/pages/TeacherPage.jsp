@@ -1,5 +1,7 @@
 <%@ page import="org.example.repository.RepositoryForStudentsInMemory" %>
-<%@ page import="org.example.repository.RepositoryForTeachersInMemory" %><%--
+<%@ page import="org.example.repository.RepositoryForTeachersInMemory" %>
+<%@ page import="org.example.service.TeacherService" %>
+<%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -14,14 +16,14 @@
 </head>
 <body>
 <h1>Hello Teacher</h1>
-<%= RepositoryForTeachersInMemory.getInstance()
-        .findByLogin(String.valueOf(session.getAttribute("login"))).get().showGroup()%>
+<%= TeacherService.showGroup(RepositoryForTeachersInMemory.getInstance()
+        .findByLoginAndPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)), String.valueOf(session.getAttribute(Attributes.PASSWORD))).get())%>
 <br/>
 <h3>Enter student's login, subject and rating:</h3>
 <form method="post" action="<c:url value="/changeRating"/>">
-    <input type="text" required placeholder="login" name="loginStudent"><br/>
-    <input type="text" required placeholder="subject" name="subjectStudent"><br/>
-    <input type="text" required placeholder="rating" name="ratingStudent"><br/>
+    <input type="text" required placeholder="id" name="idMyStudent"><br/>
+    <input type="text" required placeholder="subject" name="subjectMyStudent"><br/>
+    <input type="text" required placeholder="rating" name="ratingMyStudent"><br/>
     <input class="button" type="submit" value="Change rating">
 </form>
 <a href="<c:url value='/logout' />">Logout</a>

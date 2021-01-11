@@ -15,7 +15,7 @@
 <%=AverageSalary.showAllTeachers()%><br/>
 <h3>Enter teacher's login and his salary:</h3>
 <form method="post" action="<c:url value="/setSalary"/>">
-    <input type="text" required placeholder="login" name="loginTeacher"><br/>
+    <input type="text" required placeholder="id" name="idTeacher"><br/>
     <input type="text" required placeholder="salary" name="salaryTeacher"><br/>
     <input class="button" type="submit" value="Set salary">
 </form>

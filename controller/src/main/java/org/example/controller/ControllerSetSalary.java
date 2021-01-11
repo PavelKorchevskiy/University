@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.example.constans.Parameters;
 import org.example.model.Teacher;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.slf4j.Logger;
@@ -24,16 +26,20 @@ public class ControllerSetSalary extends HttpServlet {
       throws ServletException, IOException {
     BigDecimal newSalary = new BigDecimal(0);
     try {
-      newSalary = BigDecimal.valueOf(Double.parseDouble(req.getParameter("salaryTeacher")));
+      newSalary = BigDecimal.valueOf(Double.parseDouble(req.getParameter(Parameters.SALARY)));
       log.info("new salary - " + newSalary);
     } catch (NumberFormatException e) {
       log.error("salary is not a number");
-      //нужно ли кидать исключение в таком случае?
-      //пусть пока ни чего не происходит
     }
-    String login = req.getParameter("loginTeacher");
+    int id = 0;
+    try {
+      id = Integer.parseInt(req.getParameter(Parameters.ID_TEACHER));
+      log.info("teachers id - " + id);
+    } catch (NumberFormatException e) {
+      log.error("id is not a number");
+    }
     Optional<Teacher> optionalTeacher = RepositoryForTeachersInMemory.getInstance()
-        .findByLogin(login);
+        .findById(id);
     if (optionalTeacher.isPresent()) {
       Teacher teacher = optionalTeacher.get();
       teacher.getSalary().add(newSalary);

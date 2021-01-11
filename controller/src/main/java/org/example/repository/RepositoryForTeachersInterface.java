@@ -8,7 +8,7 @@ public interface RepositoryForTeachersInterface {
 
   List<Teacher> findAll();
 
-  Optional<Teacher> findByLogin(String login);
+  Optional<Teacher> findById(int id);
 
   Teacher save(Teacher teacher);
 
