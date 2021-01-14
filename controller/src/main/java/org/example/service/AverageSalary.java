@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.example.constans.Tags;
 import org.example.model.Teacher;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.example.repository.RepositoryForTeachersInterface;
@@ -46,14 +48,14 @@ public class AverageSalary {
     RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
     List<Teacher> teachers = repository.findAll();
     BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
-    String head = "Average salary for " + teachers.size() + " teachers, for " + numberOfMonths
-        + " months - " + averageSalary.setScale(2, RoundingMode.HALF_UP) + "<br/>";
-    StringBuilder sb = new StringBuilder();
+    StringBuffer sb = new StringBuffer();
+    sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ").append(numberOfMonths)
+            .append(" months - ").append(averageSalary.setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
     for (Teacher teacher : teachers) {
       sb.append("Average salary for ").append(teacher.getFullName()).append(" - ")
           .append(calculateAverageSalary(teacher, numberOfMonths)
-              .setScale(2, RoundingMode.HALF_UP)).append("<br/>");
+              .setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
     }
-    return head + sb.toString();
+    return String.valueOf(sb);
   }
 }

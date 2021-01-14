@@ -5,4 +5,6 @@ public enum Subject {
   Chemistry,
   Biology,
   Geography,
+  Art,
+  History
 }

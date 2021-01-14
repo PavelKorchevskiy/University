@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.constans.Tags;
 import org.example.model.Student;
 import org.example.model.Teacher;
 
@@ -9,8 +10,8 @@ import java.util.Set;
 
 public class TeacherService {
     public static String showGroup(Teacher teacher) {
-        Set<Student> group = teacher.getGroup();
-        String head = teacher.getFullName() + ", in your group " + teacher.getGroup().size() + " students:</br>";
+        Set<Student> group = teacher.getGroup().getStudents();
+        String head = teacher.getFullName() + ", in your group " + teacher.getGroup().getStudents().size() + " students:</br>";
         StringBuilder stringBuilder = new StringBuilder();
         for (Student student : group) {
             stringBuilder.append(" name - ").append(student.getRatingAsString()).append(", id - ")
@@ -21,14 +22,14 @@ public class TeacherService {
     }
 
     public static String showSalary(Teacher teacher) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         sb.append("Teacher - ").append(teacher.getFullName()).append(", with id - ")
-                .append(teacher.getId()).append(".<br/> His salary: ");
+                .append(teacher.getId()).append(Tags.BR).append("His salary: ");
         for (BigDecimal b : teacher.getSalary()) {
             sb.append(b.setScale(2, RoundingMode.HALF_UP)).append(", ");
         }
         sb.deleteCharAt(sb.lastIndexOf(","));
-        sb.append("<br/>");
+        sb.append(Tags.BR);
         return sb.toString();
     }
 }

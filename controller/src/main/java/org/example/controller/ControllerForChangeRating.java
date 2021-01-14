@@ -9,15 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.example.constans.Links;
 import org.example.constans.Parameters;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.example.repository.RepositoryForTeachersInterface;
+import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/changeRating")
+@WebServlet(Links.CHANGE_RATING)
 public class ControllerForChangeRating extends HttpServlet {
 
   private static final Logger log = LoggerFactory.getLogger(ControllerForChangeRating.class);
@@ -33,7 +35,13 @@ public class ControllerForChangeRating extends HttpServlet {
     } catch (NumberFormatException e) {
       log.error("not a number in rating");
     }
-    String subject = req.getParameter(Parameters.SUBJECT);
+    String subjectString = req.getParameter(Parameters.SUBJECT);
+    Subject subject = null;
+    try {
+      subject = Subject.valueOf(subjectString);
+    } catch (IllegalArgumentException e) {
+      log.info(String.format("subject is not correct - %s", subjectString));
+    }
     int id = 0;
     try {
       id = Integer.parseInt(req.getParameter(Parameters.ID_STUDENT));
@@ -41,7 +49,7 @@ public class ControllerForChangeRating extends HttpServlet {
     } catch (NumberFormatException e) {
       log.error("id is not a number");
     }
-    log.info(String.format("subject - %s", subject));
+    log.info(String.format("subject - %s", subjectString));
     log.info(String.format("id - %s", id));
     RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
     Optional<Teacher> teacherOptional = repository
@@ -49,7 +57,7 @@ public class ControllerForChangeRating extends HttpServlet {
     if (teacherOptional.isPresent()) {
       Teacher teacher = teacherOptional.get();
       Optional<Student> studentOptional = teacher.getStudentById(id);
-      if (studentOptional.isPresent()) {
+      if (studentOptional.isPresent() && teacher.getGroup().getSubjects().contains(subject)) {
         Student student = studentOptional.get();
         student.putRating(subject, rating);
       }

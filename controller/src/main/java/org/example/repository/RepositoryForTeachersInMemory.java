@@ -37,15 +37,6 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
     teachers.add(new Teacher(2,"t2", "t2", "Gallieo Galiley", 64, initSalary()));
     teachers.add(new Teacher(3,"t3", "t3", "Albert Einschtein", 54, initSalary()));
     teachers.add(new Teacher(4,"t4", "t4", "Master Ioda", 334, initSalary()));
-
-    //add 2 random students in group
-    for (Teacher teacher : teachers) {
-      RepositoryForStudentsInMemory repository = RepositoryForStudentsInMemory.getInstance();
-      List<Student> students = repository.getRandomStudents(4);
-      for (Student student : students) {
-        teacher.addStudentInGroup(student);
-      }
-    }
     return teachers;
   }
 

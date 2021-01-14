@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
+import org.example.group.Group;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class Student extends AbstractPerson {
 
   private static final Logger log = LoggerFactory.getLogger(Student.class);
+  private Group group;
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
   public Student(int id, String login, String password, String fullName, int age, Set<Subject> subjects) {
@@ -24,12 +26,18 @@ public class Student extends AbstractPerson {
     }
   }
 
+  public Student(int id, String login, String password, String fullName, int age) {
+    super(id, login, password, fullName, age);
+    if (!StringUtils.isAlpha(fullName)) {
+      setFullName("Petia");
+    }
+  }
+
 //учитель может добавить предмет и рейтинг
-  public void putRating(String subject, int rating) {
+  public void putRating(Subject subject, int rating) {
     try {
-      Subject s = Subject.valueOf(subject);
       if (rating >= 0 && rating <= 100) {
-        ratings.put(s, rating);
+        ratings.put(subject, rating);
       }
     } catch (IllegalArgumentException e) {
       log.error("rating or subject is not valid");
@@ -37,9 +45,22 @@ public class Student extends AbstractPerson {
   }
 
   public String getRatingAsString() {
-    StringBuilder sb = new StringBuilder();
+    StringBuffer sb = new StringBuffer();
+    sb.append(getFullName()).append(" has rating: ");
     ratings.forEach((k, v) -> sb.append(k).append(" - ").append(v).append(", "));
     sb.deleteCharAt(sb.lastIndexOf(","));
-    return getFullName() + " has rating: " + sb.toString();
+    return sb.toString();
+  }
+
+  public Group getGroup() {
+    return group;
+  }
+
+  public void setGroup(Group group) {
+    this.group = group;
+  }
+
+  public Map<Subject, Integer> getRatings() {
+    return ratings;
   }
 }

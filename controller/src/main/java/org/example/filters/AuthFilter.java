@@ -59,6 +59,7 @@ public class AuthFilter implements Filter {
   //определяем доступ для введенного логина и пароля
   private String getAccess(String login, String password) {
     String access = "no";
+    //момент создания репозиториев, сначала создается репозиторий для учителей
     RepositoryForTeachersInterface repositoryForTeachers = RepositoryForTeachersInMemory
         .getInstance();
     RepositoryForStudentsInterface repositoryForStudents = RepositoryForStudentsInMemory
