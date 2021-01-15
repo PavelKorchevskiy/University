@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.example.model.Teacher;
 
-public interface RepositoryForTeachersInterface {
+public interface RepositoryForTeachersInterface extends RepositoryInterface<Teacher> {
 
   List<Teacher> findAll();
 

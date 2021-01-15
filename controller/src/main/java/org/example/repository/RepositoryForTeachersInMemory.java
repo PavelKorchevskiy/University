@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.example.model.Student;
 import org.example.model.Teacher;
 
 public class RepositoryForTeachersInMemory implements RepositoryForTeachersInterface {

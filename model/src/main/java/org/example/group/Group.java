@@ -24,10 +24,7 @@ public class Group {
         this.students = students;
         this.subjects = subjects;
 
-        //при создании группы инициализируем соответствующие поля у учителя и студентов
-        teacher.setGroup(this);
         for (Student student: students) {
-            student.setGroup(this);
             for (Subject subject: subjects) {
                 student.getRatings().put(subject, 0);
             }

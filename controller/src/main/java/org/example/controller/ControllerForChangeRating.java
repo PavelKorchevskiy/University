@@ -15,6 +15,7 @@ import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.RepositoryForTeachersInMemory;
 import org.example.repository.RepositoryForTeachersInterface;
+import org.example.service.TeacherService;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +57,8 @@ public class ControllerForChangeRating extends HttpServlet {
         .findByLoginAndPassword(String.valueOf(session.getAttribute("login")), String.valueOf(session.getAttribute("password")));
     if (teacherOptional.isPresent()) {
       Teacher teacher = teacherOptional.get();
-      Optional<Student> studentOptional = teacher.getStudentById(id);
-      if (studentOptional.isPresent() && teacher.getGroup().getSubjects().contains(subject)) {
+      Optional<Student> studentOptional = TeacherService.getStudentById(teacher, id);
+      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent() &&TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
         Student student = studentOptional.get();
         student.putRating(subject, rating);
       }

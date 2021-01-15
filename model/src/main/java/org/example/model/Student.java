@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 public class Student extends AbstractPerson {
 
   private static final Logger log = LoggerFactory.getLogger(Student.class);
-  private Group group;
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
   public Student(int id, String login, String password, String fullName, int age, Set<Subject> subjects) {
@@ -50,14 +49,6 @@ public class Student extends AbstractPerson {
     ratings.forEach((k, v) -> sb.append(k).append(" - ").append(v).append(", "));
     sb.deleteCharAt(sb.lastIndexOf(","));
     return sb.toString();
-  }
-
-  public Group getGroup() {
-    return group;
-  }
-
-  public void setGroup(Group group) {
-    this.group = group;
   }
 
   public Map<Subject, Integer> getRatings() {

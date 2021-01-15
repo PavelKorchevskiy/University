@@ -16,10 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import org.example.constans.Attributes;
 import org.example.model.Admin;
-import org.example.repository.RepositoryForStudentsInMemory;
-import org.example.repository.RepositoryForStudentsInterface;
-import org.example.repository.RepositoryForTeachersInMemory;
-import org.example.repository.RepositoryForTeachersInterface;
+import org.example.repository.*;
+
 @WebInitParam(name = "AdminLogin", value = "admin")
 
 public class AuthFilter implements Filter {
@@ -64,6 +62,8 @@ public class AuthFilter implements Filter {
         .getInstance();
     RepositoryForStudentsInterface repositoryForStudents = RepositoryForStudentsInMemory
         .getInstance();
+    //не находило предметы у учеников
+    RepositoryForGroupInMemory.getInstance();
 
     if (repositoryForTeachers.findByLoginAndPassword(login, password).isPresent()) {
       access = "teacher";

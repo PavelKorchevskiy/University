@@ -17,7 +17,6 @@ import org.example.group.Group;
 @NoArgsConstructor
 public class Teacher extends AbstractPerson {
 
-  private Group group;
   private List<BigDecimal> salary = new ArrayList<>();
 
   public Teacher(int id, String login, String password, String fullName, int age, List<BigDecimal> salary) {
@@ -26,16 +25,5 @@ public class Teacher extends AbstractPerson {
       setFullName("Ivan Ivanovich");
     }
     this.salary = salary;
-  }
-
-  //получить студента из группы
-  public Optional<Student> getStudentById(int id) {
-    Student student = null;
-    for (Student s : group.getStudents()) {
-      if (s.getId() == id) {
-        student = s;
-      }
-    }
-    return Optional.ofNullable(student);
   }
 }

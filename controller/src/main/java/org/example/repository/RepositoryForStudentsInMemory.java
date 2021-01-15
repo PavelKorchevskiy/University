@@ -43,17 +43,6 @@ public class RepositoryForStudentsInMemory implements RepositoryForStudentsInter
     students.add(new Student(6,"s6", "s6", "Kim", 23));
     students.add(new Student(7,"s7", "s7", "Pasha", 24));
     students.add(new Student(8, "s8", "s8", "Dasha", 34));
-
-    RepositoryForTeachersInterface repositoryForTeachers = RepositoryForTeachersInMemory.getInstance();
-    Group firstGroup = new Group(1, repositoryForTeachers.findById(1).get()
-            , Set.of(students.get(0), students.get(1), students.get(2), students.get(3))
-            , Set.of(Subject.Biology, Subject.Chemistry));
-    Group secondGroup = new Group(2, repositoryForTeachers.findById(2).get()
-            , Set.of(students.get(3), students.get(4), students.get(5), students.get(6))
-            , Set.of(Subject.Math, Subject.Geography));
-    Group thirdGroup = new Group(2, repositoryForTeachers.findById(3).get()
-            , Set.of(students.get(7), students.get(8))
-            , Set.of(Subject.Art, Subject.History));
     return students;
   }
 
