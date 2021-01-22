@@ -19,10 +19,10 @@ public class Teacher extends AbstractPerson {
 
   private List<BigDecimal> salary = new ArrayList<>();
 
-  public Teacher(int id, String login, String password, String fullName, int age, List<BigDecimal> salary) {
-    super(id, login, password, fullName, age);
-    if (!StringUtils.isAlpha(fullName)) {
-      setFullName("Ivan Ivanovich");
+  public Teacher(int id, String login, String password, String name, int age, List<BigDecimal> salary) {
+    super(id, login, password, name, age);
+    if (!StringUtils.isAlpha(name)) {
+      setName("Ivan Ivanovich");
     }
     this.salary = salary;
   }

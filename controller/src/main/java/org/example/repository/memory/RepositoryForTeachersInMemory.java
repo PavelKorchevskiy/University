@@ -1,4 +1,4 @@
-package org.example.repository;
+package org.example.repository.memory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.example.model.Teacher;
+import org.example.repository.interfaces.RepositoryForTeachersInterface;
 
 public class RepositoryForTeachersInMemory implements RepositoryForTeachersInterface {
 
@@ -33,9 +34,9 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
   private List<Teacher> initTeachers() {
     List<Teacher> teachers = new ArrayList<>();
     teachers.add(new Teacher(1,"t1", "t1", "Ivanov Ivan", 34, initSalary()));
-    teachers.add(new Teacher(2,"t2", "t2", "Gallieo Galiley", 64, initSalary()));
-    teachers.add(new Teacher(3,"t3", "t3", "Albert Einschtein", 54, initSalary()));
-    teachers.add(new Teacher(4,"t4", "t4", "Master Ioda", 334, initSalary()));
+    teachers.add(new Teacher(2,"t2", "t2", "Galileo Galilei", 64, initSalary()));
+    teachers.add(new Teacher(3,"t3", "t3", "Albert Einstein", 54, initSalary()));
+    teachers.add(new Teacher(4,"t4", "t4", "Master Yoda", 334, initSalary()));
     return teachers;
   }
 

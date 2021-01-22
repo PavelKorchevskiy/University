@@ -14,10 +14,10 @@ public class Student extends AbstractPerson {
   private static final Logger log = LoggerFactory.getLogger(Student.class);
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
-  public Student(int id, String login, String password, String fullName, int age, Set<Subject> subjects) {
-    super(id, login, password, fullName, age);
-    if (!StringUtils.isAlpha(fullName)) {
-      setFullName("Petia");
+  public Student(int id, String login, String password, String name, int age, Set<Subject> subjects) {
+    super(id, login, password, name, age);
+    if (!StringUtils.isAlpha(name)) {
+      setName("Petia");
     }
     //student start with rating 0
     for (Subject s : subjects) {
@@ -28,7 +28,7 @@ public class Student extends AbstractPerson {
   public Student(int id, String login, String password, String fullName, int age) {
     super(id, login, password, fullName, age);
     if (!StringUtils.isAlpha(fullName)) {
-      setFullName("Petia");
+      setName("Petia");
     }
   }
 
@@ -45,7 +45,7 @@ public class Student extends AbstractPerson {
 
   public String getRatingAsString() {
     StringBuffer sb = new StringBuffer();
-    sb.append(getFullName()).append(" has rating: ");
+    sb.append(getName()).append(" has rating: ");
     ratings.forEach((k, v) -> sb.append(k).append(" - ").append(v).append(", "));
     sb.deleteCharAt(sb.lastIndexOf(","));
     return sb.toString();

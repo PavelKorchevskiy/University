@@ -1,14 +1,17 @@
-package org.example.repository;
+package org.example.repository.memory;
 
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
+import org.example.repository.interfaces.RepositoryForGroupInterface;
+import org.example.repository.interfaces.RepositoryForStudentsInterface;
+import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.subject.Subject;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RepositoryForGroupInMemory implements RepositoryInterface<Group> {
+public class RepositoryForGroupInMemory implements RepositoryForGroupInterface {
 
     private static volatile RepositoryForGroupInMemory instance;
     private final Map<Integer, Group> map = new ConcurrentHashMap<>();
@@ -17,6 +20,7 @@ public class RepositoryForGroupInMemory implements RepositoryInterface<Group> {
         for (Group group: initGroups()) {
             map.put(group.getId(), group);
         }
+        initRatingForAllStudents();
     }
 
     public static RepositoryForGroupInMemory getInstance() {
@@ -37,13 +41,13 @@ public class RepositoryForGroupInMemory implements RepositoryInterface<Group> {
         List<Student> students = repositoryForStudents.findAll();
     Group firstGroup = new Group(1, teachers.get(0)
             , Set.of(students.get(0), students.get(1), students.get(2), students.get(3))
-            , Set.of(Subject.Biology, Subject.Chemistry));
+            , Set.of(Subject.BIOLOGY, Subject.CHEMISTRY));
     Group secondGroup = new Group(2, teachers.get(1)
             , Set.of(students.get(3), students.get(4), students.get(5), students.get(6))
-            , Set.of(Subject.Math, Subject.Geography));
+            , Set.of(Subject.MATH, Subject.GEOGRAPHY));
     Group thirdGroup = new Group(3, teachers.get(2)
             , Set.of(students.get(6), students.get(7))
-            , Set.of(Subject.Art, Subject.History));
+            , Set.of(Subject.ART, Subject.HISTORY));
         return List.of(firstGroup, secondGroup, thirdGroup);
     }
     @Override
@@ -65,5 +69,15 @@ public class RepositoryForGroupInMemory implements RepositoryInterface<Group> {
     @Override
     public Group remove(Group group) {
         return map.remove(group.getId());
+    }
+
+    @Override
+    public void initRatingForAllStudents() {
+        map.values().forEach(g -> g.getStudents().forEach(s -> {
+            Set<Subject> subjects = g.getSubjects();
+            for (Subject sub: subjects) {
+                s.putRating(sub, 0);
+            }
+        }));
     }
 }

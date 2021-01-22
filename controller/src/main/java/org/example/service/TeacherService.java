@@ -4,8 +4,8 @@ import org.example.constans.Tags;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.RepositoryForGroupInMemory;
-import org.example.repository.RepositoryInterface;
+import org.example.repository.memory.RepositoryForGroupInMemory;
+import org.example.repository.interfaces.RepositoryInterface;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,7 +14,7 @@ import java.util.*;
 public class TeacherService {
     public static String showGroup(Teacher teacher) {
         Set<Student> group = getALLStudents(teacher);
-        String head = teacher.getFullName() + ", in your group " + getALLStudents(teacher).size() + " students:</br>";
+        String head = teacher.getName() + ", in your group " + getALLStudents(teacher).size() + " students:</br>";
         StringBuilder stringBuilder = new StringBuilder();
         for (Student student : group) {
             stringBuilder.append(" name - ").append(student.getRatingAsString()).append(", id - ")
@@ -26,7 +26,7 @@ public class TeacherService {
 
     public static String showSalary(Teacher teacher) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Teacher - ").append(teacher.getFullName()).append(", with id - ")
+        sb.append("Teacher - ").append(teacher.getName()).append(", with id - ")
                 .append(teacher.getId()).append(Tags.BR).append("His salary: ");
         for (BigDecimal b : teacher.getSalary()) {
             sb.append(b.setScale(2, RoundingMode.HALF_UP)).append(", ");

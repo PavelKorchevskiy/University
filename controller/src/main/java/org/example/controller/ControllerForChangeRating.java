@@ -13,8 +13,8 @@ import org.example.constans.Links;
 import org.example.constans.Parameters;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.RepositoryForTeachersInMemory;
-import org.example.repository.RepositoryForTeachersInterface;
+import org.example.repository.memory.RepositoryForTeachersInMemory;
+import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.service.TeacherService;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class ControllerForChangeRating extends HttpServlet {
     String subjectString = req.getParameter(Parameters.SUBJECT);
     Subject subject = null;
     try {
-      subject = Subject.valueOf(subjectString);
+      subject = Subject.getSubjectByString(subjectString);
     } catch (IllegalArgumentException e) {
       log.info(String.format("subject is not correct - %s", subjectString));
     }

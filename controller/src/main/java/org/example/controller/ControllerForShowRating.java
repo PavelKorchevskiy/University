@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import org.example.constans.Attributes;
 import org.example.model.Student;
-import org.example.repository.RepositoryForStudentsInMemory;
-import org.example.repository.RepositoryForStudentsInterface;
+import org.example.repository.memory.RepositoryForStudentsInMemory;
+import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //пока не используется

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.example.constans.Parameters;
 import org.example.model.Teacher;
-import org.example.repository.RepositoryForTeachersInMemory;
+import org.example.repository.memory.RepositoryForTeachersInMemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

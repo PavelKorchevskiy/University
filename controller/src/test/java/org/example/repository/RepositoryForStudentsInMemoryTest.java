@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.List;
 import org.example.model.Student;
+import org.example.repository.memory.RepositoryForStudentsInMemory;
 import org.junit.Test;
 
 public class RepositoryForStudentsInMemoryTest {

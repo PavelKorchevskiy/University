@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.example.constans.Tags;
 import org.example.model.Teacher;
-import org.example.repository.RepositoryForTeachersInMemory;
-import org.example.repository.RepositoryForTeachersInterface;
+import org.example.repository.memory.RepositoryForTeachersInMemory;
+import org.example.repository.interfaces.RepositoryForTeachersInterface;
 
 public class AverageSalary {
 
@@ -52,7 +52,7 @@ public class AverageSalary {
     sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ").append(numberOfMonths)
             .append(" months - ").append(averageSalary.setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
     for (Teacher teacher : teachers) {
-      sb.append("Average salary for ").append(teacher.getFullName()).append(" - ")
+      sb.append("Average salary for ").append(teacher.getName()).append(" - ")
           .append(calculateAverageSalary(teacher, numberOfMonths)
               .setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
     }

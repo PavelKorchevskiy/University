@@ -12,15 +12,15 @@ public abstract class AbstractPerson implements Person {
 
   private String login;
   private String password;
-  private String fullName;
+  private String name;
   private int age;
   private int id;
 
-  public AbstractPerson(int id, String login, String password, String fullName, int age) {
+  public AbstractPerson(int id, String login, String password, String name, int age) {
     this.id = id;
     this.login = login;
     this.password = password;
-    this.fullName = fullName;
+    this.name = name;
     this.age = age;
     //TODO: create error page
     if (id == 0) {

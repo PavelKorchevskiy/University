@@ -1,4 +1,4 @@
-<%@ page import="org.example.repository.RepositoryForStudentsInMemory" %>
+<%@ page import="org.example.repository.memory.RepositoryForStudentsInMemory" %>
 <%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел

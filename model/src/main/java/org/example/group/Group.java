@@ -15,8 +15,8 @@ public class Group {
 
     private int id;
     private Teacher teacher;
-    private volatile Set<Student> students = new HashSet<>();
-    private volatile Set<Subject> subjects = new HashSet<>();
+    private volatile Set<Student> students;
+    private volatile Set<Subject> subjects;
 
     public Group(int id, Teacher teacher, Set<Student> students, Set<Subject> subjects) {
         this.id = id;
@@ -26,9 +26,8 @@ public class Group {
 
         for (Student student: students) {
             for (Subject subject: subjects) {
-                student.getRatings().put(subject, 0);
+                student.getRatings().putIfAbsent(subject, 0);
             }
         }
     }
-
 }

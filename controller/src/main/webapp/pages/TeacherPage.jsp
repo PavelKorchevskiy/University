@@ -1,5 +1,5 @@
-<%@ page import="org.example.repository.RepositoryForStudentsInMemory" %>
-<%@ page import="org.example.repository.RepositoryForTeachersInMemory" %>
+<%@ page import="org.example.repository.memory.RepositoryForStudentsInMemory" %>
+<%@ page import="org.example.repository.memory.RepositoryForTeachersInMemory" %>
 <%@ page import="org.example.service.TeacherService" %>
 <%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
