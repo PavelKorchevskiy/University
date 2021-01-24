@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.example.constans.Attributes;
 import org.example.model.Student;
-import org.example.repository.memory.RepositoryForStudentsInMemory;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.producer.StudentProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 //пока не используется
 @WebServlet("/rating")
 public class ControllerForShowRating extends HttpServlet {
@@ -43,7 +42,8 @@ public class ControllerForShowRating extends HttpServlet {
     }
     log.info("rating" + rating);
     HttpSession session = req.getSession();
-    session.setAttribute(Attributes.RATING, rating + " if you see this massage in web-browser please write me 375333038034");
+    session.setAttribute(Attributes.RATING,
+        rating + " if you see this massage in web-browser please write me 375333038034");
     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/showRating");
     requestDispatcher.forward(req, resp);
   }

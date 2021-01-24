@@ -5,11 +5,11 @@ import java.util.Optional;
 
 public interface RepositoryInterface<T> {
 
-    List<T> findAll();
+  List<T> findAll();
 
-    Optional<T> findById(int id);
+  Optional<T> findById(int id);
 
-    T save(T t);
+  T save(T t);
 
-    T remove(T t);
+  T remove(T t);
 }

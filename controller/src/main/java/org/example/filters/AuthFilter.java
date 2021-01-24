@@ -13,19 +13,15 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Admin;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
-import org.example.repository.memory.RepositoryForGroupInMemory;
-import org.example.repository.producer.GroupProducer;
 import org.example.repository.producer.StudentProducer;
 import org.example.repository.producer.TeacherProducer;
 
 @WebInitParam(name = "AdminLogin", value = "admin")
-
 public class AuthFilter implements Filter {
 
   @Override
@@ -33,21 +29,19 @@ public class AuthFilter implements Filter {
       throws IOException, ServletException {
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
-
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
-
     String login = req.getParameter(Parameters.LOGIN);
     String password = req.getParameter(Parameters.PASSWORD);
-
     HttpSession session = req.getSession();
     String role;
-    if (nonNull(session.getAttribute(Attributes.LOGIN)) && nonNull(session.getAttribute(Attributes.PASSWORD)) && nonNull(session.getAttribute(Attributes.ROLE))) {
+    if (nonNull(session.getAttribute(Attributes.LOGIN)) && nonNull(
+        session.getAttribute(Attributes.PASSWORD)) && nonNull(
+        session.getAttribute(Attributes.ROLE))) {
       role = (String) session.getAttribute(Attributes.ROLE);
     } else if (nonNull(login) && nonNull(password)) {
       session.setAttribute(Attributes.LOGIN, login);
       session.setAttribute(Attributes.PASSWORD, password);
-      ////
       session.setAttribute("myAtrib", "myAtr");
       role = getAccess(login, password);
       session.setAttribute(Attributes.ROLE, role);
@@ -67,21 +61,16 @@ public class AuthFilter implements Filter {
     String access = "no";
     RepositoryForTeachersInterface repositoryForTeachers = TeacherProducer.getRepository();
     RepositoryForStudentsInterface repositoryForStudents = StudentProducer.getRepository();
-    //не находило предметы у учеников
-    //при использовании репозиториев в памяти всегда в фильтре нужно инициализировать группы
-    RepositoryForGroupInMemory.getInstance();
-    GroupProducer.getRepository().findAll();
-
     if (repositoryForTeachers
-            .findByLoginAndPassword(login, password)
-            .isPresent()) {
+        .findByLoginAndPassword(login, password)
+        .isPresent()) {
       access = "teacher";
     } else if (repositoryForStudents
-            .findByLoginAndPassword(login, password)
-            .isPresent()) {
+        .findByLoginAndPassword(login, password)
+        .isPresent()) {
       access = "student";
     } else if (login.equals(Admin.getInstance().getLogin())
-            && Admin.getInstance().getPassword()
+        && Admin.getInstance().getPassword()
         .equals(password)) {
       access = "admin";
     }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 
@@ -33,13 +32,13 @@ public class RepositoryForStudentsInMemory implements RepositoryForStudentsInter
 
   private List<Student> initStudents() {
     List<Student> students = new ArrayList<>();
-    students.add(new Student(1,"s1", "s1", "Lena", 24));
-    students.add(new Student(2,"s2", "s2", "Dima", 25));
-    students.add(new Student(3,"s3", "s3", "Tolik", 26));
-    students.add(new Student(4,"s4", "s4", "Bill", 27));
-    students.add(new Student(5,"s5", "s5", "Tom", 28));
-    students.add(new Student(6,"s6", "s6", "Kim", 23));
-    students.add(new Student(7,"s7", "s7", "Pasha", 24));
+    students.add(new Student(1, "s1", "s1", "Lena", 24));
+    students.add(new Student(2, "s2", "s2", "Dima", 25));
+    students.add(new Student(3, "s3", "s3", "Tolik", 26));
+    students.add(new Student(4, "s4", "s4", "Bill", 27));
+    students.add(new Student(5, "s5", "s5", "Tom", 28));
+    students.add(new Student(6, "s6", "s6", "Kim", 23));
+    students.add(new Student(7, "s7", "s7", "Pasha", 24));
     students.add(new Student(8, "s8", "s8", "Dasha", 34));
     return students;
   }

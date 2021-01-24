@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import org.example.constans.Attributes;
 import org.example.constans.Links;
 import org.example.constans.Parameters;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.memory.RepositoryForTeachersInMemory;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.repository.producer.StudentProducer;
 import org.example.repository.producer.TeacherProducer;
@@ -56,11 +55,13 @@ public class ControllerForChangeRating extends HttpServlet {
     log.info(String.format("id - %s", id));
     RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     Optional<Teacher> teacherOptional = repository
-        .findByLoginAndPassword(String.valueOf(session.getAttribute("login")), String.valueOf(session.getAttribute("password")));
+        .findByLoginAndPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)),
+            String.valueOf(session.getAttribute(Attributes.PASSWORD)));
     if (teacherOptional.isPresent()) {
       Teacher teacher = teacherOptional.get();
       Optional<Student> studentOptional = TeacherService.getStudentById(teacher, id);
-      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent() && TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
+      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent()
+          && TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
         Student student = studentOptional.get();
         student.putRating(subject, rating);
         StudentProducer.getRepository().save(student);

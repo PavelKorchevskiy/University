@@ -1,4 +1,3 @@
-
 <%@ page import="org.example.service.TeacherService" %>
 <%@ page import="org.example.constans.Attributes" %>
 <%@ page import="org.example.repository.producer.TeacherProducer" %><%--
@@ -9,7 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Title</title>
@@ -18,9 +17,9 @@
 <h1>Hello Teacher</h1>
 <%= TeacherService.showGroup(
         TeacherProducer.getRepository()
-        .findByLoginAndPassword(
-                String.valueOf(session.getAttribute(Attributes.LOGIN)),
-                String.valueOf(session.getAttribute(Attributes.PASSWORD)))
+                .findByLoginAndPassword(
+                        String.valueOf(session.getAttribute(Attributes.LOGIN)),
+                        String.valueOf(session.getAttribute(Attributes.PASSWORD)))
                 .get())%>
 <br/>
 <h3>Enter student's id, subject and rating:</h3>

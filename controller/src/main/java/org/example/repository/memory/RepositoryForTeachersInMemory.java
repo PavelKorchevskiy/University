@@ -33,15 +33,15 @@ public class RepositoryForTeachersInMemory implements RepositoryForTeachersInter
 
   private List<Teacher> initTeachers() {
     List<Teacher> teachers = new ArrayList<>();
-    teachers.add(new Teacher(1,"t1", "t1", "Ivanov Ivan", 34, initSalary()));
-    teachers.add(new Teacher(2,"t2", "t2", "Galileo Galilei", 64, initSalary()));
-    teachers.add(new Teacher(3,"t3", "t3", "Albert Einstein", 54, initSalary()));
-    teachers.add(new Teacher(4,"t4", "t4", "Master Yoda", 334, initSalary()));
+    teachers.add(new Teacher(1, "t1", "t1", "Ivanov Ivan", 34, initSalary()));
+    teachers.add(new Teacher(2, "t2", "t2", "Galileo Galilei", 64, initSalary()));
+    teachers.add(new Teacher(3, "t3", "t3", "Albert Einstein", 54, initSalary()));
+    teachers.add(new Teacher(4, "t4", "t4", "Master Yoda", 334, initSalary()));
     return teachers;
   }
 
   private List<BigDecimal> initSalary() {
-      int numberOfMonths = 12;
+    int numberOfMonths = 12;
     List<BigDecimal> salary = new ArrayList<>();
     for (int i = 0; i < numberOfMonths; i++) {
       salary.add(BigDecimal.valueOf(Math.random() * 200 + 300));

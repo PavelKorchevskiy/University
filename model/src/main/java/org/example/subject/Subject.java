@@ -16,13 +16,13 @@ public enum Subject {
   private static final Map<Subject, String> subjectStringMap = initSubjectStringMap();
   private static final Map<String, Subject> stringSubjectMap = initStringSubjectMap();
 
-  Subject (String name) {
+  Subject(String name) {
     this.name = name;
   }
 
   private static Map<String, Subject> initStringSubjectMap() {
     Map<String, Subject> map = new HashMap<>();
-    for (Subject subject: Subject.values()) {
+    for (Subject subject : Subject.values()) {
       map.put(subject.name, subject);
     }
     return Collections.unmodifiableMap(map);
@@ -30,7 +30,7 @@ public enum Subject {
 
   private static Map<Subject, String> initSubjectStringMap() {
     Map<Subject, String> map = new HashMap<>();
-    for (Subject subject: Subject.values()) {
+    for (Subject subject : Subject.values()) {
       map.put(subject, subject.name);
     }
     return Collections.unmodifiableMap(map);

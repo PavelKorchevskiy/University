@@ -13,7 +13,8 @@ public class Student extends AbstractPerson {
   private static final Logger log = LoggerFactory.getLogger(Student.class);
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
-  public Student(int id, String login, String password, String name, int age, Set<Subject> subjects) {
+  public Student(int id, String login, String password, String name, int age,
+      Set<Subject> subjects) {
     super(id, login, password, name, age);
     if (!StringUtils.isAlpha(name)) {
       setName("Petia");
@@ -31,7 +32,7 @@ public class Student extends AbstractPerson {
     }
   }
 
-//учитель может добавить предмет и рейтинг
+  //учитель может добавить предмет и рейтинг
   public void putRating(Subject subject, int rating) {
     try {
       if (rating >= 0 && rating <= 100) {
@@ -49,6 +50,7 @@ public class Student extends AbstractPerson {
     sb.deleteCharAt(sb.lastIndexOf(","));
     return sb.toString();
   }
+
   public Map<Subject, Integer> getRatings() {
     return ratings;
   }

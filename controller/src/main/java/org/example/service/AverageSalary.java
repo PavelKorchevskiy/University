@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.example.constans.Tags;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
@@ -49,8 +48,10 @@ public class AverageSalary {
     List<Teacher> teachers = repository.findAll();
     BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
     StringBuffer sb = new StringBuffer();
-    sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ").append(numberOfMonths)
-            .append(" months - ").append(averageSalary.setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
+    sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ")
+        .append(numberOfMonths)
+        .append(" months - ").append(averageSalary.setScale(2, RoundingMode.HALF_UP))
+        .append(Tags.BR);
     for (Teacher teacher : teachers) {
       sb.append("Average salary for ").append(teacher.getName()).append(" - ")
           .append(calculateAverageSalary(teacher, numberOfMonths)

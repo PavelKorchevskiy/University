@@ -8,11 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.example.constans.Parameters;
 import org.example.model.Teacher;
-import org.example.repository.jdbc.DataSource;
-import org.example.repository.memory.RepositoryForTeachersInMemory;
 import org.example.repository.producer.TeacherProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
