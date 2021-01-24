@@ -1,7 +1,7 @@
-<%@ page import="org.example.repository.memory.RepositoryForStudentsInMemory" %>
-<%@ page import="org.example.repository.memory.RepositoryForTeachersInMemory" %>
+
 <%@ page import="org.example.service.TeacherService" %>
-<%@ page import="org.example.constans.Attributes" %><%--
+<%@ page import="org.example.constans.Attributes" %>
+<%@ page import="org.example.repository.producer.TeacherProducer" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -16,10 +16,14 @@
 </head>
 <body>
 <h1>Hello Teacher</h1>
-<%= TeacherService.showGroup(RepositoryForTeachersInMemory.getInstance()
-        .findByLoginAndPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)), String.valueOf(session.getAttribute(Attributes.PASSWORD))).get())%>
+<%= TeacherService.showGroup(
+        TeacherProducer.getRepository()
+        .findByLoginAndPassword(
+                String.valueOf(session.getAttribute(Attributes.LOGIN)),
+                String.valueOf(session.getAttribute(Attributes.PASSWORD)))
+                .get())%>
 <br/>
-<h3>Enter student's login, subject and rating:</h3>
+<h3>Enter student's id, subject and rating:</h3>
 <form method="post" action="<c:url value="/changeRating"/>">
     <input type="text" required placeholder="id" name="idMyStudent"><br/>
     <input type="text" required placeholder="subject" name="subjectMyStudent"><br/>

@@ -7,7 +7,7 @@ import org.example.repository.memory.RepositoryForTeachersInMemory;
 public class TeacherProducer {
 
     public static RepositoryForTeachersInterface getRepository() {
-        return RepositoryForTeachersInMemory.getInstance();
-        //return RepositoryForTeacherJDBC.getInstance();
+        //return RepositoryForTeachersInMemory.getInstance();
+        return RepositoryForTeacherJDBC.getInstance();
     }
 }

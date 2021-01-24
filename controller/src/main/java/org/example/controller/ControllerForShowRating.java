@@ -14,6 +14,7 @@ import org.example.constans.Attributes;
 import org.example.model.Student;
 import org.example.repository.memory.RepositoryForStudentsInMemory;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
+import org.example.repository.producer.StudentProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //пока не используется
@@ -32,7 +33,7 @@ public class ControllerForShowRating extends HttpServlet {
     } catch (NumberFormatException e) {
       log.error("id is not a number");
     }
-    RepositoryForStudentsInterface repository = RepositoryForStudentsInMemory.getInstance();
+    RepositoryForStudentsInterface repository = StudentProducer.getRepository();
     Optional<Student> student = repository.findById(id);
     String rating;
     if (student.isPresent()) {

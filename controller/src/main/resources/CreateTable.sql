@@ -57,4 +57,6 @@ create table Rating (
     rating int default 0,
     foreign key (student_id) references student(id)
 );
-delete from Rating where Rating.rating = 0;
+
+update Teacher set salary = '452.33;455;432;471;499;476.54' where id = 4;
+update rating set rating = 50 where student_id = 1 and  subject = 'chemistry';

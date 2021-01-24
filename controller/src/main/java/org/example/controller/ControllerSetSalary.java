@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.example.constans.Parameters;
 import org.example.model.Teacher;
+import org.example.repository.jdbc.DataSource;
 import org.example.repository.memory.RepositoryForTeachersInMemory;
+import org.example.repository.producer.TeacherProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +40,12 @@ public class ControllerSetSalary extends HttpServlet {
     } catch (NumberFormatException e) {
       log.error("id is not a number");
     }
-    Optional<Teacher> optionalTeacher = RepositoryForTeachersInMemory.getInstance()
+    Optional<Teacher> optionalTeacher = TeacherProducer.getRepository()
         .findById(id);
     if (optionalTeacher.isPresent()) {
       Teacher teacher = optionalTeacher.get();
       teacher.getSalary().add(newSalary);
+      TeacherProducer.getRepository().save(teacher);
     }
     req.getRequestDispatcher("pages/AdminSetSalary.jsp").forward(req, resp);
   }

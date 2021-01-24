@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
-import org.example.group.Group;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,6 @@ public class Student extends AbstractPerson {
     sb.deleteCharAt(sb.lastIndexOf(","));
     return sb.toString();
   }
-
   public Map<Subject, Integer> getRatings() {
     return ratings;
   }

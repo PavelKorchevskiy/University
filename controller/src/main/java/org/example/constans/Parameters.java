@@ -10,6 +10,8 @@ public class Parameters {
     //AdminSetSalary
     public static final String SALARY = "salaryTeacher";
     public static final String ID_TEACHER = "idTeacher";
+    public static final String PASSWORD = "password";
+    public static final String LOGIN = "login";
 
 
 }

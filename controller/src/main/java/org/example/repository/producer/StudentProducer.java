@@ -6,7 +6,7 @@ import org.example.repository.memory.RepositoryForStudentsInMemory;
 
 public class StudentProducer {
     public static RepositoryForStudentsInterface getRepository() {
-        return RepositoryForStudentsInMemory.getInstance();
-        //return RepositoryForStudentJDBC.getInstance();
+        //return RepositoryForStudentsInMemory.getInstance();
+        return RepositoryForStudentJDBC.getInstance();
     }
 }

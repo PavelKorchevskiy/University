@@ -2,15 +2,11 @@ package org.example.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.example.group.Group;
 
 @Getter
 @Setter
@@ -21,9 +17,9 @@ public class Teacher extends AbstractPerson {
 
   public Teacher(int id, String login, String password, String name, int age, List<BigDecimal> salary) {
     super(id, login, password, name, age);
-    if (!StringUtils.isAlpha(name)) {
-      setName("Ivan Ivanovich");
-    }
+//    if (!StringUtils.isAlpha(name)) {
+//      setName("Ivan Ivanovich");
+//    }
     this.salary = salary;
   }
 }

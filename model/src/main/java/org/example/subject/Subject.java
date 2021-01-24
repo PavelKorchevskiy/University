@@ -13,8 +13,8 @@ public enum Subject {
   HISTORY("history");
 
   private final String name;
-  private static Map<Subject, String> subjectStringMap = initSubjectStringMap();
-  private static Map<String, Subject> stringSubjectMap = initStringSubjectMap();
+  private static final Map<Subject, String> subjectStringMap = initSubjectStringMap();
+  private static final Map<String, Subject> stringSubjectMap = initStringSubjectMap();
 
   Subject (String name) {
     this.name = name;

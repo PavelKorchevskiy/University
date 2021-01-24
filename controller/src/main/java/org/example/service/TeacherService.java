@@ -4,24 +4,29 @@ import org.example.constans.Tags;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.memory.RepositoryForGroupInMemory;
-import org.example.repository.interfaces.RepositoryInterface;
+import org.example.repository.interfaces.RepositoryForGroupInterface;
+import org.example.repository.producer.GroupProducer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
 public class TeacherService {
+
     public static String showGroup(Teacher teacher) {
-        Set<Student> group = getALLStudents(teacher);
-        String head = teacher.getName() + ", in your group " + getALLStudents(teacher).size() + " students:</br>";
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Student student : group) {
-            stringBuilder.append(" name - ").append(student.getRatingAsString()).append(", id - ")
-                    .append(student.getId()).append(";</br>");
+        try {
+            Set<Student> students = getALLStudents(teacher);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(teacher.getName()).append(", in your group ").append(students.size())
+                    .append(" students:").append(Tags.BR);
+            for (Student s : students) {
+                stringBuilder.append(" name - ").append(s.getRatingAsString()).append(", id - ")
+                        .append(s.getId()).append(Tags.BR);
+            }
+            return stringBuilder.toString();
+        } catch (IndexOutOfBoundsException e) {
+            return "kakto tak IndexOutOfBoundsException";
         }
-        stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(";"));
-        return head + stringBuilder.toString();
     }
 
     public static String showSalary(Teacher teacher) {
@@ -36,11 +41,11 @@ public class TeacherService {
         return sb.toString();
     }
     public static Optional<Group> getGroup(Teacher teacher) {
-        RepositoryInterface<Group> groupRepository = RepositoryForGroupInMemory.getInstance();
+        RepositoryForGroupInterface groupRepository = GroupProducer.getRepository();
         List<Group> groups = groupRepository.findAll();
         Group group = null;
         for (Group g: groups) {
-            if (g.getTeacher() == teacher) {
+            if (g.getTeacher().getId() == teacher.getId()) {
                 group = g;
             }
         }

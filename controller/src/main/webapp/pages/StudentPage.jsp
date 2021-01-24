@@ -1,5 +1,6 @@
 <%@ page import="org.example.repository.memory.RepositoryForStudentsInMemory" %>
-<%@ page import="org.example.constans.Attributes" %><%--
+<%@ page import="org.example.constans.Attributes" %>
+<%@ page import="org.example.repository.producer.StudentProducer" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -14,9 +15,12 @@
 </head>
 <body>
 <h1>Hello Student</h1>
-<%= RepositoryForStudentsInMemory.getInstance()
-        .findByLoginAndPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)), String.valueOf(session.getAttribute(Attributes.PASSWORD)))
-        .get().getRatingAsString()%>
+<%= StudentProducer.getRepository()
+        .findByLoginAndPassword(
+                String.valueOf(session.getAttribute(Attributes.LOGIN)),
+                String.valueOf(session.getAttribute(Attributes.PASSWORD)))
+        .get()
+        .getRatingAsString()%>
 <br/>
 <a href="<c:url value='/logout' />">Logout</a>
 </body>

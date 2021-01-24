@@ -54,7 +54,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
     @Override
     public Optional<Teacher> findById(int id) {
         List<Teacher> teachers = new ArrayList<>();
-        try(Connection connection = DataSource.getConnection();
+        try(Connection connection = DataSource.getConnection()
             ) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from teacher where id = ?;");
             preparedStatement.setInt(1, id);
@@ -127,8 +127,8 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
     @Override
     public Optional<Teacher> findByLoginAndPassword(String login, String password) {
-        List<Teacher> teachers = new ArrayList<>();
-        try(Connection connection = DataSource.getConnection();
+        /*List<Teacher> teachers = new ArrayList<>();
+        try(Connection connection = DataSource.getConnection()
         ) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from teacher where login = ? and password = ?;");
             preparedStatement.setString(1, login);
@@ -137,7 +137,9 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
             while (rs.next()) {
                 List<BigDecimal> salary;
                 String salaryStr = rs.getString("salary");
-                salary = Arrays.stream(salaryStr.split(";")).map(s -> BigDecimal.valueOf(Double.parseDouble(s))).collect(Collectors.toList());
+                salary = Arrays.stream(salaryStr.split(";"))
+                        .map(s -> BigDecimal.valueOf(Double.parseDouble(s)))
+                        .collect(Collectors.toList());
                 teachers.add(new Teacher(rs.getInt("id"),
                         rs.getString("login"), rs.getString("password"),
                         rs.getString("name"), rs.getInt("age"), salary));
@@ -145,7 +147,15 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return teachers.stream().findAny();
+        return teachers.stream().findAny();*/
+        Optional<Teacher> result = Optional.ofNullable(null);
+        List<Teacher> teachers = findAll();
+        for (Teacher t: teachers) {
+            if (t.getLogin().equals(login) && t.getPassword().equals(password)) {
+                result = Optional.ofNullable(t);
+            }
+        }
+        return result;
     }
 
     private String getSalaryAsString(List<BigDecimal> list) {

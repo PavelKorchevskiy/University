@@ -15,6 +15,8 @@ import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.memory.RepositoryForTeachersInMemory;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
+import org.example.repository.producer.StudentProducer;
+import org.example.repository.producer.TeacherProducer;
 import org.example.service.TeacherService;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
@@ -52,15 +54,16 @@ public class ControllerForChangeRating extends HttpServlet {
     }
     log.info(String.format("subject - %s", subjectString));
     log.info(String.format("id - %s", id));
-    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     Optional<Teacher> teacherOptional = repository
         .findByLoginAndPassword(String.valueOf(session.getAttribute("login")), String.valueOf(session.getAttribute("password")));
     if (teacherOptional.isPresent()) {
       Teacher teacher = teacherOptional.get();
       Optional<Student> studentOptional = TeacherService.getStudentById(teacher, id);
-      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent() &&TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
+      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent() && TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
         Student student = studentOptional.get();
         student.putRating(subject, rating);
+        StudentProducer.getRepository().save(student);
       }
     }
     req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);

@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.example.constans.Tags;
 import org.example.model.Teacher;
-import org.example.repository.memory.RepositoryForTeachersInMemory;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
+import org.example.repository.producer.TeacherProducer;
 
 public class AverageSalary {
 
@@ -35,7 +35,7 @@ public class AverageSalary {
   }
 
   public static String showAllTeachers() {
-    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     List<Teacher> teachers = repository.findAll();
     StringBuilder sb = new StringBuilder();
     for (Teacher teacher : teachers) {
@@ -45,7 +45,7 @@ public class AverageSalary {
   }
 
   public static String showAverageSalaryForAllTeacher(int numberOfMonths) {
-    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     List<Teacher> teachers = repository.findAll();
     BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
     StringBuffer sb = new StringBuffer();
