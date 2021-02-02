@@ -3,6 +3,7 @@ package org.example.subject;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Enumerated;
 
 public enum Subject {
   MATH("math"),

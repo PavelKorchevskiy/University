@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
 import org.example.constans.Links;
 import org.example.constans.Parameters;
+import org.example.exceptions.UnsupportedArgumentException;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
@@ -36,6 +37,7 @@ public class ControllerForChangeRating extends HttpServlet {
       log.info(String.valueOf(rating));
     } catch (NumberFormatException e) {
       log.error("not a number in rating");
+      throw new UnsupportedArgumentException("not a number in rating", req);
     }
     String subjectString = req.getParameter(Parameters.SUBJECT);
     Subject subject = null;
@@ -43,6 +45,7 @@ public class ControllerForChangeRating extends HttpServlet {
       subject = Subject.getSubjectByString(subjectString);
     } catch (IllegalArgumentException e) {
       log.info(String.format("subject is not correct - %s", subjectString));
+      throw new UnsupportedArgumentException("subject is not correct", req);
     }
     int id = 0;
     try {
@@ -50,6 +53,7 @@ public class ControllerForChangeRating extends HttpServlet {
       log.info("students id - " + id);
     } catch (NumberFormatException e) {
       log.error("id is not a number");
+      throw new UnsupportedArgumentException("subject is not correct", req);
     }
     log.info(String.format("subject - %s", subjectString));
     log.info(String.format("id - %s", id));

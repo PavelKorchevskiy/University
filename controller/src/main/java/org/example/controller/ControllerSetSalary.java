@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.constans.Parameters;
+import org.example.exceptions.UnsupportedArgumentException;
 import org.example.model.Teacher;
 import org.example.repository.producer.TeacherProducer;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class ControllerSetSalary extends HttpServlet {
       log.info("new salary - " + newSalary);
     } catch (NumberFormatException e) {
       log.error("salary is not a number");
+      throw new UnsupportedArgumentException("salary is not a number", req);
     }
     int id = 0;
     try {
@@ -36,6 +38,8 @@ public class ControllerSetSalary extends HttpServlet {
       log.info("teachers id - " + id);
     } catch (NumberFormatException e) {
       log.error("id is not a number");
+      throw new UnsupportedArgumentException("id is not a number", req);
+
     }
     Optional<Teacher> optionalTeacher = TeacherProducer.getRepository()
         .findById(id);

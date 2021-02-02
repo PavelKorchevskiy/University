@@ -89,3 +89,50 @@ update rating
 set rating = 50
 where student_id = 1
   and subject = 'chemistry';
+create table subject (
+    id int not null ,
+    name varchar not null ,
+    primary key (id)
+);
+insert into subject (id, name) VALUES (1, 'biology'),
+                                      (2, 'chemistry'),
+                                      (3, 'math'),
+                                      (4, 'geography'),
+                                      (5, 'art'),
+                                      (6, 'history');
+alter table groups drop column subjects;
+create table groups_subject (
+    group_id int not null ,
+    subject_id int not null ,
+    foreign key (group_id) references groups(id) ,
+    foreign key (subject_id) references subject(id));
+insert into groups_subject (group_id, subject_id) VALUES (1,1),
+                                                         (1,2),
+                                                         (2,3),
+                                                         (2,4),
+                                                         (3,5),
+                                                         (3,6);
+drop table salary;
+create table salary (
+    id serial primary key not null ,
+    teacher_id int not null ,
+    salary real not null ,
+    foreign key (teacher_id) references Teacher
+);
+create sequence salary_id_seq start 1 increment 1;
+delete from salary where id=1;
+insert into salary (teacher_id, salary) VALUES (3, 474.45),
+                                               (3, 344.45),
+                                               (3, 427.4),
+                                               (3, 394.5),
+                                               (3, 444.45),
+                                               (4, 341.5),
+                                               (4, 424.75),
+                                               (4, 433.48),
+                                               (4, 440.5),
+                                               (4, 384),
+                                               (4, 447.8);
+create table rat (
+    id serial,
+    subject
+)
