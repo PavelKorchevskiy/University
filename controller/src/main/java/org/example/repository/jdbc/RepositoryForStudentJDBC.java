@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.subject.Subject;
@@ -67,15 +66,6 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
 
   @Override
   public Optional<Student> findById(int id) {
-//    List<Student> students = findAll();
-//    Optional<Student> result = Optional.empty();
-//    for (Student s : students) {
-//      if (s.getId() == id) {
-//        result = Optional.of(s);
-//      }
-//    }
-//    return result;
-
     List<Student> students = new ArrayList<>();
     try (Connection connection = DataSource.getConnection();
         PreparedStatement preparedStatement = connection
@@ -114,9 +104,8 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
 
   @Override
   public Student save(Student student) {
-    List<Student> students = findAll();
-    if (students.stream().map(Student::getId).collect(Collectors.toList())
-        .contains(student.getId())) {
+    Optional<Student> studentOptional = findById(student.getId());
+    if (studentOptional.isPresent()) {
       return update(student);
     }
     try (Connection connection = DataSource.getConnection();
@@ -195,13 +184,45 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
 
   @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
-    List<Student> students = findAll();
-    Optional<Student> result = Optional.empty();
-    for (Student s : students) {
-      if (s.getLogin().equals(login) && s.getPassword().equals(password)) {
-        result = Optional.of(s);
+    List<Student> students = new ArrayList<>();
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection
+            .prepareStatement("select * from student where login = ? and password = ?;")) {
+      preparedStatement.setString(1, login);
+      preparedStatement.setString(2, password);
+      ResultSet rs = preparedStatement.executeQuery();
+      while (rs.next()) {
+        students.add(new Student(rs.getInt("id"),
+            rs.getString("login"), rs.getString("password"),
+            rs.getString("name"), rs.getInt("age")));
+      }
+
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
+    }
+    Optional<Student> s = students.stream().findAny();
+    if (s.isPresent()) {
+      int id = s.get().getId();
+      try (Connection connection = DataSource.getConnection();
+          PreparedStatement preparedStatement = connection
+              .prepareStatement("select * from rating where student_id = ?;")
+      ) {
+        preparedStatement.setInt(1, id);
+        ResultSet rs = preparedStatement.executeQuery();
+        //инициализируем рейтинг у студентов, если он есть в таблице
+        while (rs.next()) {
+          Subject subject = Subject.getSubjectByString(rs.getString("subject"));
+          int rating = rs.getInt("rating");
+          for (Student student : students) {
+            if (student.getId() == id) {
+              student.putRating(subject, rating);
+            }
+          }
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
       }
     }
-    return result;
+    return students.stream().findAny();
   }
 }

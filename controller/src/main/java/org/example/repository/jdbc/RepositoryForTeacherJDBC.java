@@ -124,14 +124,19 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
-    Optional<Teacher> result = Optional.empty();
-    List<Teacher> teachers = findAll();
-    for (Teacher t : teachers) {
-      if (t.getLogin().equals(login) && t.getPassword().equals(password)) {
-        result = Optional.of(t);
-      }
+    List<Teacher> teachers = new ArrayList<>();
+    try (Connection connection = DataSource.getConnection()
+    ) {
+      PreparedStatement preparedStatement = connection
+          .prepareStatement("select * from teacher where login = ? and password = ?;");
+      preparedStatement.setString(1, login);
+      preparedStatement.setString(2, password);
+      ResultSet rs = preparedStatement.executeQuery();
+      getTeachersFromResultSet(teachers, rs);
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-    return result;
+    return teachers.stream().findAny();
   }
 
   private String getSalaryAsString(List<BigDecimal> list) {
