@@ -63,9 +63,8 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   private void getTeachersFromResultSet(List<Teacher> teachers, ResultSet rs) throws SQLException {
     while (rs.next()) {
-      List<BigDecimal> salary;
       String salaryStr = rs.getString("salary");
-      salary = Arrays.stream(salaryStr.split(";"))
+      List<BigDecimal> salary = Arrays.stream(salaryStr.split(";"))
           .map(s -> BigDecimal.valueOf(Double.parseDouble(s))).collect(Collectors.toList());
       teachers.add(new Teacher(rs.getInt("id"),
           rs.getString("login"), rs.getString("password"),
@@ -75,9 +74,8 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   @Override
   public Teacher save(Teacher teacher) {
-    List<Teacher> teachers = findAll();
-    if (teachers.stream().map(Teacher::getId).collect(Collectors.toList())
-        .contains(teacher.getId())) {
+    Optional<Teacher> optionalTeacher = findById(teacher.getId());
+    if (optionalTeacher.isPresent()) {
       return update(teacher);
     }
     try (Connection connection = DataSource.getConnection();

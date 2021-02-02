@@ -89,3 +89,5 @@ update rating
 set rating = 50
 where student_id = 1
   and subject = 'chemistry';
+
+alter table groups add column subjects varchar(50);

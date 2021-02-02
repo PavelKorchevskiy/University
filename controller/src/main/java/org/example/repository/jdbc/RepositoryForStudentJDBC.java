@@ -67,14 +67,49 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
 
   @Override
   public Optional<Student> findById(int id) {
-    List<Student> students = findAll();
-    Optional<Student> result = Optional.empty();
-    for (Student s : students) {
-      if (s.getId() == id) {
-        result = Optional.of(s);
+//    List<Student> students = findAll();
+//    Optional<Student> result = Optional.empty();
+//    for (Student s : students) {
+//      if (s.getId() == id) {
+//        result = Optional.of(s);
+//      }
+//    }
+//    return result;
+
+    List<Student> students = new ArrayList<>();
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection
+            .prepareStatement("select * from student where id = ?;")) {
+      preparedStatement.setInt(1, id);
+      ResultSet rs = preparedStatement.executeQuery();
+      while (rs.next()) {
+        students.add(new Student(rs.getInt("id"),
+            rs.getString("login"), rs.getString("password"),
+            rs.getString("name"), rs.getInt("age")));
       }
+
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
     }
-    return result;
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from rating where student_id = ?;")
+        ) {
+      preparedStatement.setInt(1, id);
+      ResultSet rs = preparedStatement.executeQuery();
+      //инициализируем рейтинг у студентов, если он есть в таблице
+      while (rs.next()) {
+        Subject subject = Subject.getSubjectByString(rs.getString("subject"));
+        int rating = rs.getInt("rating");
+        for (Student student : students) {
+          if (student.getId() == id) {
+            student.putRating(subject, rating);
+          }
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return students.stream().findAny();
   }
 
   @Override

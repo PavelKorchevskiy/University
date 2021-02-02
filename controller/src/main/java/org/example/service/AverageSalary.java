@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.example.constans.Tags;
+import org.example.excetions.IllegalDataException;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.repository.producer.TeacherProducer;
@@ -18,8 +19,12 @@ public class AverageSalary {
     List<BigDecimal> salaries = new ArrayList<>(teacher.getSalary());
     Collections.reverse(salaries);
     BigDecimal sum = BigDecimal.ZERO;
-    for (int i = 0; i < numberOfMonths; i++) {
-      sum = sum.add(salaries.get(i));
+    try {
+      for (int i = 0; i < numberOfMonths; i++) {
+        sum = sum.add(salaries.get(i));
+      }
+    } catch (IndexOutOfBoundsException e) {
+      throw new IllegalDataException("Number of months is too big");
     }
     return sum.divide(BigDecimal.valueOf(numberOfMonths), 2, RoundingMode.HALF_UP);
   }
