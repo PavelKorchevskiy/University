@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.example.constans.Attributes;
 import org.example.model.Student;
-import org.example.repository.RepositoryForStudentsInMemory;
-import org.example.repository.RepositoryForStudentsInterface;
+import org.example.repository.interfaces.RepositoryForStudentsInterface;
+import org.example.repository.producer.StudentProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//пока не используется
 @WebServlet("/rating")
 public class ControllerForShowRating extends HttpServlet {
 
@@ -23,18 +25,25 @@ public class ControllerForShowRating extends HttpServlet {
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    String login = req.getParameter("login");
-    RepositoryForStudentsInterface repository = RepositoryForStudentsInMemory.getInstance();
-    Optional<Student> student = repository.findByLogin(login);
-    String answer;
-    if (student.isPresent()) {
-      answer = student.get().getRatingAsString();
-    } else {
-      answer = "Пользаватель с таким логином не найден";
+    int id = 0;
+    try {
+      id = Integer.parseInt(req.getParameter("idStudent"));
+      log.info("students id - " + id);
+    } catch (NumberFormatException e) {
+      log.error("id is not a number");
     }
-    log.info("answer" + answer);
+    RepositoryForStudentsInterface repository = StudentProducer.getRepository();
+    Optional<Student> student = repository.findById(id);
+    String rating;
+    if (student.isPresent()) {
+      rating = student.get().getRatingAsString();
+    } else {
+      rating = "Пользаватель с таким логином не найден";
+    }
+    log.info("rating" + rating);
     HttpSession session = req.getSession();
-    session.setAttribute("answer", answer);
+    session.setAttribute(Attributes.RATING,
+        rating + " if you see this massage in web-browser please write me 375333038034");
     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/showRating");
     requestDispatcher.forward(req, resp);
   }

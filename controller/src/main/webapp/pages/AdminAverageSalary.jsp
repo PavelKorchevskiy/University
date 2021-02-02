@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 26.12.2020
@@ -13,7 +13,7 @@
 </head>
 <body>
 <%
-    String s = (String) session.getAttribute("averageSalary");
+    String s = (String) session.getAttribute(Attributes.AVERAGE_SALARY);
     if (s != null) {
         out.println(s);
     }%> <br/>

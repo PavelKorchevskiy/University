@@ -6,7 +6,7 @@
 
   <servlet>
     <servlet-name>Salary</servlet-name>
-    <jsp-file>/WEB-INF/pages/AdminSetSalary.jsp</jsp-file>
+    <jsp-file>/pages/AdminSetSalary.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>Salary</servlet-name>
@@ -15,7 +15,7 @@
 
   <servlet>
     <servlet-name>AverageSalary</servlet-name>
-    <jsp-file>/WEB-INF/pages/AdminAverageSalary.jsp</jsp-file>
+    <jsp-file>/pages/AdminAverageSalary.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>AverageSalary</servlet-name>
@@ -24,7 +24,7 @@
 
   <servlet>
     <servlet-name>Admin</servlet-name>
-    <jsp-file>/WEB-INF/pages/AdminPage.jsp</jsp-file>
+    <jsp-file>/pages/AdminPage.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>Admin</servlet-name>
@@ -42,7 +42,7 @@
 
   <filter>
     <filter-name>AuthFilter</filter-name>
-    <filter-class>org.example.filtres.AuthFilter</filter-class>
+    <filter-class>org.example.filters.AuthFilter</filter-class>
     <init-param>
       <param-name>AdminLogin</param-name>
       <param-value>admin</param-value>

@@ -13,10 +13,11 @@ public class Student extends AbstractPerson {
   private static final Logger log = LoggerFactory.getLogger(Student.class);
   private final Map<Subject, Integer> ratings = new HashMap<>();
 
-  public Student(String login, String password, String fullName, int age, Set<Subject> subjects) {
-    super(login, password, fullName, age);
-    if (!StringUtils.isAlpha(fullName)) {
-      setFullName("Petia");
+  public Student(int id, String login, String password, String name, int age,
+      Set<Subject> subjects) {
+    super(id, login, password, name, age);
+    if (!StringUtils.isAlpha(name)) {
+      setName("Petia");
     }
     //student start with rating 0
     for (Subject s : subjects) {
@@ -24,21 +25,33 @@ public class Student extends AbstractPerson {
     }
   }
 
-  public void putRating(String subject, int rating) {
+  public Student(int id, String login, String password, String fullName, int age) {
+    super(id, login, password, fullName, age);
+    if (!StringUtils.isAlpha(fullName)) {
+      setName("Petia");
+    }
+  }
+
+  //учитель может добавить предмет и рейтинг
+  public void putRating(Subject subject, int rating) {
     try {
-      Subject s = Subject.valueOf(subject);
       if (rating >= 0 && rating <= 100) {
-        ratings.put(s, rating);
+        ratings.put(subject, rating);
       }
     } catch (IllegalArgumentException e) {
-      log.error("rating is not valid");
+      log.error("rating or subject is not valid");
     }
   }
 
   public String getRatingAsString() {
-    StringBuilder sb = new StringBuilder();
+    StringBuffer sb = new StringBuffer();
+    sb.append(getName()).append(" has rating: ");
     ratings.forEach((k, v) -> sb.append(k).append(" - ").append(v).append(", "));
     sb.deleteCharAt(sb.lastIndexOf(","));
-    return getFullName() + " has rating: " + sb.toString();
+    return sb.toString();
+  }
+
+  public Map<Subject, Integer> getRatings() {
+    return ratings;
   }
 }

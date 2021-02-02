@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.example.constans.Attributes;
+import org.example.constans.Parameters;
 import org.example.service.AverageSalary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +25,13 @@ public class ControllerForShowAverageSalary extends HttpServlet {
     //при неподходящем числе выведем информацию за один месяц
     int numberOfMonths = 1;
     try {
-      numberOfMonths = Integer.parseInt(req.getParameter("numberOfMonths"));
-      log.info("numberOfMonths" + numberOfMonths);
+      numberOfMonths = Integer.parseInt(req.getParameter(Parameters.NUMB_MONTHS));
+      log.info("number of months " + numberOfMonths);
     } catch (NumberFormatException e) {
       log.error("not a number in number of months");
-      //нужно ли кидать исключение в таком случае?
-      //пусть пока ни чего не происходит
     }
-    session.setAttribute("averageSalary",
+    session.setAttribute(Attributes.AVERAGE_SALARY,
         AverageSalary.showAverageSalaryForAllTeacher(numberOfMonths));
-    req.getRequestDispatcher("WEB-INF/pages/AdminAverageSalary.jsp").forward(req, resp);
+    req.getRequestDispatcher("pages/AdminAverageSalary.jsp").forward(req, resp);
   }
 }

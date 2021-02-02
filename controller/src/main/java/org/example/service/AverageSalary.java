@@ -5,9 +5,10 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.example.constans.Tags;
 import org.example.model.Teacher;
-import org.example.repository.RepositoryForTeachersInMemory;
-import org.example.repository.RepositoryForTeachersInterface;
+import org.example.repository.interfaces.RepositoryForTeachersInterface;
+import org.example.repository.producer.TeacherProducer;
 
 public class AverageSalary {
 
@@ -33,27 +34,29 @@ public class AverageSalary {
   }
 
   public static String showAllTeachers() {
-    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     List<Teacher> teachers = repository.findAll();
     StringBuilder sb = new StringBuilder();
     for (Teacher teacher : teachers) {
-      sb.append(teacher.showSalary());
+      sb.append(TeacherService.showSalary(teacher));
     }
     return sb.toString();
   }
 
   public static String showAverageSalaryForAllTeacher(int numberOfMonths) {
-    RepositoryForTeachersInterface repository = RepositoryForTeachersInMemory.getInstance();
+    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     List<Teacher> teachers = repository.findAll();
     BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
-    String head = "Average salary for " + teachers.size() + " teachers, for " + numberOfMonths
-        + " months - " + averageSalary.setScale(2, RoundingMode.HALF_UP) + "<br/>";
-    StringBuilder sb = new StringBuilder();
+    StringBuffer sb = new StringBuffer();
+    sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ")
+        .append(numberOfMonths)
+        .append(" months - ").append(averageSalary.setScale(2, RoundingMode.HALF_UP))
+        .append(Tags.BR);
     for (Teacher teacher : teachers) {
-      sb.append("Average salary for ").append(teacher.getFullName()).append(" - ")
+      sb.append("Average salary for ").append(teacher.getName()).append(" - ")
           .append(calculateAverageSalary(teacher, numberOfMonths)
-              .setScale(2, RoundingMode.HALF_UP)).append("<br/>");
+              .setScale(2, RoundingMode.HALF_UP)).append(Tags.BR);
     }
-    return head + sb.toString();
+    return String.valueOf(sb);
   }
 }
