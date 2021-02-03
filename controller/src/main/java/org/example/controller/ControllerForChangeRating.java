@@ -12,12 +12,12 @@ import org.example.constans.Attributes;
 import org.example.constans.Links;
 import org.example.constans.Parameters;
 import org.example.excetions.IllegalDataException;
-import org.example.excetions.IllegalFormatException;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.repository.producer.StudentProducer;
 import org.example.repository.producer.TeacherProducer;
+import org.example.service.Checking;
 import org.example.service.TeacherService;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
@@ -32,31 +32,10 @@ public class ControllerForChangeRating extends HttpServlet {
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     HttpSession session = req.getSession();
-    int rating;
-    try {
-      rating = Integer.parseInt(req.getParameter(Parameters.RATING));
-      log.info(String.valueOf(rating));
-    } catch (NumberFormatException e) {
-      log.error("not a number in rating");
-      throw new IllegalFormatException("not a number in rating");
-    }
-    String subjectString = req.getParameter(Parameters.SUBJECT);
-    Subject subject;
-    try {
-      subject = Subject.getSubjectByString(subjectString);
-    } catch (IllegalArgumentException e) {
-      log.info(String.format("subject is not correct - %s", subjectString));
-      throw new IllegalFormatException("subject is not correct - " + subjectString);
-    }
-    int id;
-    try {
-      id = Integer.parseInt(req.getParameter(Parameters.ID_STUDENT));
-      log.info("students id - " + id);
-    } catch (NumberFormatException e) {
-      log.error("id is not a number");
-      throw new IllegalFormatException("id is not a number");
-    }
-    log.info(String.format("subject - %s", subjectString));
+    int rating = Checking.getRating(req.getParameter(Parameters.RATING));
+    Subject subject = Checking.getSubject(req.getParameter(Parameters.SUBJECT));
+    int id = Checking.getId(req.getParameter(Parameters.ID_STUDENT));
+    log.info(String.format("subject - %s", subject.toString()));
     log.info(String.format("id - %s", id));
     RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
     Optional<Teacher> teacherOptional = repository

@@ -77,28 +77,10 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
             rs.getString("login"), rs.getString("password"),
             rs.getString("name"), rs.getInt("age")));
       }
-
     } catch (SQLException throwable) {
       throwable.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from rating where student_id = ?;")
-        ) {
-      preparedStatement.setInt(1, id);
-      ResultSet rs = preparedStatement.executeQuery();
-      //инициализируем рейтинг у студентов, если он есть в таблице
-      while (rs.next()) {
-        Subject subject = Subject.getSubjectByString(rs.getString("subject"));
-        int rating = rs.getInt("rating");
-        for (Student student : students) {
-          if (student.getId() == id) {
-            student.putRating(subject, rating);
-          }
-        }
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    setRatingForStudentWithId(students, id);
     return students.stream().findAny();
   }
 
@@ -123,21 +105,13 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    //set rating
-    for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
-      try (Connection connection = DataSource.getConnection();
-          PreparedStatement ps2 = connection.prepareStatement(
-              "insert into rating (student_id, subject, rating) values (?, ?, ?);")
-      ) {
-        ps2.setInt(1, entry.getValue());
-        ps2.setInt(2, student.getId());
-        ps2.setString(3, Subject.getStringBySubject(entry.getKey()));
-        ResultSet rs1 = ps2.executeQuery();
-        rs1.next();
-        rs1.close();
-      } catch (SQLException e) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(
+            "insert into rating (student_id, subject, rating) values (?, ?, ?);")
+    ) {
+      saveRating(student, connection, preparedStatement);
+    } catch (SQLException e) {
         e.printStackTrace();
-      }
     }
     return student;
   }
@@ -158,23 +132,31 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    //set rating
-    for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
-      try (Connection connection = DataSource.getConnection();
-          PreparedStatement ps2 = connection.prepareStatement("update rating " +
-              "set rating = ? where student_id = ? and subject = ?;")
-      ) {
-        ps2.setInt(1, entry.getValue());
-        ps2.setInt(2, student.getId());
-        ps2.setString(3, Subject.getStringBySubject(entry.getKey()));
-        ResultSet rs1 = ps2.executeQuery();
-        rs1.next();
-        rs1.close();
-      } catch (SQLException e) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("update rating " +
+            "set rating = ? where student_id = ? and subject = ?;")
+    ) {
+      saveRating(student, connection, preparedStatement);
+    } catch (SQLException e) {
         e.printStackTrace();
       }
-    }
     return student;
+  }
+
+  //transaction example
+  private void saveRating(Student student, Connection connection, PreparedStatement preparedStatement)
+      throws SQLException {
+    connection.setAutoCommit(false);
+    connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+    for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
+        preparedStatement.setInt(1, entry.getValue());
+        preparedStatement.setInt(2, student.getId());
+        preparedStatement.setString(3, Subject.getStringBySubject(entry.getKey()));
+        ResultSet rs1 = preparedStatement.executeQuery();
+        rs1.next();
+        rs1.close();
+      }
+    connection.commit();
   }
 
   @Override
@@ -203,26 +185,30 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     Optional<Student> s = students.stream().findAny();
     if (s.isPresent()) {
       int id = s.get().getId();
-      try (Connection connection = DataSource.getConnection();
-          PreparedStatement preparedStatement = connection
-              .prepareStatement("select * from rating where student_id = ?;")
-      ) {
-        preparedStatement.setInt(1, id);
-        ResultSet rs = preparedStatement.executeQuery();
-        //инициализируем рейтинг у студентов, если он есть в таблице
-        while (rs.next()) {
-          Subject subject = Subject.getSubjectByString(rs.getString("subject"));
-          int rating = rs.getInt("rating");
-          for (Student student : students) {
-            if (student.getId() == id) {
-              student.putRating(subject, rating);
-            }
-          }
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      setRatingForStudentWithId(students, id);
     }
     return students.stream().findAny();
+  }
+
+  private void setRatingForStudentWithId(List<Student> students, int id) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement preparedStatement = connection
+            .prepareStatement("select * from rating where student_id = ?;")
+    ) {
+      preparedStatement.setInt(1, id);
+      ResultSet rs = preparedStatement.executeQuery();
+      //инициализируем рейтинг у студентов, если он есть в таблице
+      while (rs.next()) {
+        Subject subject = Subject.getSubjectByString(rs.getString("subject"));
+        int rating = rs.getInt("rating");
+        for (Student student : students) {
+          if (student.getId() == id) {
+            student.putRating(subject, rating);
+          }
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

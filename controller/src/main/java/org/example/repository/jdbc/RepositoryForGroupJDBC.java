@@ -40,7 +40,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     List<Group> groups = new ArrayList<>();
     //создаем группы без студентов
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from groups;");
+        PreparedStatement ps = connection.prepareStatement("select * from groups;");
         ResultSet rs = ps.executeQuery()
     ) {
       while (rs.next()) {
@@ -56,7 +56,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     }
     //добавляем студентов в группы
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from group_student;");
+        PreparedStatement ps = connection.prepareStatement("select * from group_student;");
         ResultSet rs = ps.executeQuery()
     ) {
       while (rs.next()) {
@@ -81,7 +81,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     List<Group> groups = new ArrayList<>();
     //создаем группы без студентов
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from groups where id = ?;"))
+        PreparedStatement ps = connection.prepareStatement("select * from groups where id = ?;"))
     {
       ps.setInt(1, id);
       ResultSet rs = ps.executeQuery();
@@ -98,7 +98,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     }
     //добавляем студентов в группы
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from group_student where group_id = ?;")
+        PreparedStatement ps = connection.prepareStatement("select * from group_student where group_id = ?;")
     ) {
       ps.setInt(1, id);
       ResultSet rs = ps.executeQuery();
