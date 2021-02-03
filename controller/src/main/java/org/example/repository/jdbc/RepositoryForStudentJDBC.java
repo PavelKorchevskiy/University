@@ -146,17 +146,17 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   //transaction example
   private void saveRating(Student student, Connection connection, PreparedStatement preparedStatement)
       throws SQLException {
-    connection.setAutoCommit(false);
-    connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+    //connection.setAutoCommit(false);
+    //connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
     for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
         preparedStatement.setInt(1, entry.getValue());
         preparedStatement.setInt(2, student.getId());
         preparedStatement.setString(3, Subject.getStringBySubject(entry.getKey()));
         ResultSet rs1 = preparedStatement.executeQuery();
         rs1.next();
+        //connection.commit();
         rs1.close();
       }
-    connection.commit();
   }
 
   @Override
