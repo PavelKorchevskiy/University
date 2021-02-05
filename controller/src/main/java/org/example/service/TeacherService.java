@@ -61,7 +61,7 @@ public class TeacherService {
 
   public static Optional<Student> getStudentById(Teacher teacher, int id) {
     Student student = null;
-    for (Student s : getALLStudents(teacher)) {
+    for (Student s : getALLStudents(teacher).size()) {
       if (s.getId() == id) {
         student = s;
       }

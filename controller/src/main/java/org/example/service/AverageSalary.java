@@ -64,4 +64,8 @@ public class AverageSalary {
     }
     return String.valueOf(sb);
   }
+
+  public static List<BigDecimal> getSalaryAsList(String salaryAsString) {
+    String[] array = salaryAsString.split(";");
+  }
 }
