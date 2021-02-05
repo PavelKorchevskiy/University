@@ -99,17 +99,20 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
       preparedStatement.setString(3, student.getPassword());
       preparedStatement.setString(4, student.getName());
       preparedStatement.setInt(5, student.getAge());
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection()) {
+      for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
         PreparedStatement preparedStatement = connection.prepareStatement(
-            "insert into rating (student_id, subject, rating) values (?, ?, ?);")
-    ) {
-      saveRating(student, connection, preparedStatement);
+            "insert into rating (student_id, subject, rating) values (?, ?, ?);");
+        preparedStatement.setInt(1, student.getId());
+        preparedStatement.setString(2, Subject.getStringBySubject(entry.getKey()));
+        preparedStatement.setInt(3, entry.getValue());
+        preparedStatement.executeQuery();
+        preparedStatement.close();
+      }
     } catch (SQLException e) {
         e.printStackTrace();
     }
@@ -126,37 +129,24 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
       preparedStatement.setString(2, student.getPassword());
       preparedStatement.setString(3, student.getName());
       preparedStatement.setInt(4, student.getAge());
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection()) {
+      for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
         PreparedStatement preparedStatement = connection.prepareStatement("update rating " +
-            "set rating = ? where student_id = ? and subject = ?;")
-    ) {
-      saveRating(student, connection, preparedStatement);
+            "set rating = ? where student_id = ? and subject = ?;");
+        preparedStatement.setInt(1, entry.getValue());
+        preparedStatement.setInt(2, student.getId());
+        preparedStatement.setString(3, Subject.getStringBySubject(entry.getKey()));
+        preparedStatement.executeQuery();
+        preparedStatement.close();
+      }
     } catch (SQLException e) {
         e.printStackTrace();
       }
     return student;
-  }
-
-  //transaction example
-  private void saveRating(Student student, Connection connection, PreparedStatement preparedStatement)
-      throws SQLException {
-    //connection.setAutoCommit(false);
-    //connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-    for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
-        preparedStatement.setInt(1, entry.getValue());
-        preparedStatement.setInt(2, student.getId());
-        preparedStatement.setString(3, Subject.getStringBySubject(entry.getKey()));
-        ResultSet rs1 = preparedStatement.executeQuery();
-        rs1.next();
-        //connection.commit();
-        rs1.close();
-      }
   }
 
   @Override

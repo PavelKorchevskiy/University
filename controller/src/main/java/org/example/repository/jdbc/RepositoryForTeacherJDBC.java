@@ -88,9 +88,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
       preparedStatement.setString(4, teacher.getName());
       preparedStatement.setInt(5, teacher.getAge());
       preparedStatement.setString(6, getSalaryAsString(teacher.getSalary()));
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -108,9 +106,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
       preparedStatement.setString(3, teacher.getName());
       preparedStatement.setInt(4, teacher.getAge());
       preparedStatement.setString(5, getSalaryAsString(teacher.getSalary()));
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
