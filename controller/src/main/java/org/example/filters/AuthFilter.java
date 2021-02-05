@@ -35,9 +35,9 @@ public class AuthFilter implements Filter {
     String password = req.getParameter(Parameters.PASSWORD);
     HttpSession session = req.getSession();
     String role;
-    if (nonNull(session.getAttribute(Attributes.LOGIN)) && nonNull(
-        session.getAttribute(Attributes.PASSWORD)) && nonNull(
-        session.getAttribute(Attributes.ROLE))) {
+    if (nonNull(session.getAttribute(Attributes.LOGIN)) &&
+        nonNull(session.getAttribute(Attributes.PASSWORD)) &&
+        nonNull(session.getAttribute(Attributes.ROLE))) {
       role = (String) session.getAttribute(Attributes.ROLE);
     } else if (nonNull(login) && nonNull(password)) {
       session.setAttribute(Attributes.LOGIN, login);

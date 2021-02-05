@@ -63,9 +63,8 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   private void getTeachersFromResultSet(List<Teacher> teachers, ResultSet rs) throws SQLException {
     while (rs.next()) {
-      List<BigDecimal> salary;
       String salaryStr = rs.getString("salary");
-      salary = Arrays.stream(salaryStr.split(";"))
+      List<BigDecimal> salary = Arrays.stream(salaryStr.split(";"))
           .map(s -> BigDecimal.valueOf(Double.parseDouble(s))).collect(Collectors.toList());
       teachers.add(new Teacher(rs.getInt("id"),
           rs.getString("login"), rs.getString("password"),
@@ -75,9 +74,8 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   @Override
   public Teacher save(Teacher teacher) {
-    List<Teacher> teachers = findAll();
-    if (teachers.stream().map(Teacher::getId).collect(Collectors.toList())
-        .contains(teacher.getId())) {
+    Optional<Teacher> optionalTeacher = findById(teacher.getId());
+    if (optionalTeacher.isPresent()) {
       return update(teacher);
     }
     try (Connection connection = DataSource.getConnection();
@@ -90,9 +88,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
       preparedStatement.setString(4, teacher.getName());
       preparedStatement.setInt(5, teacher.getAge());
       preparedStatement.setString(6, getSalaryAsString(teacher.getSalary()));
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -110,9 +106,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
       preparedStatement.setString(3, teacher.getName());
       preparedStatement.setInt(4, teacher.getAge());
       preparedStatement.setString(5, getSalaryAsString(teacher.getSalary()));
-      ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      rs.close();
+      preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -126,14 +120,19 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
-    Optional<Teacher> result = Optional.empty();
-    List<Teacher> teachers = findAll();
-    for (Teacher t : teachers) {
-      if (t.getLogin().equals(login) && t.getPassword().equals(password)) {
-        result = Optional.of(t);
-      }
+    List<Teacher> teachers = new ArrayList<>();
+    try (Connection connection = DataSource.getConnection()
+    ) {
+      PreparedStatement preparedStatement = connection
+          .prepareStatement("select * from teacher where login = ? and password = ?;");
+      preparedStatement.setString(1, login);
+      preparedStatement.setString(2, password);
+      ResultSet rs = preparedStatement.executeQuery();
+      getTeachersFromResultSet(teachers, rs);
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-    return result;
+    return teachers.stream().findAny();
   }
 
   private String getSalaryAsString(List<BigDecimal> list) {

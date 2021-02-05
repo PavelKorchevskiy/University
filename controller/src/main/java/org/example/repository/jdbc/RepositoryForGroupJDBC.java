@@ -40,7 +40,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     List<Group> groups = new ArrayList<>();
     //создаем группы без студентов
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from groups;");
+        PreparedStatement ps = connection.prepareStatement("select * from groups;");
         ResultSet rs = ps.executeQuery()
     ) {
       while (rs.next()) {
@@ -56,8 +56,8 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     }
     //добавляем студентов в группы
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select  * from group_student;");
-        ResultSet rs = ps.executeQuery();
+        PreparedStatement ps = connection.prepareStatement("select * from group_student;");
+        ResultSet rs = ps.executeQuery()
     ) {
       while (rs.next()) {
         int groupId = rs.getInt("group_id");
@@ -78,14 +78,42 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
 
   @Override
   public Optional<Group> findById(int id) {
-    List<Group> groups = findAll();
-    Group group = null;
-    for (Group g : groups) {
-      if (g.getId() == id) {
-        group = g;
+    List<Group> groups = new ArrayList<>();
+    //создаем группы без студентов
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from groups where id = ?;"))
+    {
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        Teacher teacher = TeacherProducer.getRepository()
+            .findById(rs.getInt("teacher_id")).orElseThrow(NullPointerException::new);
+        Set<Subject> subjects = getSubjectsFromString(rs.getString("subjects"));
+        Set<Student> students = new HashSet<>();
+        groups.add(new Group(id, teacher, students, subjects));
       }
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-    return Optional.ofNullable(group);
+    //добавляем студентов в группы
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from group_student where group_id = ?;")
+    ) {
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        int studentId = rs.getInt("student_id");
+        Student student = StudentProducer.getRepository().findById(studentId)
+            .orElseThrow(NullPointerException::new);
+        for (Group g : groups) {
+            g.getStudents().add(student);
+        }
+      }
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
+    }
+    return groups.stream().findAny();
   }
 
   @Override

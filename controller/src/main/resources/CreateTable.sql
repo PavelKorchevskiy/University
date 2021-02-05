@@ -135,4 +135,5 @@ insert into salary (teacher_id, salary) VALUES (3, 474.45),
 create table rat (
     id serial,
     subject
-)
+);
+alter table groups add column subjects varchar(50);
