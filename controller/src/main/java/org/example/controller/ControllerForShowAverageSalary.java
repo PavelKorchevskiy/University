@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
+import org.example.excetions.IllegalFormatException;
 import org.example.service.AverageSalary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +24,13 @@ public class ControllerForShowAverageSalary extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = req.getSession();
     //при неподходящем числе выведем информацию за один месяц
-    int numberOfMonths = 1;
+    int numberOfMonths;
     try {
       numberOfMonths = Integer.parseInt(req.getParameter(Parameters.NUMB_MONTHS));
       log.info("number of months " + numberOfMonths);
     } catch (NumberFormatException e) {
       log.error("not a number in number of months");
+      throw new IllegalFormatException("not a number in number of months");
     }
     session.setAttribute(Attributes.AVERAGE_SALARY,
         AverageSalary.showAverageSalaryForAllTeacher(numberOfMonths));

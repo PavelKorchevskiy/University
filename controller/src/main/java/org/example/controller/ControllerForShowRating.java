@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
+import org.example.excetions.IllegalFormatException;
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.producer.StudentProducer;
@@ -31,6 +32,7 @@ public class ControllerForShowRating extends HttpServlet {
       log.info("students id - " + id);
     } catch (NumberFormatException e) {
       log.error("id is not a number");
+      throw new IllegalFormatException("id is not a number");
     }
     RepositoryForStudentsInterface repository = StudentProducer.getRepository();
     Optional<Student> student = repository.findById(id);
