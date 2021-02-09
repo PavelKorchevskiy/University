@@ -1,6 +1,15 @@
 package org.example.model;
 
+import lombok.Data;
+
+@Data
 public class Admin extends AbstractPerson {
+
+  private int id;
+  private String login;
+  private String password;
+  private String name;
+  private int age;
 
   private static Admin instance;
 

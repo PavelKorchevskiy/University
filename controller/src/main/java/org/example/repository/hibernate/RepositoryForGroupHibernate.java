@@ -53,7 +53,7 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
   public Group update(Group group) {
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.update(group);
+    session.merge(group);
     transaction.commit();
     session.close();
     return group;

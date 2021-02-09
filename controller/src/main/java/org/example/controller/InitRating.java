@@ -25,7 +25,7 @@ public class InitRating {
                   "insert into rating (student_id, subject, rating) values (?, ?, ?)")
           ) {
             ps.setInt(1, student.getId());
-            ps.setString(2, Subject.getStringBySubject(subject));
+            ps.setString(2, subject.toString());
             ps.setInt(3, 0);
             ResultSet rs = ps.executeQuery();
             rs.next();

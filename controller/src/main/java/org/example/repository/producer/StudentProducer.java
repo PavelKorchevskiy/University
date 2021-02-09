@@ -1,5 +1,6 @@
 package org.example.repository.producer;
 
+import org.example.repository.hibernate.RepositoryForStudentHibernate;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.jdbc.RepositoryForStudentJDBC;
 import org.example.repository.memory.RepositoryForStudentsInMemory;
@@ -10,8 +11,10 @@ public class StudentProducer {
     switch (RepositoryType.type) {
       case "memory":
         return RepositoryForStudentsInMemory.getInstance();
-      default:
+      case "jdbc":
         return RepositoryForStudentJDBC.getInstance();
+      default:
+        return RepositoryForStudentHibernate.getInstance();
     }
   }
 }

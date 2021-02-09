@@ -7,10 +7,17 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -21,30 +28,36 @@ import org.slf4j.LoggerFactory;
 @ToString
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "student")
+@SequenceGenerator(name = "id_gen", sequenceName = "student_id_seq", allocationSize = 1)
 public class Student extends AbstractPerson {
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
   private int id;
   private String login;
   private String password;
   private String name;
   private int age;
-  @ElementCollection
+  @ElementCollection()
   @CollectionTable(name = "rating",
       joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "id")})
   @MapKeyColumn(name = "subject")
+  @MapKeyClass(Subject.class)
+  @MapKeyEnumerated(EnumType.STRING)
   @Column(name = "rating")
-  private final Map<String, Integer> ratings = new HashMap<>();
+  private final Map<Subject, Integer> ratings = new HashMap<>();
+
   private static final Logger log = LoggerFactory.getLogger(Student.class);
 
   public Student(int id, String login, String password, String name, int age,
-      Set<String> subjects) {
+      Set<Subject> subjects) {
     super(id, login, password, name, age);
     if (!StringUtils.isAlpha(name)) {
       setName("Petia");
     }
     //student start with rating 0
-    for (String s : subjects) {
+    for (Subject s : subjects) {
       ratings.put(s, 0);
     }
   }
@@ -57,7 +70,7 @@ public class Student extends AbstractPerson {
   }
 
   //учитель может добавить предмет и рейтинг
-  public void putRating(String subject, int rating) {
+  public void putRating(Subject subject, int rating) {
     try {
       if (rating >= 0 && rating <= 100) {
         ratings.put(subject, rating);
@@ -75,7 +88,7 @@ public class Student extends AbstractPerson {
     return sb.toString();
   }
 
-  public Map<String, Integer> getRatings() {
+  public Map<Subject, Integer> getRatings() {
     return ratings;
   }
 }

@@ -16,15 +16,19 @@ public class HibernateSessionFactory {
   }
 
   public static SessionFactory getSessionFactory() {
-    if(sessionFactory == null) {
-      Configuration configuration = new Configuration().configure();
-      configuration.addAnnotatedClass(Student.class);
-      configuration.addAnnotatedClass(Teacher.class);
-      configuration.addAnnotatedClass(Sub.class);
-      configuration.addAnnotatedClass(Group.class);
-      StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-          .applySettings(configuration.getProperties());
-      sessionFactory = configuration.buildSessionFactory(builder.build());
+    if (sessionFactory == null) {
+      synchronized (HibernateSessionFactory.class) {
+        if (sessionFactory == null) {
+          Configuration configuration = new Configuration().configure();
+          configuration.addAnnotatedClass(Student.class);
+          configuration.addAnnotatedClass(Teacher.class);
+          //configuration.addAnnotatedClass(Sub.class);
+          configuration.addAnnotatedClass(Group.class);
+          StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+              .applySettings(configuration.getProperties());
+          sessionFactory = configuration.buildSessionFactory(builder.build());
+        }
+      }
     }
     return sessionFactory;
   }

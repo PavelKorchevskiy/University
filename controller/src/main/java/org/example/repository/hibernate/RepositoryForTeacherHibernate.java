@@ -54,7 +54,7 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
 
   @Override
   public Teacher save(Teacher teacher) {
-    if (findAll().stream().map(AbstractPerson::getId).collect(Collectors.toList())
+    if (findAll().stream().map(Teacher::getId).collect(Collectors.toList())
         .contains(teacher.getId())) {
       return update(teacher);
     }
@@ -69,7 +69,8 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
   public Teacher update(Teacher teacher) {
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.update(teacher);
+    //session.update(teacher);
+    session.merge(teacher);
     transaction.commit();
     session.close();
     return teacher;

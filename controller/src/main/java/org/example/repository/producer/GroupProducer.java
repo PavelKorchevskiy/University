@@ -1,5 +1,6 @@
 package org.example.repository.producer;
 
+import org.example.repository.hibernate.RepositoryForGroupHibernate;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.example.repository.jdbc.RepositoryForGroupJDBC;
 import org.example.repository.memory.RepositoryForGroupInMemory;
@@ -10,8 +11,10 @@ public class GroupProducer {
     switch (RepositoryType.type) {
       case "memory":
         return RepositoryForGroupInMemory.getInstance();
-      default:
+      case "jdbc":
         return RepositoryForGroupJDBC.getInstance();
+      default:
+        return RepositoryForGroupHibernate.getInstance();
     }
   }
 }

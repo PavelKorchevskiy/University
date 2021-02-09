@@ -132,8 +132,11 @@ insert into salary (teacher_id, salary) VALUES (3, 474.45),
                                                (4, 440.5),
                                                (4, 384),
                                                (4, 447.8);
-create table rat (
-    id serial,
-    subject
-);
+
 alter table groups add column subjects varchar(50);
+ALTER TABLE teacher ALTER COLUMN id TYPE serial;
+
+create sequence teacher_id_seq start 1 increment 1;
+create sequence student_id_seq start 1 increment 1;
+create sequence groups_id_seq start 1 increment 1;
+

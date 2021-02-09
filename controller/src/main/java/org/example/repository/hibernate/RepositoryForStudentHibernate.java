@@ -1,6 +1,7 @@
 package org.example.repository.hibernate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.example.model.AbstractPerson;
@@ -30,6 +31,7 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
   @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
     List<Student> students = findAll();
+    students.removeIf(Objects::isNull);
     Student student = null;
     for (Student s : students) {
       if (s.getLogin().equals(login) && s.getPassword().equals(password)) {
@@ -54,7 +56,7 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
 
   @Override
   public Student save(Student student) {
-    if (findAll().stream().map(AbstractPerson::getId).collect(Collectors.toList())
+    if (findAll().stream().map(Student::getId).collect(Collectors.toList())
         .contains(student.getId())) {
       return update(student);
     }
@@ -69,7 +71,7 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
   public Student update(Student student) {
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.update(student);
+    session.merge(student);
     transaction.commit();
     session.close();
     return student;

@@ -3,7 +3,6 @@ package org.example.subject;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.Enumerated;
 
 public enum Subject {
   MATH("math"),
@@ -24,6 +23,7 @@ public enum Subject {
   private static Map<String, Subject> initStringSubjectMap() {
     Map<String, Subject> map = new HashMap<>();
     for (Subject subject : Subject.values()) {
+      map.put(subject.toString(), subject);
       map.put(subject.name, subject);
     }
     return Collections.unmodifiableMap(map);
@@ -40,7 +40,7 @@ public enum Subject {
   public static Subject getSubjectByString(String name) throws IllegalArgumentException {
     Subject subject = stringSubjectMap.get(name);
     if (subject == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Subject with this name doesn't exist");
     }
     return subject;
   }
@@ -48,7 +48,7 @@ public enum Subject {
   public static String getStringBySubject(Subject name) throws IllegalArgumentException {
     String subject = subjectStringMap.get(name);
     if (subject == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("It is strange if  you see this massage");
     }
     return subject;
   }
