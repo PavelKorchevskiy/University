@@ -1,10 +1,8 @@
 package org.example.service;
 
 import java.math.BigDecimal;
-import org.example.constans.Parameters;
-import org.example.controller.ControllerForChangeRating;
-import org.example.excetions.IllegalDataException;
-import org.example.excetions.IllegalFormatException;
+import org.example.exceptions.IllegalDataException;
+import org.example.exceptions.IllegalFormatException;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,18 @@ import org.slf4j.LoggerFactory;
 public class Checking {
 
   private static final Logger log = LoggerFactory.getLogger(Checking.class);
+
+  public static int getNumber(String numberAsString) {
+    int number;
+    try {
+      number = Integer.parseInt(numberAsString);
+      log.info("number - " + number);
+    } catch (NumberFormatException e) {
+      log.error("it's not a number");
+      throw new IllegalFormatException("it's not a number");
+    }
+    return number;
+  }
 
   public static int getId(String parameter) {
     int id;

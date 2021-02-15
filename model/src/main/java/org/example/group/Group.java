@@ -28,7 +28,7 @@ import org.example.subject.Subject;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "students")
 @Entity
 @Table(name = "groups")
 public class Group {
@@ -57,8 +57,8 @@ public class Group {
 @ElementCollection(targetClass = Subject.class)
 @CollectionTable(name = "groups_subject",
     joinColumns = {@JoinColumn(name = "group_id", referencedColumnName = "id")})
-@Column(name = "subject_id")
-@Enumerated(EnumType.ORDINAL)
+@Column(name = "subject")
+@Enumerated(EnumType.STRING)
   private volatile Set<Subject> subjects;
 
   public Group(int id, Teacher teacher, Set<Student> students, Set<Subject> subjects) {

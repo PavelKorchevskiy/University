@@ -21,7 +21,7 @@ public class TeacherService {
       stringBuilder.append(teacher.getName()).append(", in your group ").append(students.size())
           .append(" students:").append(Tags.BR);
       for (Student s : students) {
-        stringBuilder.append(" name - ").append(s.getRatingAsString()).append(", id - ")
+        stringBuilder.append(" name - ").append(StudentService.getRatingAsString(s)).append(", id - ")
             .append(s.getId()).append(Tags.BR);
       }
       return stringBuilder.toString();

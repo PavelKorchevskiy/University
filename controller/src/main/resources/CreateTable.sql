@@ -140,3 +140,4 @@ create sequence teacher_id_seq start 1 increment 1;
 create sequence student_id_seq start 1 increment 1;
 create sequence groups_id_seq start 1 increment 1;
 
+drop table groups_subject;

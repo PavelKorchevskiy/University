@@ -1,4 +1,4 @@
-package org.example.excetions;
+package org.example.exceptions;
 
 public class IllegalDataException extends AppException {
 

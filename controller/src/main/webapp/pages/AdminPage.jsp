@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>Admin</title>
+    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <h1>Hello ADMIN!</h1>

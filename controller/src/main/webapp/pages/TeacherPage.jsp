@@ -12,6 +12,7 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <h1>Hello Teacher</h1>
@@ -26,7 +27,7 @@
 <form method="post" action="<c:url value="/changeRating"/>">
     <input type="text" required placeholder="id" name="idMyStudent"><br/>
     <input type="text" required placeholder="subject" name="subjectMyStudent"><br/>
-    <input type="text" required placeholder="rating" name="ratingMyStudent"><br/>
+    <input type="number" required placeholder="rating" name="ratingMyStudent"><br/>
     <input class="button" type="submit" value="Change rating">
 </form>
 <a href="<c:url value='/logout' />">Logout</a>

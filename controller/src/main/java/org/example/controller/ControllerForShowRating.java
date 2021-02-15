@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
-import org.example.excetions.IllegalFormatException;
+import org.example.exceptions.IllegalFormatException;
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.producer.StudentProducer;
+import org.example.service.Checking;
+import org.example.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,22 +28,11 @@ public class ControllerForShowRating extends HttpServlet {
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    int id = 0;
-    try {
-      id = Integer.parseInt(req.getParameter("idStudent"));
-      log.info("students id - " + id);
-    } catch (NumberFormatException e) {
-      log.error("id is not a number");
-      throw new IllegalFormatException("id is not a number");
-    }
+    int id = Checking.getId(req.getParameter("idStudent"));
     RepositoryForStudentsInterface repository = StudentProducer.getRepository();
     Optional<Student> student = repository.findById(id);
-    String rating;
-    if (student.isPresent()) {
-      rating = student.get().getRatingAsString();
-    } else {
-      rating = "Пользаватель с таким логином не найден";
-    }
+    String rating = student.map(StudentService::getRatingAsString)
+        .orElse("Пользаватель с таким логином не найден");
     log.info("rating" + rating);
     HttpSession session = req.getSession();
     session.setAttribute(Attributes.RATING,

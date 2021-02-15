@@ -18,6 +18,7 @@ import javax.persistence.MapKeyEnumerated;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import org.example.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @NoArgsConstructor
 @Entity
@@ -67,25 +69,6 @@ public class Student extends AbstractPerson {
     if (!StringUtils.isAlpha(fullName)) {
       setName("Petia");
     }
-  }
-
-  //учитель может добавить предмет и рейтинг
-  public void putRating(Subject subject, int rating) {
-    try {
-      if (rating >= 0 && rating <= 100) {
-        ratings.put(subject, rating);
-      }
-    } catch (IllegalArgumentException e) {
-      log.error("rating or subject is not valid");
-    }
-  }
-
-  public String getRatingAsString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(getName()).append(" has rating: ");
-    ratings.forEach((k, v) -> sb.append(k).append(" - ").append(v).append(", "));
-    sb.deleteCharAt(sb.lastIndexOf(","));
-    return sb.toString();
   }
 
   public Map<Subject, Integer> getRatings() {

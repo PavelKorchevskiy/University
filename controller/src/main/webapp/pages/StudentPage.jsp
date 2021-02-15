@@ -1,6 +1,7 @@
 
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.StudentProducer" %><%--
+<%@ page import="org.example.repository.producer.StudentProducer" %>
+<%@ page import="org.example.service.StudentService" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -12,15 +13,15 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <h1>Hello Student</h1>
-<%= StudentProducer.getRepository()
+<%= StudentService.getRatingAsString(StudentProducer.getRepository()
         .findByLoginAndPassword(
                 String.valueOf(session.getAttribute(Attributes.LOGIN)),
                 String.valueOf(session.getAttribute(Attributes.PASSWORD)))
-        .get()
-        .getRatingAsString()%>
+        .get())%>
 <br/>
 <a href="<c:url value='/logout' />">Logout</a>
 </body>
