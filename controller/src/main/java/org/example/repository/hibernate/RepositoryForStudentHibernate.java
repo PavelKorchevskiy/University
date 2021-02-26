@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.example.model.Student;
-import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 public class RepositoryForStudentHibernate implements RepositoryForStudentsInterface {
@@ -32,26 +29,17 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
 
   @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
-    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("login", login))
-        .add(Restrictions.eq("password", password));
-    List<Student> teachers = criteria.list();
-    return teachers.stream().findAny();
+//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
+//    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("login", login))
+//        .add(Restrictions.eq("password", password));
+//    List<Student> teachers = criteria.list();
+//    return teachers.stream().findAny();
 
-//    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
-//        .createQuery("from Student where Student.login = :login and Student .password = :password");
-//    query.setParameter("login", login);
-//    query.setParameter("password", password);
-//    return query.stream().findAny();
-//    List<Student> students = findAll();
-//    students.removeIf(Objects::isNull);
-//    Student student = null;
-//    for (Student s : students) {
-//      if (s.getLogin().equals(login) && s.getPassword().equals(password)) {
-//        student = s;
-//      }
-//    }
-//    return Optional.ofNullable(student);
+    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Student where login = :login and password = :password");
+    query.setParameter("login", login);
+    query.setParameter("password", password);
+    return query.stream().findAny();
   }
 
   @Override
@@ -62,15 +50,15 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
 
   @Override
   public Optional<Student> findById(int id) {
-    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("id", id));
-    List<Student> teachers = criteria.list();
-    return teachers.stream().findAny();
+//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
+//    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("id", id));
+//    List<Student> teachers = criteria.list();
+//    return teachers.stream().findAny();
 
-//    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
-//        .createQuery("from Student where Student .id = :id");
-//    query.setParameter("id", id);
-//    return query.stream().findAny();
+    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Student where id = :id");
+    query.setParameter("id", id);
+    return query.stream().findAny();
   }
 
   @Override

@@ -47,7 +47,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
         int id = rs.getInt("id");
         Teacher teacher = TeacherProducer.getRepository()
             .findById(rs.getInt("teacher_id")).orElseThrow(NullPointerException::new);
-        Set<Subject> subjects = getSubjectsFromString(rs.getString("subjects"));
+        Set<Subject> subjects = getSubjectsFromDB(id);
         Set<Student> students = new HashSet<>();
         groups.add(new Group(id, teacher, students, subjects));
       }
@@ -81,15 +81,14 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     List<Group> groups = new ArrayList<>();
     //создаем группы без студентов
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select * from groups where id = ?;"))
-    {
+        PreparedStatement ps = connection.prepareStatement("select * from groups where id = ?;")) {
       ps.setInt(1, id);
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
         Teacher teacher = TeacherProducer.getRepository()
             .findById(rs.getInt("teacher_id")).orElseThrow(NullPointerException::new);
-        Set<Subject> subjects = getSubjectsFromString(rs.getString("subjects"));
+        Set<Subject> subjects = getSubjectsFromDB(id);
         Set<Student> students = new HashSet<>();
         groups.add(new Group(id, teacher, students, subjects));
       }
@@ -98,7 +97,8 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     }
     //добавляем студентов в группы
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select * from group_student where group_id = ?;")
+        PreparedStatement ps = connection
+            .prepareStatement("select * from group_student where group_id = ?;")
     ) {
       ps.setInt(1, id);
       ResultSet rs = ps.executeQuery();
@@ -107,7 +107,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
         Student student = StudentProducer.getRepository().findById(studentId)
             .orElseThrow(NullPointerException::new);
         for (Group g : groups) {
-            g.getStudents().add(student);
+          g.getStudents().add(student);
         }
       }
     } catch (SQLException throwable) {
@@ -126,11 +126,20 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     return null;
   }
 
-  private Set<Subject> getSubjectsFromString(String string) {
+  private Set<Subject> getSubjectsFromDB(int groupId) {
     Set<Subject> subjects = new HashSet<>();
-    String[] array = string.split(";");
-    for (String s : array) {
-      subjects.add(Subject.getSubjectByString(s));
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement ps = connection
+            .prepareStatement("select from groups_subject where group_id = ?");
+    ) {
+      ps.setInt(1, groupId);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        subjects.add(Subject.getSubjectByString(rs.getString("subject")));
+      }
+      rs.close();
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
     }
     return subjects;
   }

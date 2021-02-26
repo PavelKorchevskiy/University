@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "teacher", schema = "public")
 public class Teacher extends AbstractPerson {
+
   @Id
   @SequenceGenerator(name = "id_gen_t", sequenceName = "teacher_id_seq", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_t")
@@ -35,23 +36,19 @@ public class Teacher extends AbstractPerson {
   private String name;
   @Column(name = "age")
   private int age;
-//  @Column(name = "salary")
-//  private String salary;
-//  @OneToMany(cascade = CascadeType.ALL)
-//  @JoinTable(
-//      name = "salary",
-//      joinColumns = @JoinColumn(name = "teacher_id"),
-//      inverseJoinColumns = @JoinColumn(name = "salary")
-//  )
   @ElementCollection
   @CollectionTable(name = "salary",
-  joinColumns = @JoinColumn(name = "teacher_id"))
+      joinColumns = @JoinColumn(name = "teacher_id"))
   @Column(name = "salary")
   private List<BigDecimal> salary;
 
-  public Teacher(int id, String login, String password, String name, int age, List<BigDecimal> salary) {
-    super(id, login, password, name, age);
+  public Teacher(int id, String login, String password, String name, int age,
+      List<BigDecimal> salary) {
+    this.id = id;
+    this.login = login;
+    this.password = password;
+    this.name = name;
+    this.age = age;
     this.salary = salary;
   }
-
 }

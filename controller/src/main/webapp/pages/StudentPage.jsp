@@ -1,4 +1,3 @@
-
 <%@ page import="org.example.constans.Attributes" %>
 <%@ page import="org.example.repository.producer.StudentProducer" %>
 <%@ page import="org.example.service.StudentService" %><%--
@@ -13,7 +12,8 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <h1>Hello Student</h1>

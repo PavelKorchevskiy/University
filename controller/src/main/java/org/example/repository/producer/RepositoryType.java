@@ -6,11 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RepositoryType {
+
   static String type;
+
   static {
     Properties properties = new Properties();
     try {
-      properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("app.properties"));
+      properties.load(
+          Thread.currentThread().getContextClassLoader().getResourceAsStream("app.properties"));
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     }

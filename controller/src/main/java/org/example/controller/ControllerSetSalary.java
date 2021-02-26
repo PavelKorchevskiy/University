@@ -2,16 +2,13 @@ package org.example.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.example.constans.Parameters;
-import org.example.exceptions.IllegalDataException;
 import org.example.model.Teacher;
-import org.example.repository.producer.TeacherProducer;
 import org.example.service.Checking;
 import org.example.service.SaveService;
 import org.example.service.Supplier;

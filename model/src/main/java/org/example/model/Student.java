@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 @Table(name = "student")
 @SequenceGenerator(name = "id_gen", sequenceName = "student_id_seq", allocationSize = 1)
 public class Student extends AbstractPerson {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
   private int id;
@@ -54,7 +55,12 @@ public class Student extends AbstractPerson {
 
   public Student(int id, String login, String password, String name, int age,
       Set<Subject> subjects) {
-    super(id, login, password, name, age);
+    this.id = id;
+    this.login = login;
+    this.password = password;
+    this.name = name;
+    this.age = age;
+
     if (!StringUtils.isAlpha(name)) {
       setName("Petia");
     }
@@ -64,11 +70,12 @@ public class Student extends AbstractPerson {
     }
   }
 
-  public Student(int id, String login, String password, String fullName, int age) {
-    super(id, login, password, fullName, age);
-    if (!StringUtils.isAlpha(fullName)) {
-      setName("Petia");
-    }
+  public Student(int id, String login, String password, String name, int age) {
+    this.id = id;
+    this.login = login;
+    this.password = password;
+    this.name = name;
+    this.age = age;
   }
 
   public Map<Subject, Integer> getRatings() {

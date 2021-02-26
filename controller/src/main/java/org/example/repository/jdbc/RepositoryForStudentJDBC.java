@@ -115,7 +115,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         preparedStatement.close();
       }
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
     return student;
   }
@@ -145,8 +145,8 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         preparedStatement.close();
       }
     } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      e.printStackTrace();
+    }
     return student;
   }
 

@@ -16,15 +16,15 @@ import org.example.repository.producer.GroupProducer;
 public class TeacherService {
 
   public static String showGroup(Teacher teacher) {
-      Set<Student> students = getALLStudents(teacher);
-      StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.append(teacher.getName()).append(", in your group ").append(students.size())
-          .append(" students:").append(Tags.BR);
-      for (Student s : students) {
-        stringBuilder.append(" name - ").append(StudentService.getRatingAsString(s)).append(", id - ")
-            .append(s.getId()).append(Tags.BR);
-      }
-      return stringBuilder.toString();
+    Set<Student> students = getALLStudents(teacher);
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(teacher.getName()).append(", in your group ").append(students.size())
+        .append(" students:").append(Tags.BR);
+    for (Student s : students) {
+      stringBuilder.append(" name - ").append(StudentService.getRatingAsString(s)).append(", id - ")
+          .append(s.getId()).append(Tags.BR);
+    }
+    return stringBuilder.toString();
   }
 
   public static String showSalary(Teacher teacher) {

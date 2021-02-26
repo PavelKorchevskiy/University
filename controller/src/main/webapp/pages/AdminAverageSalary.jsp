@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Average Salary</title>
-    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <%

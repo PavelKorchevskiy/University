@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Set Salary</title>
-    <link rel = "stylesheet" type = "text/css" href = "${pageContext.request.contextPath}/pages/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <%=AverageSalary.showAllTeachers()%><br/>

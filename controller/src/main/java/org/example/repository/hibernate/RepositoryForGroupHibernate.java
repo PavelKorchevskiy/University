@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.example.group.Group;
-import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 public class RepositoryForGroupHibernate implements RepositoryForGroupInterface {
@@ -32,20 +29,21 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
 
   @Override
   public List<Group> findAll() {
-    return (List<Group>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from Group ").list();
+    return (List<Group>) HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Group ").list();
   }
 
   @Override
   public Optional<Group> findById(int id) {
-    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-    Criteria criteria = session.createCriteria(Group.class).add(Restrictions.eq("id", id));
-    List<Group> teachers = criteria.list();
-    return teachers.stream().findAny();
+//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
+//    Criteria criteria = session.createCriteria(Group.class).add(Restrictions.eq("id", id));
+//    List<Group> teachers = criteria.list();
+//    return teachers.stream().findAny();
 
-//    Query<Group> query = HibernateSessionFactory.getSessionFactory().openSession()
-//        .createQuery("from Group where Group .id = :id");
-//    query.setParameter("id", id);
-//    return query.stream().findAny();
+    Query<Group> query = HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Group where id = :id");
+    query.setParameter("id", id);
+    return query.stream().findAny();
   }
 
   @Override

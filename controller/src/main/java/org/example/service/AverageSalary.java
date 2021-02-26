@@ -69,8 +69,7 @@ public class AverageSalary {
 
   public static List<BigDecimal> getSalaryAsList(String salaryAsString) {
     String[] array = salaryAsString.split(";");
-    List<BigDecimal> list = Arrays.stream(array).map(s -> BigDecimal.valueOf(Double.parseDouble(s)))
+    return Arrays.stream(array).map(s -> BigDecimal.valueOf(Double.parseDouble(s)))
         .collect(Collectors.toList());
-    return list;
   }
 }

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
-import org.example.exceptions.IllegalFormatException;
 import org.example.service.AverageSalary;
 import org.example.service.Checking;
 import org.slf4j.Logger;

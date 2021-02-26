@@ -7,10 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 
@@ -63,12 +61,10 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   private void getTeachersFromResultSet(List<Teacher> teachers, ResultSet rs) throws SQLException {
     while (rs.next()) {
-      String salaryStr = rs.getString("salary");
-      List<BigDecimal> salary = Arrays.stream(salaryStr.split(";"))
-          .map(s -> BigDecimal.valueOf(Double.parseDouble(s))).collect(Collectors.toList());
-      teachers.add(new Teacher(rs.getInt("id"),
-          rs.getString("login"), rs.getString("password"),
-          rs.getString("name"), rs.getInt("age"), salary));
+      int id = rs.getInt("id");
+      List<BigDecimal> salary = getSalaryById(id);
+      teachers.add(new Teacher(id, rs.getString("login"), rs.getString("password")
+          , rs.getString("name"), rs.getInt("age"), salary));
     }
   }
 
@@ -107,6 +103,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
       preparedStatement.setInt(4, teacher.getAge());
       preparedStatement.setString(5, getSalaryAsString(teacher.getSalary()));
       preparedStatement.executeQuery();
+      updateSalary(teacher.getId(), teacher.getSalary());
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -142,5 +139,46 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
     }
     sb.deleteCharAt(sb.lastIndexOf(";"));
     return sb.toString();
+  }
+
+  private List<BigDecimal> getSalaryById(int id) {
+    List<BigDecimal> salary = new ArrayList<>();
+    try (Connection connection = DataSource.getConnection()) {
+      PreparedStatement ps = connection
+          .prepareStatement("select * from salary where teacher_id = ?;");
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        salary.add(rs.getBigDecimal("salary"));
+      }
+      rs.close();
+      ps.close();
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
+    }
+    return salary;
+  }
+
+  private void updateSalary(int teacherId, List<BigDecimal> salary) {
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement ps = connection
+            .prepareStatement("delete from salary where teacher_id = ?;")) {
+      ps.setInt(1, teacherId);
+      ps.executeQuery();
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
+    }
+    try (Connection connection = DataSource.getConnection();
+        PreparedStatement ps = connection
+            .prepareStatement("insert into salary (teacher_id, salary) values (?, ?);;")) {
+      for (BigDecimal bd : salary) {
+        ps.setInt(1, teacherId);
+        ps.setBigDecimal(2, bd);
+        ps.executeQuery();
+      }
+
+    } catch (SQLException throwable) {
+      throwable.printStackTrace();
+    }
   }
 }

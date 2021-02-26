@@ -40,25 +40,18 @@ public class Group {
   @OneToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "teacher_id", referencedColumnName = "id")
   private Teacher teacher;
-  //@ManyToMany(cascade = {CascadeType.ALL})
   @ManyToMany()
   @JoinTable(
       name = "group_student",
-      joinColumns = {@JoinColumn (name = "group_id")},
+      joinColumns = {@JoinColumn(name = "group_id")},
       inverseJoinColumns = {@JoinColumn(name = "student_id")}
   )
   private volatile Set<Student> students;
-//  @ManyToMany(cascade = {CascadeType.ALL})
-//  @JoinTable(
-//      name = "groups_subject",
-//      joinColumns = {@JoinColumn (name = "group_id")},
-//      inverseJoinColumns = {@JoinColumn(name = "subject_id")}
-//  )
-@ElementCollection(targetClass = Subject.class)
-@CollectionTable(name = "groups_subject",
-    joinColumns = {@JoinColumn(name = "group_id", referencedColumnName = "id")})
-@Column(name = "subject")
-@Enumerated(EnumType.STRING)
+  @ElementCollection(targetClass = Subject.class)
+  @CollectionTable(name = "groups_subject",
+      joinColumns = {@JoinColumn(name = "group_id", referencedColumnName = "id")})
+  @Column(name = "subject")
+  @Enumerated(EnumType.STRING)
   private volatile Set<Subject> subjects;
 
   public Group(int id, Teacher teacher, Set<Student> students, Set<Subject> subjects) {

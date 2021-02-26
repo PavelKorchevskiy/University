@@ -3,7 +3,6 @@ package org.example.repository.hibernate;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.subject.Sub;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -22,7 +21,6 @@ public class HibernateSessionFactory {
           Configuration configuration = new Configuration().configure();
           configuration.addAnnotatedClass(Student.class);
           configuration.addAnnotatedClass(Teacher.class);
-          //configuration.addAnnotatedClass(Sub.class);
           configuration.addAnnotatedClass(Group.class);
           StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
               .applySettings(configuration.getProperties());

@@ -3,16 +3,31 @@ body {
   background-color: lightsteelblue;
   font-size: 25px;
 }
-h1{
+
+h1 {
   font-size: 40px;
 }
-a{
+
+a {
   font-size: 25px;
   font-style: italic;
 }
-a:link {color: #0d2cf5}    /* непосещенная ссылка */
-a:visited {color: #260278;} /* посещенная ссылка */
-a:hover {color: #e30505;}   /* курсор мыши над ссылкой */
+
+a:link {
+  color: #0d2cf5
+}
+
+/* непосещенная ссылка */
+a:visited {
+  color: #260278;
+}
+
+/* посещенная ссылка */
+a:hover {
+  color: #e30505;
+}
+
+/* курсор мыши над ссылкой */
 
 .button {
   display: inline-block;
@@ -29,7 +44,8 @@ a:hover {color: #e30505;}   /* курсор мыши над ссылкой */
   box-shadow: 0 9px #999;
 }
 
-.button:hover {background-color: #606360
+.button:hover {
+  background-color: #606360
 }
 
 .button:active {
