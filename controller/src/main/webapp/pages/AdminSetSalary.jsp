@@ -1,4 +1,5 @@
-<%@ page import="org.example.service.AverageSalary" %><%--
+
+<%@ page import="org.example.service.TeachersServ" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 25.12.2020
@@ -14,7 +15,7 @@
           href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
-<%=AverageSalary.showAllTeachers()%><br/>
+<%= new TeachersServ().showAllTeachers()%><br/>
 <h3>Enter teacher's login and his salary:</h3>
 <form method="post" action="<c:url value="/setSalary"/>">
     <input type="number" required placeholder="id" name="idTeacher"><br/>
@@ -22,6 +23,8 @@
     <input class="button" type="submit" value="Set salary">
 </form>
 <a href="<c:url value='/admin' />">Back</a><br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

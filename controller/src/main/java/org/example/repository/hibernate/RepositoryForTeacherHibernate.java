@@ -3,6 +3,10 @@ package org.example.repository.hibernate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import org.example.exceptions.IllegalFormatException;
+import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.hibernate.Session;
@@ -12,6 +16,8 @@ import org.hibernate.query.Query;
 public class RepositoryForTeacherHibernate implements RepositoryForTeachersInterface {
 
   private static volatile RepositoryForTeacherHibernate instance;
+  protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
+
 
   private RepositoryForTeacherHibernate() {
   }
@@ -35,19 +41,27 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
 //    List<Teacher> teachers = criteria.list();
 //    return teachers.stream().findAny();
 
-    Query query = HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Teacher> query = (Query<Teacher>) session
         .createQuery("from Teacher where login = :login and password = :password");
     query.setParameter("login", login);
     query.setParameter("password", password);
-    return query.list().stream().findFirst();
+    Optional<Teacher> first = query.list().stream().findFirst();
+    //session.close();
+    return first;
 
   }
 
   @Override
   public List<Teacher> findAll() {
-    return (List<Teacher>) HibernateSessionFactory.getSessionFactory().openSession()
-        .createQuery("from Teacher ").list();
-
+    List<Teacher> result;
+    EntityManager em = helper.getEntityManager();
+    EntityTransaction trx = em.getTransaction();
+    trx.begin();
+    result = (List<Teacher>) em.createQuery("from Teacher ").getResultList();
+    trx.commit();
+    //em.close();
+    return result;
   }
 
   @Override
@@ -57,10 +71,13 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
 //    List<Teacher> teachers = criteria.list();
 //    return teachers.stream().findAny();
 
-    Query query = HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Teacher> query = (Query<Teacher>) session
         .createQuery("from Teacher where id = :id");
     query.setParameter("id", id);
-    return query.stream().findAny();
+    Optional<Teacher> any = query.stream().findAny();
+    //session.close();
+    return any;
   }
 
   @Override
@@ -73,7 +90,7 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     Transaction transaction = session.beginTransaction();
     session.save(teacher);
     transaction.commit();
-    session.close();
+    //session.close();
     return teacher;
   }
 
@@ -83,7 +100,7 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     //session.update(teacher);
     session.merge(teacher);
     transaction.commit();
-    session.close();
+    //session.close();
     return teacher;
   }
 

@@ -1,6 +1,7 @@
-<%@ page import="org.example.service.TeacherService" %>
+
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.TeacherProducer" %><%--
+<%@ page import="org.example.repository.producer.TeacherProducer" %>
+<%@ page import="org.example.service.TeachersServ" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -17,7 +18,7 @@
 </head>
 <body>
 <h1>Hello Teacher</h1>
-<%= TeacherService.showGroup(
+<%= new TeachersServ().showGroup(
         TeacherProducer.getRepository()
                 .findByLoginAndPassword(
                         String.valueOf(session.getAttribute(Attributes.LOGIN)),
@@ -31,6 +32,10 @@
     <input type="number" required placeholder="rating" name="ratingMyStudent"><br/>
     <input class="button" type="submit" value="Change rating">
 </form>
-<a href="<c:url value='/logout' />">Logout</a>
+
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
+<%--<a href="<c:url value='/logout' />">Logout</a>--%>
 </body>
 </html>

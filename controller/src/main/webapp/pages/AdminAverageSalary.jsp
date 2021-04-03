@@ -24,6 +24,8 @@
     <input class="button" type="submit" value="Show salary">
 </form>
 <a href="<c:url value='/admin' />">Back</a><br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

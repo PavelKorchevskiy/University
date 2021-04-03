@@ -23,7 +23,7 @@ public class InitRating {
         for (Subject subject : subjects) {
           try (Connection connection = DataSource.getConnection();
               PreparedStatement ps = connection.prepareStatement(
-                  "insert into rating (student_id, subject, rating) values (?, ?, ?)")
+                  "insert into aaarating (student_id, subject, rating) values (?, ?, ?)")
           ) {
             ps.setInt(1, student.getId());
             ps.setString(2, subject.toString());

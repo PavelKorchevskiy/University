@@ -29,8 +29,11 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
 
   @Override
   public List<Group> findAll() {
-    return (List<Group>) HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    List<Group> from_group_ = (List<Group>) session
         .createQuery("from Group ").list();
+    //session.close();
+    return from_group_;
   }
 
   @Override
@@ -40,10 +43,13 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
 //    List<Group> teachers = criteria.list();
 //    return teachers.stream().findAny();
 
-    Query<Group> query = HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Group> query = (Query<Group>) session
         .createQuery("from Group where id = :id");
     query.setParameter("id", id);
-    return query.stream().findAny();
+    Optional<Group> any = query.stream().findAny();
+    //session.close();
+    return any;
   }
 
   @Override
@@ -55,7 +61,7 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.save(group);
     transaction.commit();
-    session.close();
+    //session.close();
     return group;
   }
 
@@ -64,7 +70,7 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.merge(group);
     transaction.commit();
-    session.close();
+    //session.close();
     return group;
   }
 

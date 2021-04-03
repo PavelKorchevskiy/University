@@ -30,7 +30,7 @@ import org.example.subject.Subject;
 @NoArgsConstructor
 @ToString(exclude = "students")
 @Entity
-@Table(name = "groups")
+@Table(name = "aaagroups")
 public class Group {
 
   @Id
@@ -42,13 +42,13 @@ public class Group {
   private Teacher teacher;
   @ManyToMany()
   @JoinTable(
-      name = "group_student",
+      name = "aaagroup_student",
       joinColumns = {@JoinColumn(name = "group_id")},
       inverseJoinColumns = {@JoinColumn(name = "student_id")}
   )
   private volatile Set<Student> students;
   @ElementCollection(targetClass = Subject.class)
-  @CollectionTable(name = "groups_subject",
+  @CollectionTable(name = "aaagroups_subject",
       joinColumns = {@JoinColumn(name = "group_id", referencedColumnName = "id")})
   @Column(name = "subject")
   @Enumerated(EnumType.STRING)

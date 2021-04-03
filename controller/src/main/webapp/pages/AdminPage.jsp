@@ -19,6 +19,8 @@
 <a href="<c:url value='/salary' />">Set Salary</a><br/>
 <p>Show average salary: </p>
 <a href="<c:url value='/averageSalary' />">Show average salary</a><br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

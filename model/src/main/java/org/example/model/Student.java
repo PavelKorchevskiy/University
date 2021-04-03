@@ -31,19 +31,21 @@ import org.slf4j.LoggerFactory;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "student")
-@SequenceGenerator(name = "id_gen", sequenceName = "student_id_seq", allocationSize = 1)
+@Table(name = "aaastudent")
+
 public class Student extends AbstractPerson {
 
   @Id
+  @SequenceGenerator(name = "id_gen", sequenceName = "student_id_seq", allocationSize = 1)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+  @Column(name = "id")
   private int id;
   private String login;
   private String password;
   private String name;
   private int age;
   @ElementCollection()
-  @CollectionTable(name = "rating",
+  @CollectionTable(name = "aaarating",
       joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "id")})
   @MapKeyColumn(name = "subject")
   @MapKeyClass(Subject.class)
