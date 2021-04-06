@@ -13,17 +13,10 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
-</head>
+    <style><%@include file="/pages/style.css"%></style>
 <body>
 <h1>Hello Teacher</h1>
-<%= new TeachersServ().showGroup(
-        TeacherProducer.getRepository()
-                .findByLoginAndPassword(
-                        String.valueOf(session.getAttribute(Attributes.LOGIN)),
-                        String.valueOf(session.getAttribute(Attributes.PASSWORD)))
-                .get())%>
+<%= session.getAttribute(Attributes.GROUP)%>
 <br/>
 <h3>Enter student's id, subject and rating:</h3>
 <form method="post" action="<c:url value="/changeRating"/>">

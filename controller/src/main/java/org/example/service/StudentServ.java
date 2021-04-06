@@ -9,7 +9,7 @@ import org.example.subject.Subject;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+//@Service
 public class StudentServ {
 
 

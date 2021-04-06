@@ -78,6 +78,13 @@ public class TeachersServ {
     return stringBuilder.toString();
   }
 
+  public Optional<Student> getStudentByLoginAndPassword(String login, String password) {
+    return repositoryStudent.findByLoginAndPassword(login, password);
+  }
+  public Optional<Teacher> getTeacherByLoginAndPassword(String login, String password) {
+    return repository.findByLoginAndPassword(login, password);
+  }
+
   public Optional<Student> getStudentById(Teacher teacher, int id) {
     Student student = null;
     for (Student s : getALLStudents(teacher)) {

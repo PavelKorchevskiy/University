@@ -10,8 +10,7 @@
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
+    <style><%@include file="/pages/style.css"%></style>
 </head>
 <body>
 <div class="form">

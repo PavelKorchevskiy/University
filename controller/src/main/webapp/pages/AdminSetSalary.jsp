@@ -1,5 +1,6 @@
 
-<%@ page import="org.example.service.TeachersServ" %><%--
+<%@ page import="org.example.service.TeachersServ" %>
+<%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 25.12.2020
@@ -11,11 +12,10 @@
 <html>
 <head>
     <title>Set Salary</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
+    <style><%@include file="/pages/style.css"%></style>
 </head>
 <body>
-<%= new TeachersServ().showAllTeachers()%><br/>
+<%= session.getAttribute(Attributes.TEACHERS)%><br/>
 <h3>Enter teacher's login and his salary:</h3>
 <form method="post" action="<c:url value="/setSalary"/>">
     <input type="number" required placeholder="id" name="idTeacher"><br/>

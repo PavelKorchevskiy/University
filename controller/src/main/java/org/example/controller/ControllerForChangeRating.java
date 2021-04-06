@@ -17,7 +17,6 @@ import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.producer.StudentProducer;
 import org.example.service.Checking;
-import org.example.service.StudentServ;
 import org.example.service.StudentService;
 import org.example.service.TeachersServ;
 import org.example.subject.Subject;
@@ -63,6 +62,7 @@ public class ControllerForChangeRating {
       throw new IllegalDataException(
           "Student with this subject doesn't exist or You can't put him rating");
     }
+    session.setAttribute(Attributes.GROUP, teachersServ.showGroup(teacher));
     modelAndView.setViewName("TeacherPage");
     return modelAndView;
 //    req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
