@@ -1,7 +1,6 @@
 
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.TeacherProducer" %>
-<%@ page import="org.example.service.TeachersServ" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020

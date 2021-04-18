@@ -13,36 +13,50 @@ import org.example.exceptions.IllegalDataException;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
+import org.example.repository.hibernate.RepositoryForGroupHibernate;
+import org.example.repository.hibernate.RepositoryForStudentHibernate;
+import org.example.repository.hibernate.RepositoryForTeacherHibernate;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
-import org.example.repository.producer.GroupProducer;
-import org.example.repository.producer.StudentProducer;
-import org.example.repository.producer.TeacherProducer;
+import org.example.repository.producer.RepositoryType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service
-public class TeachersServ {
+@Service("service")
+public class ServiceCRUD {
 
-  private final RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
-  private final RepositoryForGroupInterface repositoryGroup = GroupProducer.getRepository();
-  private final RepositoryForStudentsInterface repositoryStudent = StudentProducer.getRepository();
+
+//  private Map<String, RepositoryForStudentsInterface> mapS;
+//  private Map<String, RepositoryForTeachersInterface> mapT;
+//  private Map<String, RepositoryForGroupInterface> mapG;
+
+//  private final RepositoryForTeachersInterface repositoryTeacher = mapT.get(RepositoryType.type + "T");
+//  private final RepositoryForGroupInterface repositoryGroup = mapG.get(RepositoryType.type + "G");
+//  private final RepositoryForStudentsInterface repositoryStudent = mapS.get(RepositoryType.type + "S");
+
+  private RepositoryForTeacherHibernate repositoryTeacher;
+  private RepositoryForGroupHibernate repositoryGroup;
+  private RepositoryForStudentHibernate repositoryStudent;
+
+  private final String repositoryType = RepositoryType.type;
 
   public Student save(Student student) {
     return repositoryStudent.save(student);
   }
   public Teacher saveTeacher(Teacher teacher) {
-    return repository.save(teacher);
+    return repositoryTeacher.save(teacher);
   }
 
   public Teacher getTeacherWithLoginAngPassword(String login, String password) {
-    return repository.findByLoginAndPassword(login, password)
+    return repositoryTeacher.findByLoginAndPassword(login, password)
         .orElseThrow(
             () -> new IllegalDataException("Teacher with this login and password doesn't exist"));
   }
 
   public Teacher getTeacherWithId(int id) {
-    return repository.findById(id)
+    return repositoryTeacher.findById(id)
         .orElseThrow(
             () -> new IllegalDataException("Teacher with id - " + id + " doesn't exist"));
   }
@@ -82,7 +96,7 @@ public class TeachersServ {
     return repositoryStudent.findByLoginAndPassword(login, password);
   }
   public Optional<Teacher> getTeacherByLoginAndPassword(String login, String password) {
-    return repository.findByLoginAndPassword(login, password);
+    return repositoryTeacher.findByLoginAndPassword(login, password);
   }
 
   public Optional<Student> getStudentById(Teacher teacher, int id) {
@@ -119,7 +133,7 @@ public class TeachersServ {
   }
 
   public String showAllTeachers() {
-    List<Teacher> teachers = repository.findAll();
+    List<Teacher> teachers = repositoryTeacher.findAll();
     StringBuilder sb = new StringBuilder();
     for (Teacher teacher : teachers) {
       sb.append(showSalary(teacher));
@@ -140,7 +154,7 @@ public class TeachersServ {
   }
 
   public String showAverageSalaryForAllTeacher(int numberOfMonths) {
-    List<Teacher> teachers = repository.findAll();
+    List<Teacher> teachers = repositoryTeacher.findAll();
     BigDecimal averageSalary = calculateAverageSalary(teachers, numberOfMonths);
     StringBuffer sb = new StringBuffer();
     sb.append("Average salary for ").append(teachers.size()).append(" teachers, for ")
@@ -155,4 +169,37 @@ public class TeachersServ {
     return String.valueOf(sb);
   }
 
+//  @Autowired
+//  public void setMapS(
+//      Map<String, RepositoryForStudentsInterface> mapS) {
+//    this.mapS = mapS;
+//  }
+//  @Autowired
+//  public void setMapT(
+//      Map<String, RepositoryForTeachersInterface> mapT) {
+//    this.mapT = mapT;
+//  }
+//  @Autowired
+//  public void setMapG(
+//      Map<String, RepositoryForGroupInterface> mapG) {
+//    this.mapG = mapG;
+//  }
+
+  @Autowired
+  //@Qualifier("hibernateT")
+  public void setRepositoryTeacher(RepositoryForTeacherHibernate repositoryTeacher) {
+    this.repositoryTeacher = repositoryTeacher;
+  }
+
+  @Autowired
+  //@Qualifier("hibernateG")
+  public void setRepositoryGroup(RepositoryForGroupHibernate repositoryGroup) {
+    this.repositoryGroup = repositoryGroup;
+  }
+
+  @Autowired
+  //@Qualifier("hibernateS")
+  public void setRepositoryStudent(RepositoryForStudentHibernate repositoryStudent) {
+    this.repositoryStudent = repositoryStudent;
+  }
 }

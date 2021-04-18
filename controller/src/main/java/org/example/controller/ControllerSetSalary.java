@@ -3,27 +3,23 @@ package org.example.controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Teacher;
 import org.example.service.Checking;
-import org.example.service.TeachersServ;
+import org.example.service.ServiceCRUD;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-//@WebServlet("/setSalary")
 @Controller
-@AllArgsConstructor
 public class ControllerSetSalary {
 
-  private final TeachersServ service;
+  private ServiceCRUD service;
 
   @PostMapping("/setSalary")
   protected ModelAndView service(HttpServletRequest req)
@@ -38,6 +34,10 @@ public class ControllerSetSalary {
     session.setAttribute(Attributes.TEACHERS, service.showAllTeachers());
     modelAndView.setViewName("AdminSetSalary");
     return modelAndView;
-    //req.getRequestDispatcher("pages/AdminSetSalary.jsp").forward(req, resp);
+  }
+
+  @Autowired
+  public void setService(ServiceCRUD service) {
+    this.service = service;
   }
 }

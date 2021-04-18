@@ -8,15 +8,15 @@ import org.springframework.context.annotation.Bean;
 
 public class StudentProducer {
 
-  @Bean
-  public static RepositoryForStudentsInterface getRepository() {
-    switch (RepositoryType.type) {
-      case "memory":
-        return RepositoryForStudentsInMemory.getInstance();
-      case "jdbc":
-        return RepositoryForStudentJDBC.getInstance();
-      default:
-        return RepositoryForStudentHibernate.getInstance();
-    }
-  }
+  //@Bean
+//  public static RepositoryForStudentsInterface getRepository() {
+//    switch (RepositoryType.type) {
+//      case "memory":
+//        return RepositoryForStudentsInMemory.getInstance();
+//      case "jdbc":
+//        return RepositoryForStudentJDBC.getInstance();
+//      default:
+//        return RepositoryForStudentHibernate.getInstance();
+//    }
+//  }
 }

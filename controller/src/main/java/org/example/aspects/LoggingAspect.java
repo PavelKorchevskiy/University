@@ -15,18 +15,13 @@ public class LoggingAspect {
 
   @Pointcut("execution(* org.example.controller.*.*(..))")
   public void controllers() {
-
   }
 
-  @Pointcut("execution(* org.example.service.Checking.*(..))")
-  public static void serviceChecking() {
-
-  }
 
   @Before("controllers()")
   public static void before(JoinPoint joinPoint) {
     log.error(joinPoint.toShortString());
-    log.info(Arrays.toString(joinPoint.getArgs()));
+    log.info("Args - " + Arrays.toString(joinPoint.getArgs()));
   }
 
 }

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RepositoryType {
 
-  static String type;
+  public static String type;
 
   static {
     Properties properties = new Properties();
@@ -19,4 +19,5 @@ public class RepositoryType {
     }
     type = properties.getProperty("repository.type");
   }
+
 }

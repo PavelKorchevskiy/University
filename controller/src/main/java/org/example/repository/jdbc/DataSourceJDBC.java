@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DataSource {
+public class DataSourceJDBC {
 
   private static final String URL = "jdbc:postgresql://localhost:5432/pasha";
   private static final String USER = "pasha";

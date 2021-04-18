@@ -8,32 +8,22 @@ import java.util.Set;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.repository.hibernate.RepositoryForGroupHibernate;
-import org.example.repository.jdbc.DataSource;
+import org.example.repository.jdbc.DataSourceJDBC;
 import org.example.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InitRating {
 
   //класс для стартового инициализирования таблицы rating нулями
-  private final Logger log = LoggerFactory.getLogger(InitRating.class);
-
-  private void logging() {
-    log.error("Start log");
-  }
-
-  public static void main(String[] args) {
-    new InitRating().logging();
 
 
-
-
+//  public static void main(String[] args) {
+//
 //    for (Group group : RepositoryForGroupHibernate.getInstance().findAll()) {
 //      Set<Student> students = group.getStudents();
 //      Set<Subject> subjects = group.getSubjects();
 //      for (Student student : students) {
 //        for (Subject subject : subjects) {
-//          try (Connection connection = DataSource.getConnection();
+//          try (Connection connection = DataSourceJDBC.getConnection();
 //              PreparedStatement ps = connection.prepareStatement(
 //                  "insert into aaarating (student_id, subject, rating) values (?, ?, ?)")
 //          ) {
@@ -48,5 +38,5 @@ public class InitRating {
 //        }
 //      }
 //    }
-  }
+//  }
 }

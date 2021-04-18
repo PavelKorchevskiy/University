@@ -1,5 +1,4 @@
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.StudentProducer" %>
 <%@ page import="org.example.service.StudentService" %><%--
   Created by IntelliJ IDEA.
   User: павел
@@ -21,6 +20,5 @@
 <form method="post" action="<c:url value="/logout"/>">
     <input class="button" type="submit" value="LogoutButton">
 </form>
-<%--<a href="<c:url value='/logout' />">Logout</a>--%>
 </body>
 </html>

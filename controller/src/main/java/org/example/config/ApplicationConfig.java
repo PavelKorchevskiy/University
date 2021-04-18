@@ -1,5 +1,6 @@
 package org.example.config;
 
+import org.example.filters.AuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;

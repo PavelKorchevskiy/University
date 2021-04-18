@@ -8,41 +8,22 @@ import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository("hibernateG")
 public class RepositoryForGroupHibernate implements RepositoryForGroupInterface {
-
-  private static volatile RepositoryForGroupHibernate instance;
-
-  private RepositoryForGroupHibernate() {
-  }
-
-  public static RepositoryForGroupHibernate getInstance() {
-    if (instance == null) {
-      synchronized (RepositoryForGroupHibernate.class) {
-        if (instance == null) {
-          instance = new RepositoryForGroupHibernate();
-        }
-      }
-    }
-    return instance;
-  }
 
   @Override
   public List<Group> findAll() {
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
-    List<Group> from_group_ = (List<Group>) session
+    List<Group> from_group = (List<Group>) session
         .createQuery("from Group ").list();
     //session.close();
-    return from_group_;
+    return from_group;
   }
 
   @Override
   public Optional<Group> findById(int id) {
-//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-//    Criteria criteria = session.createCriteria(Group.class).add(Restrictions.eq("id", id));
-//    List<Group> teachers = criteria.list();
-//    return teachers.stream().findAny();
-
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
     Query<Group> query = (Query<Group>) session
         .createQuery("from Group where id = :id");

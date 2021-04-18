@@ -1,5 +1,5 @@
 
-<%@ page import="org.example.service.TeachersServ" %>
+<%@ page import="org.example.service.ServiceCRUD" %>
 <%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел

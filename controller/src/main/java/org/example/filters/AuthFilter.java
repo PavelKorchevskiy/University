@@ -7,40 +7,40 @@ import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Admin;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.interfaces.RepositoryForStudentsInterface;
-import org.example.repository.interfaces.RepositoryForTeachersInterface;
-import org.example.repository.producer.StudentProducer;
-import org.example.repository.producer.TeacherProducer;
 import org.example.service.StudentService;
-import org.example.service.TeachersServ;
+import org.example.service.ServiceCRUD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 @WebInitParam(name = "AdminLogin", value = "admin")
-public class AuthFilter implements Filter {
+@Component("myTestFilter")
+public class AuthFilter implements Filter{
 
-
-  private final TeachersServ service = new TeachersServ();
+  @Autowired
+  private ServiceCRUD service;
   private final Logger log = LoggerFactory.getLogger(AuthFilter.class);
-
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
       throws IOException, ServletException {
+
     log.error("Start filter");
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
@@ -80,15 +80,13 @@ public class AuthFilter implements Filter {
     Optional<Student> optionalStudent = service.getStudentByLoginAndPassword(login, password);
     Optional<Teacher> optionalTeacher = service.getTeacherByLoginAndPassword(login, password);
 
-
-
     if (optionalTeacher.isPresent()) {
       access = "teacher";
       session.setAttribute(Attributes.GROUP, service.showGroup(optionalTeacher.get()));
     } else if (optionalStudent.isPresent()) {
       access = "student";
       session.setAttribute(Attributes.RATING
-              , StudentService.getRatingAsString(optionalStudent.get()));
+          , StudentService.getRatingAsString(optionalStudent.get()));
     } else if (login.equals(Admin.getInstance().getLogin())
         && Admin.getInstance().getPassword()
         .equals(password)) {
@@ -119,6 +117,7 @@ public class AuthFilter implements Filter {
         break;
     }
   }
+
 
   @Override
   public void init(FilterConfig filterConfig) {
