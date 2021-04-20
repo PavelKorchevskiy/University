@@ -46,10 +46,7 @@ public class ControllerForChangeRating {
     if (studentOptional.isPresent() && serviceCRUD.getGroup(teacher).isPresent()
         && serviceCRUD.getGroup(teacher).get().getSubjects().contains(subject)) {
       Student student = studentOptional.get();
-      //
       StudentService.putRating(student, subject, rating);
-      ////////////////////////
-      //StudentProducer.getRepository().save(student);
       serviceCRUD.save(student);
     } else {
       throw new IllegalDataException(
@@ -58,7 +55,6 @@ public class ControllerForChangeRating {
     session.setAttribute(Attributes.GROUP, serviceCRUD.showGroup(teacher));
     modelAndView.setViewName("TeacherPage");
     return modelAndView;
-//    req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
   }
 
   @Autowired

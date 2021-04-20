@@ -40,6 +40,11 @@
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
+  <error-page>
+    <exception-type>org.example.exceptions.AppException</exception-type>
+    <location>/pages/ExceptionPage.jsp</location>
+  </error-page>
+
 <!--  <filter>-->
 <!--    <filter-name>AuthFilter</filter-name>-->
 <!--    <filter-class>org.example.filters.AuthFilter</filter-class>-->

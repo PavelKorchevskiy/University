@@ -25,7 +25,7 @@ public class Admin extends AbstractPerson {
 
   public static Admin getInstance() {
     if (instance == null) {
-      instance = new Admin("a", "a", "Pasha Korchevskiy", 23);
+      instance = new Admin("admin", "admin", "Pasha Korchevskiy", 23);
     }
     return instance;
   }

@@ -53,18 +53,20 @@ public class AuthFilter implements Filter{
     if (nonNull(session.getAttribute(Attributes.LOGIN)) &&
         nonNull(session.getAttribute(Attributes.PASSWORD)) &&
         nonNull(session.getAttribute(Attributes.ROLE))) {
-      role = (String) session.getAttribute(Attributes.ROLE);
+      log.info("all attributes are present");
+      //role = (String) session.getAttribute(Attributes.ROLE);
+      role = "user";
+      filterChain.doFilter(request, response);
     } else if (nonNull(login) && nonNull(password)) {
+      log.info("Login and password are present, go to access control");
       session.setAttribute(Attributes.LOGIN, login);
       session.setAttribute(Attributes.PASSWORD, password);
       role = getAccess(login, password, session);
       session.setAttribute(Attributes.ROLE, role);
     } else {
+      log.info("no attributes were wound, go to login page");
       role = "no";
       req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
-    }
-    if (role.equals("admin")) {
-      session.setAttribute("allTeachers", service.showAllTeachers());
     }
     goToPage(role, req, resp);
   }
@@ -99,21 +101,27 @@ public class AuthFilter implements Filter{
   private void goToPage(String role, HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     switch (role) {
+      case "user" :
+        break;
       case "admin":
+        log.info("go to admin page");
         req.getRequestDispatcher("pages/AdminPage.jsp").forward(req, resp);
         break;
       case "student":
+        log.info("go to student page");
         req.getRequestDispatcher("pages/StudentPage.jsp").forward(req, resp);
         break;
       case "teacher":
+        log.info("go to teacher page");
         req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
         break;
       default:
+        log.info("default: go to login page");
         final HttpSession session = req.getSession();
         session.removeAttribute(Attributes.PASSWORD);
         session.removeAttribute(Attributes.LOGIN);
         session.removeAttribute(Attributes.ROLE);
-        req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
+//        req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
         break;
     }
   }
