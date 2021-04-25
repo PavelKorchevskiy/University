@@ -28,7 +28,6 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     query.setParameter("login", login);
     query.setParameter("password", password);
     Optional<Teacher> first = query.list().stream().findFirst();
-    //session.close();
     return first;
   }
 
@@ -38,9 +37,8 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     EntityManager em = helper.getEntityManager();
     EntityTransaction trx = em.getTransaction();
     trx.begin();
-    result = (List<Teacher>) em.createQuery("from Teacher ").getResultList();
+    result = (List<Teacher>) em.createQuery("from " + Teacher.class.getName()).getResultList();
     trx.commit();
-    //em.close();
     return result;
   }
 
@@ -51,7 +49,6 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
         .createQuery("from Teacher where id = :id");
     query.setParameter("id", id);
     Optional<Teacher> any = query.stream().findAny();
-    //session.close();
     return any;
   }
 
@@ -65,7 +62,6 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     Transaction transaction = session.beginTransaction();
     session.save(teacher);
     transaction.commit();
-    //session.close();
     return teacher;
   }
 
@@ -74,7 +70,6 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     Transaction transaction = session.beginTransaction();
     session.merge(teacher);
     transaction.commit();
-    //session.close();
     return teacher;
   }
 

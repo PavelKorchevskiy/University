@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>Login page</title>
     <style><%@include file="/pages/style.css"%></style>
 </head>
 <body>

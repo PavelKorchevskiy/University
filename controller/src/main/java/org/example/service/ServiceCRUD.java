@@ -6,61 +6,74 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import org.example.constans.Tags;
 import org.example.exceptions.IllegalDataException;
 import org.example.group.Group;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.hibernate.RepositoryForGroupHibernate;
-import org.example.repository.hibernate.RepositoryForStudentHibernate;
-import org.example.repository.hibernate.RepositoryForTeacherHibernate;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.repository.producer.RepositoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service("service")
+@Service
+@PropertySource("classpath:app.properties")
+@Transactional
 public class ServiceCRUD {
 
+  @Value("${repository.type}")
+  private String repositoryType;
 
-//  private Map<String, RepositoryForStudentsInterface> mapS;
-//  private Map<String, RepositoryForTeachersInterface> mapT;
-//  private Map<String, RepositoryForGroupInterface> mapG;
+  private Map<String, RepositoryForStudentsInterface> mapS;
+  private Map<String, RepositoryForTeachersInterface> mapT;
+  private Map<String, RepositoryForGroupInterface> mapG;
 
-//  private final RepositoryForTeachersInterface repositoryTeacher = mapT.get(RepositoryType.type + "T");
-//  private final RepositoryForGroupInterface repositoryGroup = mapG.get(RepositoryType.type + "G");
-//  private final RepositoryForStudentsInterface repositoryStudent = mapS.get(RepositoryType.type + "S");
+  private RepositoryForTeachersInterface repositoryTeacher;
+  private RepositoryForGroupInterface repositoryGroup;
+  private RepositoryForStudentsInterface repositoryStudent;
 
-  private RepositoryForTeacherHibernate repositoryTeacher;
-  private RepositoryForGroupHibernate repositoryGroup;
-  private RepositoryForStudentHibernate repositoryStudent;
+  @PostConstruct
+  public void init() {
+   repositoryTeacher = mapT.get(repositoryType + "T");
+   repositoryGroup = mapG.get(repositoryType + "G");
+   repositoryStudent = mapS.get(repositoryType + "S");
 
-  private final String repositoryType = RepositoryType.type;
+  }
 
-  public Student save(Student student) {
+  public Student saveStudent(Student student) {
     return repositoryStudent.save(student);
   }
+
   public Teacher saveTeacher(Teacher teacher) {
     return repositoryTeacher.save(teacher);
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
   public Teacher getTeacherWithLoginAngPassword(String login, String password) {
     return repositoryTeacher.findByLoginAndPassword(login, password)
         .orElseThrow(
             () -> new IllegalDataException("Teacher with this login and password doesn't exist"));
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
   public Teacher getTeacherWithId(int id) {
     return repositoryTeacher.findById(id)
         .orElseThrow(
             () -> new IllegalDataException("Teacher with id - " + id + " doesn't exist"));
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
   public Optional<Group> getGroup(Teacher teacher) {
     List<Group> groups = repositoryGroup.findAll();
     Group group = null;
@@ -92,9 +105,11 @@ public class ServiceCRUD {
     return stringBuilder.toString();
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
   public Optional<Student> getStudentByLoginAndPassword(String login, String password) {
     return repositoryStudent.findByLoginAndPassword(login, password);
   }
+  @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
   public Optional<Teacher> getTeacherByLoginAndPassword(String login, String password) {
     return repositoryTeacher.findByLoginAndPassword(login, password);
   }
@@ -169,37 +184,19 @@ public class ServiceCRUD {
     return String.valueOf(sb);
   }
 
-//  @Autowired
-//  public void setMapS(
-//      Map<String, RepositoryForStudentsInterface> mapS) {
-//    this.mapS = mapS;
-//  }
-//  @Autowired
-//  public void setMapT(
-//      Map<String, RepositoryForTeachersInterface> mapT) {
-//    this.mapT = mapT;
-//  }
-//  @Autowired
-//  public void setMapG(
-//      Map<String, RepositoryForGroupInterface> mapG) {
-//    this.mapG = mapG;
-//  }
-
   @Autowired
-  //@Qualifier("hibernateT")
-  public void setRepositoryTeacher(RepositoryForTeacherHibernate repositoryTeacher) {
-    this.repositoryTeacher = repositoryTeacher;
+  public void setMapS(
+      Map<String, RepositoryForStudentsInterface> mapS) {
+    this.mapS = mapS;
   }
-
   @Autowired
-  //@Qualifier("hibernateG")
-  public void setRepositoryGroup(RepositoryForGroupHibernate repositoryGroup) {
-    this.repositoryGroup = repositoryGroup;
+  public void setMapT(
+      Map<String, RepositoryForTeachersInterface> mapT) {
+    this.mapT = mapT;
   }
-
   @Autowired
-  //@Qualifier("hibernateS")
-  public void setRepositoryStudent(RepositoryForStudentHibernate repositoryStudent) {
-    this.repositoryStudent = repositoryStudent;
+  public void setMapG(
+      Map<String, RepositoryForGroupInterface> mapG) {
+    this.mapG = mapG;
   }
 }

@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
@@ -27,16 +28,21 @@ public class SpringHibernateConfig {
   }
 
   @Bean
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+  public LocalContainerEntityManagerFactoryBean factory() {
     LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
     factory.setDataSource(dataSource());
     factory.setPersistenceUnitName("jpa-unit");
     factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-    //don't sure
-    factory.setPackagesToScan("model/src/main/java/org/example");
+    factory.setPackagesToScan("org.example");
     factory.setJpaProperties(jpaProperties());
     return factory;
+  }
 
+  @Bean
+  public JpaTransactionManager jpaTransactionManager() {
+    JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+    jpaTransactionManager.setEntityManagerFactory(factory().getObject());
+    return jpaTransactionManager;
   }
 
   public Properties jpaProperties() {
@@ -54,5 +60,4 @@ public class SpringHibernateConfig {
     properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
     return properties;
   }
-
 }

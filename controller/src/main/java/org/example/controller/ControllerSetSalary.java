@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Teacher;

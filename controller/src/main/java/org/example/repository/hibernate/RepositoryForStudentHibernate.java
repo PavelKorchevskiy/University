@@ -25,7 +25,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
     query.setParameter("login", login);
     query.setParameter("password", password);
     Optional<Student> any = query.stream().findAny();
-    //session.close();
     return any;
   }
 
@@ -35,9 +34,8 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
     EntityManager em = helper.getEntityManager();
     EntityTransaction trx = em.getTransaction();
     trx.begin();
-    result = (List<Student>) em.createQuery("from Student ").getResultList();
+    result = (List<Student>) em.createQuery("from " + Student.class.getName()).getResultList();
     trx.commit();
-    //em.close();
     return result;
   }
 
@@ -71,7 +69,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
       Transaction transaction = session.beginTransaction();
       session.merge(student);
       transaction.commit();
-      //session.close();
       return student;
     }
 

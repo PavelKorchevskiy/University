@@ -29,7 +29,6 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
         .createQuery("from Group where id = :id");
     query.setParameter("id", id);
     Optional<Group> any = query.stream().findAny();
-    //session.close();
     return any;
   }
 
@@ -42,7 +41,6 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.save(group);
     transaction.commit();
-    //session.close();
     return group;
   }
 
@@ -51,7 +49,6 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.merge(group);
     transaction.commit();
-    //session.close();
     return group;
   }
 

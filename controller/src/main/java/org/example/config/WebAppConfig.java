@@ -1,7 +1,6 @@
 package org.example.config;
 
 import javax.servlet.Filter;
-import org.example.filters.AuthFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -24,10 +23,8 @@ public class WebAppConfig extends AbstractAnnotationConfigDispatcherServletIniti
 
   @Override
   protected Filter[] getServletFilters() {
-
     DelegatingFilterProxy filterProxy = new DelegatingFilterProxy();
     filterProxy.setTargetBeanName("myTestFilter");
     return new Filter[]{filterProxy};
   }
-
 }

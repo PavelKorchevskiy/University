@@ -47,7 +47,7 @@ public class ControllerForChangeRating {
         && serviceCRUD.getGroup(teacher).get().getSubjects().contains(subject)) {
       Student student = studentOptional.get();
       StudentService.putRating(student, subject, rating);
-      serviceCRUD.save(student);
+      serviceCRUD.saveStudent(student);
     } else {
       throw new IllegalDataException(
           "Student with this subject doesn't exist or You can't put him rating");

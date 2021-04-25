@@ -21,7 +21,7 @@
     <input type="number" required placeholder="salary" name="salaryTeacher"><br/>
     <input class="button" type="submit" value="Set salary">
 </form>
-<a href="<c:url value='/admin' />">Back</a><br/>
+<a href="<c:url value='/pages/AdminPage.jsp' />">Back</a><br/>
 <form method="post" action="<c:url value="/logout"/>">
     <input class="button" type="submit" value="LogoutButton">
 </form>

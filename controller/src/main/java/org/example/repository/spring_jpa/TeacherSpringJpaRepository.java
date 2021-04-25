@@ -2,7 +2,7 @@ package org.example.repository.spring_jpa;
 
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.springframework.stereotype.Repository;
@@ -17,13 +17,12 @@ public class TeacherSpringJpaRepository extends AbstractSpringJpaRepository<Teac
 
   @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
-    begin();
-    Query query = getEntityManager()
-        .createQuery("from Teacher where login = :login and password = :password", clazz);
+
+    TypedQuery<Teacher> query = entityManager
+        .createQuery("from " + clazz.getName() + " where login = :login and password = :password", clazz);
     query.setParameter("login", login);
     query.setParameter("password", password);
-    List<Teacher> list = (List<Teacher>) query.getResultList();
-    commit();
+    List<Teacher> list = query.getResultList();
     return list.stream().findAny();
   }
 

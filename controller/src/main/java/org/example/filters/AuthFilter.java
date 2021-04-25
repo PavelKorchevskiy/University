@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -15,7 +14,6 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Admin;
@@ -27,20 +25,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 @WebInitParam(name = "AdminLogin", value = "admin")
 @Component("myTestFilter")
 public class AuthFilter implements Filter{
 
-  @Autowired
-  private ServiceCRUD service;
+  private final ServiceCRUD service;
   private final Logger log = LoggerFactory.getLogger(AuthFilter.class);
+
+  @Autowired
+  public AuthFilter(
+      ServiceCRUD service) {
+    this.service = service;
+  }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
       throws IOException, ServletException {
-
     log.error("Start filter");
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
@@ -54,7 +55,6 @@ public class AuthFilter implements Filter{
         nonNull(session.getAttribute(Attributes.PASSWORD)) &&
         nonNull(session.getAttribute(Attributes.ROLE))) {
       log.info("all attributes are present");
-      //role = (String) session.getAttribute(Attributes.ROLE);
       role = "user";
       filterChain.doFilter(request, response);
     } else if (nonNull(login) && nonNull(password)) {
@@ -75,7 +75,6 @@ public class AuthFilter implements Filter{
   public void destroy() {
   }
 
-  //определяем доступ для введенного логина и пароля
   private String getAccess(String login, String password, HttpSession session) {
     String access = "no";
 
@@ -121,7 +120,6 @@ public class AuthFilter implements Filter{
         session.removeAttribute(Attributes.PASSWORD);
         session.removeAttribute(Attributes.LOGIN);
         session.removeAttribute(Attributes.ROLE);
-//        req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
         break;
     }
   }
