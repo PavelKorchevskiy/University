@@ -10,13 +10,15 @@
 <html>
 <head>
     <title>Set Salary</title>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <%=AverageSalary.showAllTeachers()%><br/>
 <h3>Enter teacher's login and his salary:</h3>
 <form method="post" action="<c:url value="/setSalary"/>">
-    <input type="text" required placeholder="id" name="idTeacher"><br/>
-    <input type="text" required placeholder="salary" name="salaryTeacher"><br/>
+    <input type="number" required placeholder="id" name="idTeacher"><br/>
+    <input type="number" required placeholder="salary" name="salaryTeacher"><br/>
     <input class="button" type="submit" value="Set salary">
 </form>
 <a href="<c:url value='/admin' />">Back</a><br/>

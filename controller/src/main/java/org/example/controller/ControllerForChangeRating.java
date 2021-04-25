@@ -11,13 +11,13 @@ import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
 import org.example.constans.Links;
 import org.example.constans.Parameters;
-import org.example.excetions.IllegalDataException;
+import org.example.exceptions.IllegalDataException;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repository.interfaces.RepositoryForTeachersInterface;
-import org.example.repository.producer.StudentProducer;
-import org.example.repository.producer.TeacherProducer;
 import org.example.service.Checking;
+import org.example.service.SaveService;
+import org.example.service.StudentService;
+import org.example.service.Supplier;
 import org.example.service.TeacherService;
 import org.example.subject.Subject;
 import org.slf4j.Logger;
@@ -37,24 +37,17 @@ public class ControllerForChangeRating extends HttpServlet {
     int id = Checking.getId(req.getParameter(Parameters.ID_STUDENT));
     log.info(String.format("subject - %s", subject.toString()));
     log.info(String.format("id - %s", id));
-    RepositoryForTeachersInterface repository = TeacherProducer.getRepository();
-    Optional<Teacher> teacherOptional = repository
-        .findByLoginAndPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)),
-            String.valueOf(session.getAttribute(Attributes.PASSWORD)));
-    if (teacherOptional.isPresent()) {
-      Teacher teacher = teacherOptional.get();
-      Optional<Student> studentOptional = TeacherService.getStudentById(teacher, id);
-      if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent()
-          && TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
-        Student student = studentOptional.get();
-        student.putRating(subject, rating);
-        StudentProducer.getRepository().save(student);
-      } else {
-        throw new IllegalDataException(
-            "Student with this subject doesn't exist or You can't put him rating");
-      }
+    String login = String.valueOf(session.getAttribute(Attributes.LOGIN));
+    String password = String.valueOf(session.getAttribute(Attributes.PASSWORD));
+    Teacher teacher = Supplier.getTeacherWithLoginAngPassword(login, password);
+    Optional<Student> studentOptional = TeacherService.getStudentById(teacher, id);
+    if (studentOptional.isPresent() && TeacherService.getGroup(teacher).isPresent()
+        && TeacherService.getGroup(teacher).get().getSubjects().contains(subject)) {
+      Student student = studentOptional.get();
+      SaveService.saveStudent(StudentService.putRating(student, subject, rating));
     } else {
-      throw new IllegalDataException("Teacher with this id doesn't exist");
+      throw new IllegalDataException(
+          "Student with this subject doesn't exist or You can't put him rating");
     }
     req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
   }

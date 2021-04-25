@@ -10,10 +10,12 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/pages/style.css">
 </head>
 <body>
 <div class="form">
-    <h1>Вход в систему JSP</h1><br>
+    <h1>Login in system </h1><br>
     <form method="post" action="">
         <input type="text" required placeholder="login" name="login"><br>
         <input type="password" required placeholder="password" name="password"><br><br>

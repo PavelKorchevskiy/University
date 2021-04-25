@@ -12,6 +12,7 @@ import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
+import org.example.service.StudentService;
 import org.example.subject.Subject;
 
 public class RepositoryForGroupInMemory implements RepositoryForGroupInterface {
@@ -81,7 +82,7 @@ public class RepositoryForGroupInMemory implements RepositoryForGroupInterface {
     map.values().forEach(g -> g.getStudents().forEach(s -> {
       Set<Subject> subjects = g.getSubjects();
       for (Subject sub : subjects) {
-        s.putRating(sub, 0);
+        StudentService.putRating(s, sub, 0);
       }
     }));
   }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
+import org.example.service.StudentService;
 import org.example.subject.Subject;
 
 public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface {
@@ -54,7 +55,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         int rating = rs.getInt("rating");
         for (Student student : students) {
           if (student.getId() == id) {
-            student.putRating(subject, rating);
+            StudentService.putRating(student, subject, rating);
           }
         }
       }
@@ -114,7 +115,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         preparedStatement.close();
       }
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
     return student;
   }
@@ -144,8 +145,8 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         preparedStatement.close();
       }
     } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      e.printStackTrace();
+    }
     return student;
   }
 
@@ -193,7 +194,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
         int rating = rs.getInt("rating");
         for (Student student : students) {
           if (student.getId() == id) {
-            student.putRating(subject, rating);
+            StudentService.putRating(student, subject, rating);
           }
         }
       }

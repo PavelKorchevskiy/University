@@ -3,10 +3,12 @@ package org.example.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.example.constans.Tags;
-import org.example.excetions.IllegalDataException;
+import org.example.exceptions.IllegalDataException;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.example.repository.producer.TeacherProducer;
@@ -67,5 +69,7 @@ public class AverageSalary {
 
   public static List<BigDecimal> getSalaryAsList(String salaryAsString) {
     String[] array = salaryAsString.split(";");
+    return Arrays.stream(array).map(s -> BigDecimal.valueOf(Double.parseDouble(s)))
+        .collect(Collectors.toList());
   }
 }

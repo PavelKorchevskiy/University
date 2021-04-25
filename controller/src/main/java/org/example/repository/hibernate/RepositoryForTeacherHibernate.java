@@ -3,12 +3,11 @@ package org.example.repository.hibernate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.example.model.AbstractPerson;
-import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 public class RepositoryForTeacherHibernate implements RepositoryForTeachersInterface {
 
@@ -30,31 +29,43 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
 
   @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
-    List<Teacher> teachers = findAll();
-    Teacher teacher = null;
-    for (Teacher t: teachers) {
-      if (t.getLogin().equals(login) && t.getPassword().equals(password)) {
-        teacher = t;
-      }
-    }
-    return Optional.ofNullable(teacher);
+//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
+//    Criteria criteria = session.createCriteria(Teacher.class).add(Restrictions.eq("login", login))
+//        .add(Restrictions.eq("password", password));
+//    List<Teacher> teachers = criteria.list();
+//    return teachers.stream().findAny();
+
+    Query query = HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Teacher where login = :login and password = :password");
+    query.setParameter("login", login);
+    query.setParameter("password", password);
+    return query.list().stream().findFirst();
+
   }
 
   @Override
   public List<Teacher> findAll() {
-    return (List<Teacher>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from Teacher ").list();
+    return (List<Teacher>) HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Teacher ").list();
 
   }
 
   @Override
   public Optional<Teacher> findById(int id) {
-    Teacher teacher = HibernateSessionFactory.getSessionFactory().openSession().get(Teacher.class, id);
-    return Optional.ofNullable(teacher);
+//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
+//    Criteria criteria = session.createCriteria(Teacher.class).add(Restrictions.eq("id", id));
+//    List<Teacher> teachers = criteria.list();
+//    return teachers.stream().findAny();
+
+    Query query = HibernateSessionFactory.getSessionFactory().openSession()
+        .createQuery("from Teacher where id = :id");
+    query.setParameter("id", id);
+    return query.stream().findAny();
   }
 
   @Override
   public Teacher save(Teacher teacher) {
-    if (findAll().stream().map(AbstractPerson::getId).collect(Collectors.toList())
+    if (findAll().stream().map(Teacher::getId).collect(Collectors.toList())
         .contains(teacher.getId())) {
       return update(teacher);
     }
@@ -69,7 +80,8 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
   public Teacher update(Teacher teacher) {
     Session session = HibernateSessionFactory.getSessionFactory().openSession();
     Transaction transaction = session.beginTransaction();
-    session.update(teacher);
+    //session.update(teacher);
+    session.merge(teacher);
     transaction.commit();
     session.close();
     return teacher;
