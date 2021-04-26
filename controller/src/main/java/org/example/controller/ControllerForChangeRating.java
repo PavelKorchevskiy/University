@@ -37,11 +37,7 @@ public class ControllerForChangeRating {
     int rating = Checking.getRating(req.getParameter(Parameters.RATING));
     Subject subject = Checking.getSubject(req.getParameter(Parameters.SUBJECT));
     int id = Checking.getId(req.getParameter(Parameters.ID_STUDENT));
-    log.info(String.format("subject - %s", subject.toString()));
-    log.info(String.format("id - %s", id));
-    String login = String.valueOf(session.getAttribute(Attributes.LOGIN));
-    String password = String.valueOf(session.getAttribute(Attributes.PASSWORD));
-    Teacher teacher = serviceCRUD.getTeacherWithLoginAngPassword(login, password);
+    Teacher teacher = serviceCRUD.getTeacherWithLoginAngPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)), String.valueOf(session.getAttribute(Attributes.PASSWORD)));
     Optional<Student> studentOptional = serviceCRUD.getStudentById(teacher, id);
     if (studentOptional.isPresent() && serviceCRUD.getGroup(teacher).isPresent()
         && serviceCRUD.getGroup(teacher).get().getSubjects().contains(subject)) {

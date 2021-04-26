@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import org.example.exceptions.IllegalFormatException;
-import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
 import org.hibernate.Session;
