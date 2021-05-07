@@ -43,18 +43,6 @@ public class RepositoryForStudentsInMemory implements RepositoryForStudentsInter
     return students;
   }
 
-  public List<Student> getRandomStudents(int count) {
-    List<Student> students = new ArrayList<>();
-    for (Map.Entry<Integer, Student> entry : map.entrySet()) {
-      students.add(entry.getValue());
-    }
-    List<Student> result = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
-      result.add(students.remove((int) (Math.random() * students.size())));
-    }
-    return result;
-  }
-
   @Override
   public List<Student> findAll() {
     return new ArrayList<>(map.values());

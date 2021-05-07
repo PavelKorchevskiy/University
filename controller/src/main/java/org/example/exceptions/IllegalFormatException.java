@@ -8,8 +8,4 @@ public class IllegalFormatException extends AppException {
   public IllegalFormatException(String message) {
     super(message);
   }
-
-  public IllegalFormatException(Throwable cause) {
-    super(cause);
-  }
 }

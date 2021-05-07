@@ -22,6 +22,9 @@ public class LogoutServlet {
     session.removeAttribute(Attributes.PASSWORD);
     session.removeAttribute(Attributes.LOGIN);
     session.removeAttribute(Attributes.ROLE);
+    session.removeAttribute(Attributes.AVERAGE_SALARY);
+    session.removeAttribute(Attributes.GROUP);
+    session.removeAttribute(Attributes.ACCESS_DENIED);
     log.info("logout");
     try {
       req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);

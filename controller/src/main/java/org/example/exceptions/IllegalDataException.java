@@ -8,8 +8,4 @@ public class IllegalDataException extends AppException {
   public IllegalDataException(String message) {
     super(message);
   }
-
-  public IllegalDataException(Throwable cause) {
-    super(cause);
-  }
 }

@@ -1,6 +1,7 @@
 package org.example.aspects;
 
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -11,16 +12,15 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Slf4j
 public class LoggingAspect {
-
-  private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
   @Pointcut("execution(* org.example.controller.*.*(..))")
   public void controllers() {
   }
 
   @Before("controllers()")
-  public void before(JoinPoint joinPoint) {
+  public void logging(JoinPoint joinPoint) {
     log.error(joinPoint.toShortString());
     log.info("Args - " + Arrays.toString(joinPoint.getArgs()));
   }

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -15,6 +15,9 @@
 <body>
 <div class="form">
     <h1>Login in system </h1><br>
+    <% if(session.getAttribute(Attributes.ACCESS_DENIED) != null) {
+      out.print(Attributes.ACCESS_DENIED);
+            }%>
     <form method="post" action="">
         <input type="text" required placeholder="login" name="login"><br>
         <input type="password" required placeholder="password" name="password"><br><br>

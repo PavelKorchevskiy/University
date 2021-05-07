@@ -10,39 +10,31 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
+import org.example.constans.Role;
 import org.example.model.Admin;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.service.StudentService;
 import org.example.service.ServiceCRUD;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@WebInitParam(name = "AdminLogin", value = "admin")
 @Component("myTestFilter")
-public class AuthFilter implements Filter{
+@Slf4j
+@RequiredArgsConstructor
+public class AuthFilter implements Filter {
 
   private final ServiceCRUD service;
-  private final Logger log = LoggerFactory.getLogger(AuthFilter.class);
-
-  @Autowired
-  public AuthFilter(
-      ServiceCRUD service) {
-    this.service = service;
-  }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
       throws IOException, ServletException {
-    log.error("Start filter");
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
     HttpServletRequest req = (HttpServletRequest) request;
@@ -50,24 +42,24 @@ public class AuthFilter implements Filter{
     String login = req.getParameter(Parameters.LOGIN);
     String password = req.getParameter(Parameters.PASSWORD);
     HttpSession session = req.getSession();
-    String role;
+    String role = "";
     if (nonNull(session.getAttribute(Attributes.LOGIN)) &&
         nonNull(session.getAttribute(Attributes.PASSWORD)) &&
         nonNull(session.getAttribute(Attributes.ROLE))) {
       log.info("all attributes are present");
-      role = "user";
+      role = Role.USER;
       filterChain.doFilter(request, response);
     } else if (nonNull(login) && nonNull(password)) {
       log.info("Login and password are present, go to access control");
       session.setAttribute(Attributes.LOGIN, login);
       session.setAttribute(Attributes.PASSWORD, password);
-      role = getAccess(login, password, session);
+      role = getRole(login, password, session);
       session.setAttribute(Attributes.ROLE, role);
     } else {
       log.info("no attributes were wound, go to login page");
       role = "no";
       req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
-    }
+  }
     goToPage(role, req, resp);
   }
 
@@ -75,42 +67,40 @@ public class AuthFilter implements Filter{
   public void destroy() {
   }
 
-  private String getAccess(String login, String password, HttpSession session) {
-    String access = "no";
-
+  private String getRole(String login, String password, HttpSession session) {
+    String role = "";
     Optional<Student> optionalStudent = service.getStudentByLoginAndPassword(login, password);
     Optional<Teacher> optionalTeacher = service.getTeacherByLoginAndPassword(login, password);
-
     if (optionalTeacher.isPresent()) {
-      access = "teacher";
+      role = Role.TEACHER;
       session.setAttribute(Attributes.GROUP, service.showGroup(optionalTeacher.get()));
     } else if (optionalStudent.isPresent()) {
-      access = "student";
+      role = Role.STUDENT;
       session.setAttribute(Attributes.RATING
           , StudentService.getRatingAsString(optionalStudent.get()));
     } else if (login.equals(Admin.getInstance().getLogin())
         && Admin.getInstance().getPassword()
         .equals(password)) {
-      access = "admin";
+      role = Role.ADMIN;
       session.setAttribute(Attributes.TEACHERS, service.showAllTeachers());
     }
-    return access;
+    return role;
   }
 
   private void goToPage(String role, HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     switch (role) {
-      case "user" :
+      case Role.USER :
         break;
-      case "admin":
+      case Role.ADMIN:
         log.info("go to admin page");
         req.getRequestDispatcher("pages/AdminPage.jsp").forward(req, resp);
         break;
-      case "student":
+      case Role.STUDENT:
         log.info("go to student page");
         req.getRequestDispatcher("pages/StudentPage.jsp").forward(req, resp);
         break;
-      case "teacher":
+      case Role.TEACHER:
         log.info("go to teacher page");
         req.getRequestDispatcher("pages/TeacherPage.jsp").forward(req, resp);
         break;
@@ -120,15 +110,12 @@ public class AuthFilter implements Filter{
         session.removeAttribute(Attributes.PASSWORD);
         session.removeAttribute(Attributes.LOGIN);
         session.removeAttribute(Attributes.ROLE);
-        break;
+        session.setAttribute(Attributes.ACCESS_DENIED, Attributes.ACCESS_DENIED);
+        req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
     }
   }
 
-
   @Override
   public void init(FilterConfig filterConfig) {
-    String login = filterConfig.getInitParameter("AdminLogin");
-    Admin.getInstance().setLogin(login);
-    Admin.getInstance().setPassword(login);
   }
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.example.aspects.AdminAccess;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.service.Checking;
@@ -22,6 +23,7 @@ public class ControllerForShowAverageSalary {
   private final Logger log = LoggerFactory.getLogger(ControllerForShowAverageSalary.class);
 
   @PostMapping("/showSalary")
+  @AdminAccess
   protected ModelAndView service(HttpServletRequest req)
       throws ServletException, IOException {
     log.info("show average salary controller");

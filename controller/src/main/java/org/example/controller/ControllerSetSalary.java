@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.example.aspects.AdminAccess;
 import org.example.constans.Attributes;
 import org.example.constans.Parameters;
 import org.example.model.Teacher;
@@ -21,6 +22,7 @@ public class ControllerSetSalary {
   private ServiceCRUD service;
 
   @PostMapping("/setSalary")
+  @AdminAccess
   protected ModelAndView service(HttpServletRequest req)
       throws ServletException, IOException {
     HttpSession session = req.getSession();

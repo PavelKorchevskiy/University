@@ -16,17 +16,13 @@ a:link {
   color: #0d2cf5
 }
 
-/* непосещенная ссылка */
 a:visited {
   color: #260278;
 }
 
-/* посещенная ссылка */
 a:hover {
   color: #e30505;
 }
-
-/* курсор мыши над ссылкой */
 
 .button {
   display: inline-block;
@@ -52,31 +48,3 @@ a:hover {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-
-/*input[type=text], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/
-/*input[type=number], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/
-/*input[type=password], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/

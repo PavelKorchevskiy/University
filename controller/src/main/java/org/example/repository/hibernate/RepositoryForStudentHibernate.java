@@ -45,7 +45,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
       Query<Student> query = (Query<Student>) session.createQuery("from Student where id = :id");
       query.setParameter("id", id);
       Optional<Student> student = query.stream().findAny();
-      //session.close();
       return student;
     }
 
@@ -60,7 +59,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
       Transaction transaction = session.beginTransaction();
       session.save(student);
       transaction.commit();
-      //session.close();
       return student;
     }
 

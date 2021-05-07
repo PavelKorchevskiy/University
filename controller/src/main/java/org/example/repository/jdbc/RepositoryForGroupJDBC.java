@@ -79,7 +79,6 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
   @Override
   public Optional<Group> findById(int id) {
     List<Group> groups = new ArrayList<>();
-    //создаем группы без студентов
     try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from groups where id = ?;")) {
       ps.setInt(1, id);
@@ -95,7 +94,7 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    //добавляем студентов в группы
+
     try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement ps = connection
             .prepareStatement("select * from group_student where group_id = ?;")

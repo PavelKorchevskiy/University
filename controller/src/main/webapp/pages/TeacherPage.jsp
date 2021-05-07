@@ -28,6 +28,5 @@
 <form method="post" action="<c:url value="/logout"/>">
     <input class="button" type="submit" value="LogoutButton">
 </form>
-<%--<a href="<c:url value='/logout' />">Logout</a>--%>
 </body>
 </html>
