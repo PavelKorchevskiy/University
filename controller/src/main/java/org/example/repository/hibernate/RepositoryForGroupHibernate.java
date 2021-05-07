@@ -51,9 +51,4 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     transaction.commit();
     return group;
   }
-
-  @Override
-  public Group remove(Group group) {
-    return null;
-  }
 }

@@ -59,7 +59,6 @@ public class RepositoryForStudentsInMemory implements RepositoryForStudentsInter
     return student;
   }
 
-  @Override
   public Student remove(Student student) {
     return map.remove(student.getId());
   }

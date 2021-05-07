@@ -120,7 +120,6 @@ public class RepositoryForGroupJDBC implements RepositoryForGroupInterface {
     return null;
   }
 
-  @Override
   public Group remove(Group group) {
     return null;
   }

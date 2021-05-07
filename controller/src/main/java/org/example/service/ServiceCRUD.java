@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.example.constans.Tags;
 import org.example.exceptions.IllegalDataException;
 import org.example.group.Group;
@@ -18,9 +19,6 @@ import org.example.model.Teacher;
 import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.example.repository.interfaces.RepositoryForTeachersInterface;
-import org.example.repository.spring_data.GroupSpringDataRepository;
-import org.example.repository.spring_data.StudentSpringDataRepository;
-import org.example.repository.spring_data.TeacherSpringDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -31,39 +29,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @PropertySource("classpath:app.properties")
 @Transactional
+@Slf4j
 public class ServiceCRUD {
 
-//  @Value("${repository.type}")
-//  private String repositoryType;
+  @Value("${repository.type}")
+  private String repositoryType;
 
-//  private Map<String, RepositoryForStudentsInterface> mapS;
-//  private Map<String, RepositoryForTeachersInterface> mapT;
-//  private Map<String, RepositoryForGroupInterface> mapG;
+  private Map<String, RepositoryForStudentsInterface> mapS;
+  private Map<String, RepositoryForTeachersInterface> mapT;
+  private Map<String, RepositoryForGroupInterface> mapG;
 
-//  private RepositoryForTeachersInterface repositoryTeacher;
-//  private RepositoryForGroupInterface repositoryGroup;
-//  private RepositoryForStudentsInterface repositoryStudent;
-
-  private TeacherSpringDataRepository repositoryTeacher;
-  private GroupSpringDataRepository repositoryGroup;
-  private StudentSpringDataRepository repositoryStudent;
+  private RepositoryForTeachersInterface repositoryTeacher;
+  private RepositoryForGroupInterface repositoryGroup;
+  private RepositoryForStudentsInterface repositoryStudent;
 
   @Autowired
-  public ServiceCRUD(TeacherSpringDataRepository repositoryTeacher,
-      GroupSpringDataRepository repositoryGroup,
-      StudentSpringDataRepository repositoryStudent) {
-    this.repositoryTeacher = repositoryTeacher;
-    this.repositoryGroup = repositoryGroup;
-    this.repositoryStudent = repositoryStudent;
+  public ServiceCRUD(
+      Map<String, RepositoryForStudentsInterface> mapS,
+      Map<String, RepositoryForTeachersInterface> mapT,
+      Map<String, RepositoryForGroupInterface> mapG) {
+    this.mapS = mapS;
+    this.mapT = mapT;
+    this.mapG = mapG;
   }
 
-  //  @PostConstruct
-//  public void init() {
-//    repositoryTeacher = mapT.get(repositoryType + "T");
-//    repositoryGroup = mapG.get(repositoryType + "G");
-//    repositoryStudent = mapS.get(repositoryType + "S");
-//
-//  }
+  @PostConstruct
+  public void init() {
+    repositoryTeacher = mapT.get(repositoryType + "T");
+    repositoryGroup = mapG.get(repositoryType + "G");
+    repositoryStudent = mapS.get(repositoryType + "S");
+    if (repositoryTeacher == null || repositoryGroup == null || repositoryStudent == null) {
+      repositoryStudent = mapS.get("studentSpringDataRepository");
+      repositoryTeacher = mapT.get("teacherSpringDataRepository");
+      repositoryGroup = mapG.get("groupSpringDataRepository");
+    }
+    log.info("repository type - " + repositoryTeacher.getClass().getName());
+  }
 
   public Student saveStudent(Student student) {
     return repositoryStudent.save(student);
@@ -198,22 +199,4 @@ public class ServiceCRUD {
     }
     return String.valueOf(sb);
   }
-
-//  @Autowired
-//  public void setMapS(
-//      Map<String, RepositoryForStudentsInterface> mapS) {
-//    this.mapS = mapS;
-//  }
-//
-//  @Autowired
-//  public void setMapT(
-//      Map<String, RepositoryForTeachersInterface> mapT) {
-//    this.mapT = mapT;
-//  }
-//
-//  @Autowired
-//  public void setMapG(
-//      Map<String, RepositoryForGroupInterface> mapG) {
-//    this.mapG = mapG;
-//  }
 }

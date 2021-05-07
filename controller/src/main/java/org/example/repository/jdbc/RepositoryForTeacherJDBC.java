@@ -111,11 +111,6 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   }
 
   @Override
-  public Teacher remove(Teacher teacher) {
-    return null;
-  }
-
-  @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
     List<Teacher> teachers = new ArrayList<>();
     try (Connection connection = DataSourceJDBC.getConnection()

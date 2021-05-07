@@ -28,12 +28,11 @@ public class AbstractSpringJpaRepository<T> implements RepositoryInterface<T> {
 
 
   @Override
-  public T save(T t) {
-      entityManager.merge(t);
-    return t;
+  public <S extends T> S save(S s) {
+      entityManager.merge(s);
+    return s;
   }
 
-  @Override
   public T remove(T t) {
     List<T> list = findAll();
     if (list.contains(t)) {

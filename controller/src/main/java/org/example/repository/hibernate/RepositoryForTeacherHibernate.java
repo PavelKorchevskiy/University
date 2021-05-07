@@ -70,9 +70,4 @@ public class RepositoryForTeacherHibernate implements RepositoryForTeachersInter
     transaction.commit();
     return teacher;
   }
-
-  @Override
-  public Teacher remove(Teacher teacher) {
-    return null;
-  }
 }

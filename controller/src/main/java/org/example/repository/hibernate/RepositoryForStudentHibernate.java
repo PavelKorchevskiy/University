@@ -69,9 +69,4 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
       transaction.commit();
       return student;
     }
-
-  @Override
-  public Student remove(Student student) {
-    return null;
-  }
 }

@@ -151,11 +151,6 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   }
 
   @Override
-  public Student remove(Student student) {
-    return null;
-  }
-
-  @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
     List<Student> students = new ArrayList<>();
     try (Connection connection = DataSourceJDBC.getConnection();

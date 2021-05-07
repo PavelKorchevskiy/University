@@ -9,7 +9,7 @@ public interface RepositoryInterface<T> {
 
   Optional<T> findById(int id);
 
-  T save(T t);
+  <S extends T> S save(S s);
 
-  T remove(T t);
+  //T remove(T t);
 }
