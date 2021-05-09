@@ -1,6 +1,5 @@
-<%@ page import="org.example.service.TeacherService" %>
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.TeacherProducer" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: павел
   Date: 23.12.2020
@@ -12,17 +11,12 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
-</head>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 <body>
 <h1>Hello Teacher</h1>
-<%= TeacherService.showGroup(
-        TeacherProducer.getRepository()
-                .findByLoginAndPassword(
-                        String.valueOf(session.getAttribute(Attributes.LOGIN)),
-                        String.valueOf(session.getAttribute(Attributes.PASSWORD)))
-                .get())%>
+<%= session.getAttribute(Attributes.GROUP)%>
 <br/>
 <h3>Enter student's id, subject and rating:</h3>
 <form method="post" action="<c:url value="/changeRating"/>">
@@ -31,6 +25,9 @@
     <input type="number" required placeholder="rating" name="ratingMyStudent"><br/>
     <input class="button" type="submit" value="Change rating">
 </form>
-<a href="<c:url value='/logout' />">Logout</a>
+
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

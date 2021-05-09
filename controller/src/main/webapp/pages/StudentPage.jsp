@@ -1,5 +1,4 @@
 <%@ page import="org.example.constans.Attributes" %>
-<%@ page import="org.example.repository.producer.StudentProducer" %>
 <%@ page import="org.example.service.StudentService" %><%--
   Created by IntelliJ IDEA.
   User: павел
@@ -12,17 +11,16 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <h1>Hello Student</h1>
-<%= StudentService.getRatingAsString(StudentProducer.getRepository()
-        .findByLoginAndPassword(
-                String.valueOf(session.getAttribute(Attributes.LOGIN)),
-                String.valueOf(session.getAttribute(Attributes.PASSWORD)))
-        .get())%>
+<%= session.getAttribute(Attributes.RATING)%>
 <br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

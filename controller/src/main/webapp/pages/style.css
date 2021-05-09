@@ -1,83 +1,50 @@
-
 body {
-  background-color: lightsteelblue;
-  font-size: 25px;
+    background-color: lightsteelblue;
+    font-size: 25px;
 }
 
 h1 {
-  font-size: 40px;
+    font-size: 40px;
 }
 
 a {
-  font-size: 25px;
-  font-style: italic;
+    font-size: 25px;
+    font-style: italic;
 }
 
 a:link {
-  color: #0d2cf5
+    color: #0d2cf5
 }
 
-/* непосещенная ссылка */
 a:visited {
-  color: #260278;
+    color: #260278;
 }
 
-/* посещенная ссылка */
 a:hover {
-  color: #e30505;
+    color: #e30505;
 }
-
-/* курсор мыши над ссылкой */
 
 .button {
-  display: inline-block;
-  padding: 5px 10px;
-  font-size: 22px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #7d7f7e;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 22px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #7d7f7e;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
 }
 
 .button:hover {
-  background-color: #606360
+    background-color: #606360
 }
 
 .button:active {
-  background-color: #e6eae6;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+    background-color: #e6eae6;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }
-
-/*input[type=text], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/
-/*input[type=number], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/
-/*input[type=password], select {*/
-/*  width: 15%;*/
-/*  padding: 12px 20px;*/
-/*  margin: 8px 0;*/
-/*  display: inline-block;*/
-/*  border: 1px solid #ccc;*/
-/*  border-radius: 4px;*/
-/*  box-sizing: border-box;*/
-/*}*/

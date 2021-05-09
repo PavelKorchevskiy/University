@@ -10,8 +10,9 @@
 <html>
 <head>
     <title>Average Salary</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <%
@@ -23,7 +24,9 @@
     <input type="number" required placeholder="Number of months" name="numberOfMonths"><br/><br/>
     <input class="button" type="submit" value="Show salary">
 </form>
-<a href="<c:url value='/admin' />">Back</a><br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<a href="<c:url value='/pages/AdminPage.jsp' />">Back</a><br/>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>

@@ -8,12 +8,25 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-
   <artifactId>controller</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <spring.version>5.2.13.RELEASE</spring.version>
+    <javax.servlet.version>4.0.1</javax.servlet.version>
+    <jstl.version>1.2</jstl.version>
+    <taglibs.version>1.1.2</taglibs.version>
+    <apache.tomcat.version>7.0.47</apache.tomcat.version>
+    <postgresql.version>42.2.18</postgresql.version>
+    <aspectj.version>1.9.6</aspectj.version>
+    <logback.version>1.2.3</logback.version>
+    <hibernate-entitymanager.version>5.4.30.Final</hibernate-entitymanager.version>
+    <commons-dbcp2.version>2.8.0</commons-dbcp2.version>
+    <springframework.data.version>2.3.9.RELEASE</springframework.data.version>
+    <javax.annotation.version>1.3.2</javax.annotation.version>
+  </properties>
+
   <dependencies>
-    <!--My model-module-->
     <dependency>
       <groupId>org.example</groupId>
       <artifactId>model</artifactId>
@@ -23,33 +36,93 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
+      <version>${javax.servlet.version}</version>
     </dependency>
-
     <dependency>
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/taglibs/standard -->
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
-      <version>1.1.2</version>
+      <version>${taglibs.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-jsp-api</artifactId>
-      <version>7.0.47</version>
+      <version>${apache.tomcat.version}</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.18</version>
+      <version>${postgresql.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>${commons-dbcp2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>${javax.annotation.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+      <version>${springframework.data.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>web-app</finalName>
@@ -87,6 +160,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
           <source>9</source>
           <target>9</target>

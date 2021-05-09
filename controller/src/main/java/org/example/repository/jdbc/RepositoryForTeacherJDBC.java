@@ -33,7 +33,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   @Override
   public List<Teacher> findAll() {
     List<Teacher> teachers = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from teacher;");
         ResultSet rs = preparedStatement.executeQuery()) {
       getTeachersFromResultSet(teachers, rs);
@@ -46,7 +46,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   @Override
   public Optional<Teacher> findById(int id) {
     List<Teacher> teachers = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection()
+    try (Connection connection = DataSourceJDBC.getConnection()
     ) {
       PreparedStatement preparedStatement = connection
           .prepareStatement("select * from teacher where id = ?;");
@@ -74,7 +74,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
     if (optionalTeacher.isPresent()) {
       return update(teacher);
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(
             "insert into teacher (id, login, password, name, age, salary) values (?, ?, ?, ?, ?, ?);")
     ) {
@@ -92,7 +92,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   }
 
   public Teacher update(Teacher teacher) {
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update teacher set " +
             "login = ?, password = ?, name = ?, age = ?, salary = ? where id = ?")
     ) {
@@ -111,14 +111,9 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   }
 
   @Override
-  public Teacher remove(Teacher teacher) {
-    return null;
-  }
-
-  @Override
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
     List<Teacher> teachers = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection()
+    try (Connection connection = DataSourceJDBC.getConnection()
     ) {
       PreparedStatement preparedStatement = connection
           .prepareStatement("select * from teacher where login = ? and password = ?;");
@@ -143,7 +138,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
 
   private List<BigDecimal> getSalaryById(int id) {
     List<BigDecimal> salary = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection()) {
+    try (Connection connection = DataSourceJDBC.getConnection()) {
       PreparedStatement ps = connection
           .prepareStatement("select * from salary where teacher_id = ?;");
       ps.setInt(1, id);
@@ -160,7 +155,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
   }
 
   private void updateSalary(int teacherId, List<BigDecimal> salary) {
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement ps = connection
             .prepareStatement("delete from salary where teacher_id = ?;")) {
       ps.setInt(1, teacherId);
@@ -168,7 +163,7 @@ public class RepositoryForTeacherJDBC implements RepositoryForTeachersInterface 
     } catch (SQLException throwable) {
       throwable.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement ps = connection
             .prepareStatement("insert into salary (teacher_id, salary) values (?, ?);;")) {
       for (BigDecimal bd : salary) {

@@ -8,42 +8,28 @@ import org.example.repository.interfaces.RepositoryForGroupInterface;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository("hibernateG")
 public class RepositoryForGroupHibernate implements RepositoryForGroupInterface {
-
-  private static volatile RepositoryForGroupHibernate instance;
-
-  private RepositoryForGroupHibernate() {
-  }
-
-  public static RepositoryForGroupHibernate getInstance() {
-    if (instance == null) {
-      synchronized (RepositoryForGroupHibernate.class) {
-        if (instance == null) {
-          instance = new RepositoryForGroupHibernate();
-        }
-      }
-    }
-    return instance;
-  }
 
   @Override
   public List<Group> findAll() {
-    return (List<Group>) HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    List<Group> from_group = (List<Group>) session
         .createQuery("from Group ").list();
+    //session.close();
+    return from_group;
   }
 
   @Override
   public Optional<Group> findById(int id) {
-//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-//    Criteria criteria = session.createCriteria(Group.class).add(Restrictions.eq("id", id));
-//    List<Group> teachers = criteria.list();
-//    return teachers.stream().findAny();
-
-    Query<Group> query = HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Group> query = (Query<Group>) session
         .createQuery("from Group where id = :id");
     query.setParameter("id", id);
-    return query.stream().findAny();
+    Optional<Group> any = query.stream().findAny();
+    return any;
   }
 
   @Override
@@ -55,7 +41,6 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.save(group);
     transaction.commit();
-    session.close();
     return group;
   }
 
@@ -64,12 +49,6 @@ public class RepositoryForGroupHibernate implements RepositoryForGroupInterface 
     Transaction transaction = session.beginTransaction();
     session.merge(group);
     transaction.commit();
-    session.close();
     return group;
-  }
-
-  @Override
-  public Group remove(Group group) {
-    return null;
   }
 }

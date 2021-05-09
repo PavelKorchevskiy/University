@@ -34,7 +34,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   @Override
   public List<Student> findAll() {
     List<Student> students = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from student;");
         ResultSet rs = preparedStatement.executeQuery()) {
       while (rs.next()) {
@@ -45,7 +45,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from rating;");
         ResultSet rs = preparedStatement.executeQuery()) {
       //инициализируем рейтинг у студентов, если он есть в таблице
@@ -68,7 +68,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   @Override
   public Optional<Student> findById(int id) {
     List<Student> students = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection
             .prepareStatement("select * from student where id = ?;")) {
       preparedStatement.setInt(1, id);
@@ -91,7 +91,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     if (studentOptional.isPresent()) {
       return update(student);
     }
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(
             "insert into student (id, login, password, name, age) values (?, ?, ?, ?, ?);")
     ) {
@@ -104,7 +104,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection()) {
+    try (Connection connection = DataSourceJDBC.getConnection()) {
       for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
         PreparedStatement preparedStatement = connection.prepareStatement(
             "insert into rating (student_id, subject, rating) values (?, ?, ?);");
@@ -121,7 +121,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   }
 
   public Student update(Student student) {
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update student" +
             " set  login = ?, password = ?, name = ?, age = ? where id = ?;")
     ) {
@@ -134,7 +134,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    try (Connection connection = DataSource.getConnection()) {
+    try (Connection connection = DataSourceJDBC.getConnection()) {
       for (Map.Entry<Subject, Integer> entry : student.getRatings().entrySet()) {
         PreparedStatement preparedStatement = connection.prepareStatement("update rating " +
             "set rating = ? where student_id = ? and subject = ?;");
@@ -151,14 +151,9 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   }
 
   @Override
-  public Student remove(Student student) {
-    return null;
-  }
-
-  @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
     List<Student> students = new ArrayList<>();
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection
             .prepareStatement("select * from student where login = ? and password = ?;")) {
       preparedStatement.setString(1, login);
@@ -182,7 +177,7 @@ public class RepositoryForStudentJDBC implements RepositoryForStudentsInterface 
   }
 
   private void setRatingForStudentWithId(List<Student> students, int id) {
-    try (Connection connection = DataSource.getConnection();
+    try (Connection connection = DataSourceJDBC.getConnection();
         PreparedStatement preparedStatement = connection
             .prepareStatement("select * from rating where student_id = ?;")
     ) {

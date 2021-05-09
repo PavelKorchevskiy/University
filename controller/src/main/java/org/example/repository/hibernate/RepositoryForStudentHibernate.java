@@ -3,67 +3,55 @@ package org.example.repository.hibernate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import org.example.model.Student;
 import org.example.repository.interfaces.RepositoryForStudentsInterface;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository("hibernateS")
 public class RepositoryForStudentHibernate implements RepositoryForStudentsInterface {
 
-  private static volatile RepositoryForStudentHibernate instance;
-
-  private RepositoryForStudentHibernate() {
-  }
-
-  public static RepositoryForStudentHibernate getInstance() {
-    if (instance == null) {
-      synchronized (RepositoryForStudentHibernate.class) {
-        if (instance == null) {
-          instance = new RepositoryForStudentHibernate();
-        }
-      }
-    }
-    return instance;
-  }
+  protected final EntityManagerHelper helper = EntityManagerHelper.getInstance();
 
   @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
-//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-//    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("login", login))
-//        .add(Restrictions.eq("password", password));
-//    List<Student> teachers = criteria.list();
-//    return teachers.stream().findAny();
-
-    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Student> query = (Query<Student>) session
         .createQuery("from Student where login = :login and password = :password");
     query.setParameter("login", login);
     query.setParameter("password", password);
-    return query.stream().findAny();
+    Optional<Student> any = query.stream().findAny();
+    return any;
   }
 
   @Override
   public List<Student> findAll() {
-    return (List<Student>) HibernateSessionFactory.getSessionFactory().openSession()
-        .createQuery("from Student ").list();
+    List<Student> result;
+    EntityManager em = helper.getEntityManager();
+    EntityTransaction trx = em.getTransaction();
+    trx.begin();
+    result = (List<Student>) em.createQuery("from " + Student.class.getName()).getResultList();
+    trx.commit();
+    return result;
   }
 
   @Override
   public Optional<Student> findById(int id) {
-//    Session session  = HibernateSessionFactory.getSessionFactory().openSession();
-//    Criteria criteria = session.createCriteria(Student.class).add(Restrictions.eq("id", id));
-//    List<Student> teachers = criteria.list();
-//    return teachers.stream().findAny();
-
-    Query<Student> query = HibernateSessionFactory.getSessionFactory().openSession()
-        .createQuery("from Student where id = :id");
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Student> query = (Query<Student>) session.createQuery("from Student where id = :id");
     query.setParameter("id", id);
-    return query.stream().findAny();
+    Optional<Student> student = query.stream().findAny();
+    return student;
   }
 
   @Override
   public Student save(Student student) {
-    if (findAll().stream().map(Student::getId).collect(Collectors.toList())
+    if (findAll().stream().map(Student::getId)
+        .collect(Collectors.toList())
         .contains(student.getId())) {
       return update(student);
     }
@@ -71,7 +59,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
     Transaction transaction = session.beginTransaction();
     session.save(student);
     transaction.commit();
-    session.close();
     return student;
   }
 
@@ -80,12 +67,6 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
     Transaction transaction = session.beginTransaction();
     session.merge(student);
     transaction.commit();
-    session.close();
     return student;
-  }
-
-  @Override
-  public Student remove(Student student) {
-    return null;
   }
 }

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "teacher", schema = "public")
+@Table(name = "aaateacher", schema = "public")
 public class Teacher extends AbstractPerson {
 
   @Id
@@ -37,7 +37,7 @@ public class Teacher extends AbstractPerson {
   @Column(name = "age")
   private int age;
   @ElementCollection
-  @CollectionTable(name = "salary",
+  @CollectionTable(name = "aaasalary",
       joinColumns = @JoinColumn(name = "teacher_id"))
   @Column(name = "salary")
   private List<BigDecimal> salary;

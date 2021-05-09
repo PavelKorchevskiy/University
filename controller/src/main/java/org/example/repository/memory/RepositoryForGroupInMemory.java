@@ -73,7 +73,6 @@ public class RepositoryForGroupInMemory implements RepositoryForGroupInterface {
     return group;
   }
 
-  @Override
   public Group remove(Group group) {
     return map.remove(group.getId());
   }

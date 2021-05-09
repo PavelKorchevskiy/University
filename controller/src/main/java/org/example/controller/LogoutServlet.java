@@ -1,25 +1,35 @@
 package org.example.controller;
 
 import java.io.IOException;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.example.constans.Attributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
-public class LogoutServlet extends HttpServlet {
+@Controller
+public class LogoutServlet {
 
   private static final Logger log = LoggerFactory.getLogger(ControllerForChangeRating.class);
 
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  @PostMapping("/logout")
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     final HttpSession session = req.getSession();
     session.removeAttribute(Attributes.PASSWORD);
     session.removeAttribute(Attributes.LOGIN);
     session.removeAttribute(Attributes.ROLE);
+    session.removeAttribute(Attributes.AVERAGE_SALARY);
+    session.removeAttribute(Attributes.GROUP);
+    session.removeAttribute(Attributes.ACCESS_DENIED);
     log.info("logout");
-    resp.sendRedirect(super.getServletContext().getContextPath());
+    try {
+      req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
+    } catch (ServletException e) {
+      e.printStackTrace();
+    }
   }
 }

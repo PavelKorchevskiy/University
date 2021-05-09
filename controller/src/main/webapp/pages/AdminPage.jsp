@@ -10,15 +10,20 @@
 <html>
 <head>
     <title>Admin</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/pages/style.css">
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <h1>Hello ADMIN!</h1>
 <p>You can add salary to one teacher: </p>
-<a href="<c:url value='/salary' />">Set Salary</a><br/>
+<a href="<c:url value='/pages/AdminSetSalary.jsp' />">Set Salary</a><br/>
+<%--<a href="<c:url value='/salary' />">Set Salary</a><br/>--%>
 <p>Show average salary: </p>
-<a href="<c:url value='/averageSalary' />">Show average salary</a><br/>
-<a href="<c:url value='/logout' />">Logout</a>
+<a href="<c:url value='/pages/AdminAverageSalary.jsp' />">Show average salary</a><br/>
+<%--<a href="<c:url value='/averageSalary' />">Show average salary</a><br/>--%>
+<form method="post" action="<c:url value="/logout"/>">
+    <input class="button" type="submit" value="LogoutButton">
+</form>
 </body>
 </html>
