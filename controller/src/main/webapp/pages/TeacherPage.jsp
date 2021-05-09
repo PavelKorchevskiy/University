@@ -1,4 +1,3 @@
-
 <%@ page import="org.example.constans.Attributes" %>
 <%--
   Created by IntelliJ IDEA.
@@ -12,7 +11,9 @@
 <html>
 <head>
     <title>Title</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 <body>
 <h1>Hello Teacher</h1>
 <%= session.getAttribute(Attributes.GROUP)%>

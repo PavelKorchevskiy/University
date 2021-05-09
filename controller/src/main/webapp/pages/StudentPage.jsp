@@ -11,7 +11,9 @@
 <html>
 <head>
     <title>Title</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <h1>Hello Student</h1>

@@ -10,7 +10,9 @@
 <html>
 <head>
     <title>Average Salary</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <%

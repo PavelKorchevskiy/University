@@ -16,7 +16,7 @@ public class LogoutServlet {
 
   private static final Logger log = LoggerFactory.getLogger(ControllerForChangeRating.class);
 
- @PostMapping("/logout")
+  @PostMapping("/logout")
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     final HttpSession session = req.getSession();
     session.removeAttribute(Attributes.PASSWORD);
@@ -31,5 +31,5 @@ public class LogoutServlet {
     } catch (ServletException e) {
       e.printStackTrace();
     }
- }
+  }
 }

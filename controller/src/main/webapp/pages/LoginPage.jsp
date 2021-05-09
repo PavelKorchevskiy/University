@@ -10,14 +10,16 @@
 <html>
 <head>
     <title>Login page</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <div class="form">
     <h1>Login in system </h1><br>
-    <% if(session.getAttribute(Attributes.ACCESS_DENIED) != null) {
-      out.print(Attributes.ACCESS_DENIED);
-            }%>
+    <% if (session.getAttribute(Attributes.ACCESS_DENIED) != null) {
+        out.print(Attributes.ACCESS_DENIED);
+    }%>
     <form method="post" action="">
         <input type="text" required placeholder="login" name="login"><br>
         <input type="password" required placeholder="password" name="password"><br><br>

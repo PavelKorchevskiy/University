@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EntityManagerHelper {
+
   private final SessionFactory factory;
 
   @SneakyThrows
@@ -23,6 +24,7 @@ public class EntityManagerHelper {
   }
 
   private static class EntityManagerHelperHolder {
+
     private static final EntityManagerHelper HOLDER_INSTANCE = new EntityManagerHelper();
   }
 

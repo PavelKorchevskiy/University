@@ -19,7 +19,8 @@ public class TeacherSpringJpaRepository extends AbstractSpringJpaRepository<Teac
   public Optional<Teacher> findByLoginAndPassword(String login, String password) {
 
     TypedQuery<Teacher> query = entityManager
-        .createQuery("from " + clazz.getName() + " where login = :login and password = :password", clazz);
+        .createQuery("from " + clazz.getName() + " where login = :login and password = :password",
+            clazz);
     query.setParameter("login", login);
     query.setParameter("password", password);
     List<Teacher> list = query.getResultList();

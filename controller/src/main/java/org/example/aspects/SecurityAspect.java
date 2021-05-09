@@ -3,11 +3,10 @@ package org.example.aspects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.example.constans.Attributes;
+import org.example.constans.Role;
 import org.example.exceptions.IllegalAccessException;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,7 @@ public class SecurityAspect {
     HttpServletRequest request = (HttpServletRequest) args[0];
     HttpSession session = request.getSession();
     String role = (String) session.getAttribute(Attributes.ROLE);
-    if (!role.equals("admin")) {
+    if (!role.equals(Role.ADMIN)) {
       throw new IllegalAccessException("You not a admin");
     }
   }
@@ -32,7 +31,7 @@ public class SecurityAspect {
     HttpServletRequest request = (HttpServletRequest) args[0];
     HttpSession session = request.getSession();
     String role = (String) session.getAttribute(Attributes.ROLE);
-    if (!role.equals("teacher")) {
+    if (!role.equals(Role.TEACHER)) {
       throw new IllegalAccessException("You not a teacher");
     }
   }

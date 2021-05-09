@@ -67,13 +67,6 @@ values (1, 5),
 
 
 
-
-
-
-
-
-
-
 drop table Student;
 create table Student
 (
@@ -178,7 +171,8 @@ VALUES (1, 'biology'),
        (4, 'geography'),
        (5, 'art'),
        (6, 'history');
-alter table groups drop column subjects;
+alter table groups
+    drop column subjects;
 create table aaagroups_subject
 (
     group_id   int not null,
@@ -189,8 +183,8 @@ create table aaagroups_subject
 drop table aaagroups_subject;
 create table aaagroups_subject
 (
-    group_id   int not null,
-    subject varchar not null,
+    group_id int     not null,
+    subject  varchar not null,
     foreign key (group_id) references aaagroups (id)
 );
 insert into aaagroups_subject (group_id, subject)
@@ -227,7 +221,8 @@ VALUES (3, 474.45),
 
 alter table groups
     add column subjects varchar(50);
-ALTER TABLE teacher ALTER COLUMN id TYPE serial;
+ALTER TABLE teacher
+    ALTER COLUMN id TYPE serial;
 
 create sequence teacher_id_seq start 1 increment 1;
 create sequence student_id_seq start 1 increment 1;

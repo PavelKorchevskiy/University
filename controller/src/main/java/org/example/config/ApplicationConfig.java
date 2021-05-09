@@ -20,7 +20,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class ApplicationConfig {
 
   @Bean
-  public InternalResourceViewResolver internalResourceViewResolver(@Autowired ApplicationContext ctx) {
+  public InternalResourceViewResolver internalResourceViewResolver(
+      @Autowired ApplicationContext ctx) {
     InternalResourceViewResolver resolver = new InternalResourceViewResolver();
     resolver.setApplicationContext(ctx);
     resolver.setPrefix("/pages/");

@@ -39,34 +39,34 @@ public class RepositoryForStudentHibernate implements RepositoryForStudentsInter
     return result;
   }
 
-    @Override
-    public Optional<Student> findById(int id) {
-      Session session = HibernateSessionFactory.getSessionFactory().openSession();
-      Query<Student> query = (Query<Student>) session.createQuery("from Student where id = :id");
-      query.setParameter("id", id);
-      Optional<Student> student = query.stream().findAny();
-      return student;
-    }
+  @Override
+  public Optional<Student> findById(int id) {
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Query<Student> query = (Query<Student>) session.createQuery("from Student where id = :id");
+    query.setParameter("id", id);
+    Optional<Student> student = query.stream().findAny();
+    return student;
+  }
 
-    @Override
-    public Student save(Student student) {
-      if (findAll().stream().map(Student::getId)
-          .collect(Collectors.toList())
-          .contains(student.getId())) {
-        return update(student);
-      }
-      Session session = HibernateSessionFactory.getSessionFactory().openSession();
-      Transaction transaction = session.beginTransaction();
-      session.save(student);
-      transaction.commit();
-      return student;
+  @Override
+  public Student save(Student student) {
+    if (findAll().stream().map(Student::getId)
+        .collect(Collectors.toList())
+        .contains(student.getId())) {
+      return update(student);
     }
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.save(student);
+    transaction.commit();
+    return student;
+  }
 
-    public Student update(Student student) {
-      Session session = HibernateSessionFactory.getSessionFactory().openSession();
-      Transaction transaction = session.beginTransaction();
-      session.merge(student);
-      transaction.commit();
-      return student;
-    }
+  public Student update(Student student) {
+    Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    Transaction transaction = session.beginTransaction();
+    session.merge(student);
+    transaction.commit();
+    return student;
+  }
 }

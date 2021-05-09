@@ -1,4 +1,3 @@
-
 <%@ page import="org.example.constans.Attributes" %><%--
   Created by IntelliJ IDEA.
   User: павел
@@ -11,7 +10,9 @@
 <html>
 <head>
     <title>Set Salary</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <%= session.getAttribute(Attributes.TEACHERS)%><br/>

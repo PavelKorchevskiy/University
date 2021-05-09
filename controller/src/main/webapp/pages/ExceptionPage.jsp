@@ -12,7 +12,9 @@
 <html>
 <head>
     <title>Exception</title>
-    <style><%@include file="/pages/style.css"%></style>
+    <style>
+        <%@include file="/pages/style.css" %>
+    </style>
 </head>
 <body>
 <h2>Exception occurred while processing the request</h2>

@@ -16,8 +16,6 @@ import org.example.service.Checking;
 import org.example.service.StudentService;
 import org.example.service.ServiceCRUD;
 import org.example.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +26,6 @@ public class ControllerForChangeRating {
 
   private ServiceCRUD serviceCRUD;
 
-  private static final Logger log = LoggerFactory.getLogger(ControllerForChangeRating.class);
-
   @PostMapping(path = Links.CHANGE_RATING)
   @TeacherAccess
   protected ModelAndView service(HttpServletRequest req)
@@ -39,7 +35,9 @@ public class ControllerForChangeRating {
     int rating = Checking.getRating(req.getParameter(Parameters.RATING));
     Subject subject = Checking.getSubject(req.getParameter(Parameters.SUBJECT));
     int id = Checking.getId(req.getParameter(Parameters.ID_STUDENT));
-    Teacher teacher = serviceCRUD.getTeacherWithLoginAngPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)), String.valueOf(session.getAttribute(Attributes.PASSWORD)));
+    Teacher teacher = serviceCRUD
+        .getTeacherWithLoginAngPassword(String.valueOf(session.getAttribute(Attributes.LOGIN)),
+            String.valueOf(session.getAttribute(Attributes.PASSWORD)));
     Optional<Student> studentOptional = serviceCRUD.getStudentById(teacher, id);
     if (studentOptional.isPresent() && serviceCRUD.getGroup(teacher).isPresent()
         && serviceCRUD.getGroup(teacher).get().getSubjects().contains(subject)) {

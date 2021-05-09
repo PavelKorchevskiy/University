@@ -8,7 +8,7 @@ public class Attributes {
   public static final String LOGIN = "login";
   public static final String ROLE = "role";
   public static final String GROUP = "teachersGroup";
-  public static final String TEACHERS= "allTeachers";
-  public static final String ACCESS_DENIED= "Access denied";
+  public static final String TEACHERS = "allTeachers";
+  public static final String ACCESS_DENIED = "Access denied";
 
 }

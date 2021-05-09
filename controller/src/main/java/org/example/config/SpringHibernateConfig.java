@@ -2,20 +2,28 @@ package org.example.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
+@PropertySource("classpath:db.properties")
 public class SpringHibernateConfig {
 
-  private static final String URL = "jdbc:postgresql://localhost:5432/pasha";
-  private static final String USER = "pasha";
-  private static final String PASSWORD = "qwe";
-  private static final String DRIVER_NAME = "org.postgresql.Driver";
+  @Value("${url}")
+  private String URL;
+  @Value("${userdb}")
+  private String USER;
+  @Value("${password}")
+  private String PASSWORD;
+  @Value("${driver}")
+  private String DRIVER_NAME;
+
 
   @Bean
   public DataSource dataSource() {

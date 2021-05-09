@@ -19,7 +19,8 @@ public class StudentSpringJpaRepository extends AbstractSpringJpaRepository<Stud
   @Override
   public Optional<Student> findByLoginAndPassword(String login, String password) {
     TypedQuery<Student> query = entityManager
-        .createQuery("from " + clazz.getName() + " where login = :login and password = :password", clazz);
+        .createQuery("from " + clazz.getName() + " where login = :login and password = :password",
+            clazz);
     query.setParameter("login", login);
     query.setParameter("password", password);
     List<Student> list = query.getResultList();

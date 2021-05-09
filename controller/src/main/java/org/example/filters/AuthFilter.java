@@ -59,7 +59,7 @@ public class AuthFilter implements Filter {
       log.info("no attributes were wound, go to login page");
       role = "no";
       req.getRequestDispatcher("pages/LoginPage.jsp").forward(req, resp);
-  }
+    }
     goToPage(role, req, resp);
   }
 
@@ -76,11 +76,10 @@ public class AuthFilter implements Filter {
       session.setAttribute(Attributes.GROUP, service.showGroup(optionalTeacher.get()));
     } else if (optionalStudent.isPresent()) {
       role = Role.STUDENT;
-      session.setAttribute(Attributes.RATING
-          , StudentService.getRatingAsString(optionalStudent.get()));
+      session.setAttribute(Attributes.RATING,
+          StudentService.getRatingAsString(optionalStudent.get()));
     } else if (login.equals(Admin.getInstance().getLogin())
-        && Admin.getInstance().getPassword()
-        .equals(password)) {
+        && Admin.getInstance().getPassword().equals(password)) {
       role = Role.ADMIN;
       session.setAttribute(Attributes.TEACHERS, service.showAllTeachers());
     }
@@ -90,7 +89,7 @@ public class AuthFilter implements Filter {
   private void goToPage(String role, HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     switch (role) {
-      case Role.USER :
+      case Role.USER:
         break;
       case Role.ADMIN:
         log.info("go to admin page");

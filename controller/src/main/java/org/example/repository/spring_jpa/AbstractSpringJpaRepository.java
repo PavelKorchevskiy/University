@@ -29,7 +29,7 @@ public class AbstractSpringJpaRepository<T> implements RepositoryInterface<T> {
 
   @Override
   public <S extends T> S save(S s) {
-      entityManager.merge(s);
+    entityManager.merge(s);
     return s;
   }
 
